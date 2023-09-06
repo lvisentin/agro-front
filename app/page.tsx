@@ -2,11 +2,14 @@
 
 import LoadingButton from "@/components/LoadingButton/LoadingButton";
 import PhoneInput from "@/components/PhoneInput/PhoneInput";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function HomePage() {
-  return (
-    <>
-     <PhoneInput name="phone" mask="99999" maskChar=" " placeholder="phone" />
-    </>
-  );
+  const { push } = useRouter();
+  useEffect(() => {
+    push("/login");
+  }, []);
+
+  return <></>;
 }
