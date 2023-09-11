@@ -9,4 +9,5 @@ export interface DataTableProps {
 export interface TableColumn {
   field: string;
   name: string;
+  transformData?: (data: any) => any
 }

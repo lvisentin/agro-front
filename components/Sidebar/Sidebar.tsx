@@ -33,7 +33,7 @@ const menuItems: MenuItem[] = [
   {
     icon: faWheatAwn,
     text: "Talhões",
-    route: "/internal/writing",
+    route: "/internal/plots",
   },
   {
     icon: faBoxesStacked,

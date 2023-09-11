@@ -3,15 +3,14 @@
 import DataTable from "@/components/DataTable/DataTable";
 import DeleteButton from "@/components/DeleteButton/DeleteButton";
 import EditButton from "@/components/EditButton/EditButton";
-import { Product } from "@/shared/services/products/Products.model";
-import { productsService } from "@/shared/services/products/ProductsService";
-import React, { useState } from "react";
+import { Plot } from "@/shared/services/plots/Plots.model";
+import { plotsService } from "@/shared/services/plots/PlotsService";
 import { useQuery } from "react-query";
 
-function SupplyPage() {
+function PlotsPage() {
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => productsService.fetchProductsList(),
+    queryKey: ["plots"],
+    queryFn: () => plotsService.fetchPlotsList(),
   });
 
   const columns = [
@@ -28,17 +27,14 @@ function SupplyPage() {
       name: "Categoria",
     },
     {
-      field: "quantity",
-      name: "Qtd em estoque",
-    },
-    {
-      field: "minQuantity",
-      name: "Qtd mínima em estoque",
+      field: "size",
+      name: "Tamanho",
+      transformData: (data: Plot) => `${data.size}ha`,
     },
   ];
 
   const actionButtons = (
-    <div className={`action__buttons items-center justify-end`}>
+    <div className={`action__buttons flex items-center justify-end`}>
       <EditButton onClick={() => console.log("edit")} />
       <DeleteButton onClick={() => console.log("edit")} className="ml-2" />
     </div>
@@ -49,13 +45,13 @@ function SupplyPage() {
   }
 
   return (
-    <div className="supply__wrapper">
+    <div className="plots__wrapper">
       <div className="prose">
-        <h2 className="prose-h2">Estoque</h2>
+        <h2 className="prose-h2">Talhões</h2>
       </div>
       <DataTable data={data} columns={columns} actionButtons={actionButtons} />
     </div>
   );
 }
 
-export default SupplyPage;
+export default PlotsPage;

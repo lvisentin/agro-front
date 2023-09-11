@@ -14,5 +14,16 @@
       "quantity": 15,
       "minQuantity": 10
     }
-  ]
+  ],
+  "plots": [
+    {
+      "_id": 2,
+      "name": "Talhão 1",
+      "category": "Talhão de soja",
+      "size": 15
+    }
+  ],
+  "properties": [],
+  "purchases": [],
+  "sales": []
 }
