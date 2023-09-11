@@ -26,8 +26,7 @@
   "properties": [
     {
       "_id": 2,
-      "name": "Propriedade 1",
-      "description": "Minha fazenda gigante"
+      "name": "Propriedade 1"
     }
   ],
   "purchases": [

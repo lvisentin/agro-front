@@ -16,7 +16,7 @@ function SupplyPage() {
 
   const columns = [
     {
-      field: "id",
+      field: "_id",
       name: "Código",
     },
     {

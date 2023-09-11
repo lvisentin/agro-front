@@ -14,16 +14,12 @@ function PropertiesPage() {
 
   const columns = [
     {
-      field: "id",
+      field: "_id",
       name: "Código",
     },
     {
       field: "name",
       name: "Nome",
-    },
-    {
-      field: "description",
-      name: "Descrição",
     },
   ];
 
