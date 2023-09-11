@@ -1,0 +1,18 @@
+{
+  "products": [
+    {
+      "_id": 1,
+      "name": "Glifosato",
+      "category": "Inseticida",
+      "quantity": 15,
+      "minQuantity": 10
+    },
+    {
+      "_id": 2,
+      "name": "Glifosato 2",
+      "category": "Inseticida",
+      "quantity": 15,
+      "minQuantity": 10
+    }
+  ]
+}

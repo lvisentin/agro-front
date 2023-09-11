@@ -80,7 +80,7 @@ const Sidebar: React.FC = () => {
     >
       <Link href="/internal/dashboard">
         <Image
-          src="logo2.svg"
+          src="/logo2.svg"
           alt="Agro Logo"
           width={100}
           height={100}
@@ -96,12 +96,11 @@ const Sidebar: React.FC = () => {
               data-sveltekit-preload-data="hover"
               className={
                 pathname === menuItem.route
-                  ? `${styles.activeItem}active h-full text-white p-4`
+                  ? `${styles.activeItem} active h-full text-white p-4`
                   : `h-full p-4`
               }
             >
               <FontAwesomeIcon icon={menuItem.icon} className={`h-5 w-5`} />
-              {pathname}
               <span className="hidden md:block undefined">{menuItem.text}</span>
             </Link>
           </li>

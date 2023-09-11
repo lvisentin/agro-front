@@ -15,7 +15,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("@tailwindcss/typography")],
   daisyui: {
     themes: [
       {
@@ -23,11 +23,13 @@ const config: Config = {
           ...require("daisyui/src/theming/themes")["[data-theme=corporate]"],
           ".btn-primary": {
             color: "#fff",
-            backgroundColor: '#43af6d'
+            backgroundColor: "#43af6d",
+            borderColor: "#43af6d",
           },
           ".btn-primary:hover": {
             color: "#fff",
-            backgroundColor: '#25854A'
+            backgroundColor: "#25854A",
+            borderColor: "#25854A",
           },
         },
       },
