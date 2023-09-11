@@ -31,6 +31,11 @@ const menuItems: MenuItem[] = [
     route: "/internal/dashboard",
   },
   {
+    icon: faTractor,
+    text: "Propriedades",
+    route: "/internal/properties",
+  },
+  {
     icon: faWheatAwn,
     text: "Talhões",
     route: "/internal/plots",
@@ -59,11 +64,6 @@ const menuItems: MenuItem[] = [
     icon: faFolder,
     text: "Documentos",
     route: "/internal/documents",
-  },
-  {
-    icon: faTractor,
-    text: "Propriedades",
-    route: "/internal/properties",
   },
 ];
 

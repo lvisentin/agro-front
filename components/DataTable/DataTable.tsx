@@ -35,15 +35,19 @@ export default function DataTable({
             >
               {Object.keys(row).map((column: string, key) => {
                 const currentColumn = columns.find((cc) => cc.field === column);
-                return (
-                  <td className={`${styles.td} py-4 px-4`} key={key}>
-                    {currentColumn?.transformData
-                      ? currentColumn.transformData(row)
-                      : row[column]}
-                  </td>
-                );
+                if (currentColumn) {
+                  return (
+                    <td className={`${styles.td} py-4 px-4`} key={key}>
+                      {currentColumn?.transformData
+                        ? currentColumn.transformData(row)
+                        : row[column]}
+                    </td>
+                  );
+                }
               })}
-              {actionButtons && <td className={`${styles.td} py-4 px-4`}>{actionButtons}</td>}
+              {actionButtons && (
+                <td className={`${styles.td} py-4 px-4`}>{actionButtons}</td>
+              )}
             </tr>
           ))}
       </tbody>

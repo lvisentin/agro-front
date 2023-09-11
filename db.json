@@ -23,7 +23,20 @@
       "size": 15
     }
   ],
-  "properties": [],
-  "purchases": [],
+  "properties": [
+    {
+      "_id": 2,
+      "name": "Propriedade 1",
+      "description": "Minha fazenda gigante"
+    }
+  ],
+  "purchases": [
+    {
+      "_id": 2,
+      "description": "Glifosato",
+      "category": "Material",
+      "total": 499
+    }
+  ],
   "sales": []
 }
