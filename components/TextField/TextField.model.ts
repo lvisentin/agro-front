@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, ReactNode } from 'react';
+import { ChangeEvent, FocusEvent, KeyboardEventHandler, ReactNode } from 'react';
 
 interface TrailingIconProps {
   type: 'default' | 'toggle';
@@ -15,7 +15,7 @@ export interface TextFieldProps {
   className?: string;
   onChange?: (e: ChangeEvent<any>) => any;
   onBlur?: (e: FocusEvent<any, Element>) => any;
-  onKeyDown?: (e: KeyboardEvent) => any;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
   value?: any;
   name: string;
   disabled?: boolean;

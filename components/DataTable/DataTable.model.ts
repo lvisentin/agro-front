@@ -1,10 +1,13 @@
+import { ReactElement } from "react";
+
 export interface DataTableProps {
   data: any[];
   columns: TableColumn[];
+  actionButtons?: ReactElement;
 }
 
 export interface TableColumn {
   field: string;
   name: string;
-  canEdit?: boolean;
+  transformData?: (data: any) => any
 }

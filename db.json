@@ -1,0 +1,62 @@
+{
+  "products": [
+    {
+      "_id": 1,
+      "name": "Glifosato",
+      "category": "Inseticida",
+      "quantity": 15,
+      "minQuantity": 10
+    },
+    {
+      "_id": 2,
+      "name": "Glifosato 2",
+      "category": "Inseticida",
+      "quantity": 15,
+      "minQuantity": 10
+    }
+  ],
+  "plots": [
+    {
+      "_id": 2,
+      "name": "Talhão 1",
+      "category": "Talhão de soja",
+      "size": 15
+    }
+  ],
+  "properties": [
+    {
+      "_id": 2,
+      "name": "Propriedade 1"
+    }
+  ],
+  "purchases": [
+    {
+      "_id": 2,
+      "description": "Glifosato",
+      "category": "Material",
+      "total": 499
+    }
+  ],
+  "sales": [
+    {
+      "_id": 2,
+      "description": "Glifosato",
+      "category": "Material",
+      "total": 499
+    }
+  ],
+  "operations": [
+    {
+      "_id": 2,
+      "name": "Dessecação",
+      "date": "11/09/2023",
+      "product": "Glifosato",
+      "costPerPlot": 499
+    }
+  ],
+  "documents": [{
+    "_id": 1,
+    "name": "Escritura",
+    "src": "https://placehold.it/200x200"
+  }]
+}
