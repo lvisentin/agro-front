@@ -20,9 +20,9 @@ export default function Home() {
         </div>
         
         <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-2 p-1 mb-5">
-            {/* <PieChart title={'Operações'} />
+            <PieChart title={'Operações'} />
             <PieChart title={'Saídas'} />
-            <LineChart title={'Lucros30d'} /> */}
+            <LineChart title={'Lucros30d'} />
         </div>
       </main>
   )

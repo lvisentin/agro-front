@@ -40,9 +40,13 @@ export default function PieChart({title}: PieChartProps) {
   }, [])
 
   return (
-    <div className='col-span-1 w-full m-auto p-4 rounded-lg bg-white'>
-      <p className='text-2xl font-semibold'>{title}</p>
-      <Pie className='w-auto' data={chartData} options={chartOptions} />
+    <div className='card w-94 bg-white rounded-lg shadow-md'>
+      <div className='card-body'>
+        <h2 className='card-title'>{title}</h2>
+        <div className='md:col-span-1 lg:h-[40vh] h-[20vh] p-4'>
+          <Pie data={chartData} options={chartOptions} />
+        </div>
+      </div>
     </div>
   );
 }
