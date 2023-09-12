@@ -41,7 +41,7 @@ const LineChart = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position:  false,
       },
       title: {
         display: false,
@@ -52,7 +52,7 @@ const LineChart = () => {
   return (
     <div className='col-span-1 w-full m-auto p-4 rounded-lg bg-white'>
       <p className='text-2xl font-semibold'>Lucros30d</p>
-      <Line className='lg:h-[30vh] h-[30h]' data={chartData} options={chartOptions} />
+      <Line className='lg:h-[30vh] h-[30vh]' data={chartData} options={chartOptions} />
     </div>
   );
 };

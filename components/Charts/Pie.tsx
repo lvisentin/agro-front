@@ -24,6 +24,7 @@ const PieChart = () => {
       title: {
         display: false
       },
+      point: false
     },
     maintainAspectRatio: false,
     responsive: true,
@@ -32,7 +33,7 @@ const PieChart = () => {
   return (
     <div className='col-span-1 w-full m-auto p-4 rounded-lg bg-white'>
       <p className='text-2xl font-semibold'>Operações</p>
-      <Pie className='lg:h-[30vh] h-[30h]' data={chartData} options={chartOptions} />
+      <Pie className='lg:h-[30vh] h-[30vh]' data={chartData} options={chartOptions} />
     </div>
   );
 };
