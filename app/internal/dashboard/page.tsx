@@ -4,8 +4,8 @@ import {
   faArrowTrendUp,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Pie from '@/components/Charts/Pie';
-import Line from '@/components/Charts/Line';
+import PieChart from '@/components/PieChart/PieChart';
+import LineChart from '@/components/LineChart/LineChart';
 
 
 export default function Home() {
@@ -61,10 +61,10 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-2 p-1 mb-5">
-            <Pie />
-            <Pie />
-            <Line />
+        <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-2 p-1 mb-5">
+            <PieChart title={'Operações'} />
+            <PieChart title={'Saídas'} />
+            <LineChart title={'Lucros30d'} />
         </div>
       </main>
   )
