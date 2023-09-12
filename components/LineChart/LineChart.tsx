@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-export default function PieChart({title}: LineChartProps) {
+export default function LineChart({title}: LineChartProps) {
 
   const [chartData, setChartData] = useState<any>({
     datasets: [],
@@ -39,7 +39,7 @@ export default function PieChart({title}: LineChartProps) {
       datasets: [
         {
           fill: true,
-          label: false,
+          label: 'lucros30d',
           data: [1, 10, 30, 100, 110, 310],
           borderColor: '#4339F2',
           backgroundColor: '#DAD7FE',
@@ -51,7 +51,7 @@ export default function PieChart({title}: LineChartProps) {
       responsive: true,
       plugins: {
         legend: {
-          position:  false,
+          position:  'top',
         },
         title: {
           display: false,
@@ -61,9 +61,13 @@ export default function PieChart({title}: LineChartProps) {
   }, [])
 
   return (
-    <div className='col-span-1 w-full m-auto p-4 rounded-lg bg-white'>
-      <p className='text-2xl font-semibold'>{title}</p>
-      <Line className='w-auto' data={chartData} options={chartOptions} />
+    <div className='card w-94 bg-white rounded-lg shadow-md'>
+      <div className='card-body relative'>
+        <h2 className='card-title'>{title}</h2>
+        <div className=' lg:h-[40vh] h-[30vh] flex align-center justify-center lg:pt-12'>
+          <Line data={chartData} options={chartOptions} />
+        </div>
+      </div>
     </div>
   );
 }

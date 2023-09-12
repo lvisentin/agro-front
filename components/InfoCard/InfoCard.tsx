@@ -6,7 +6,7 @@ import { faArrowTrendUp } from "@fortawesome/free-solid-svg-icons";
 function InfoCard(props: InfoCardProps) {
   return (
     <div className="card w-94 rounded-lg shadow-md">
-      <div className="card-body relative">
+      <div className="card-body">
         <p className="card-title">
           {props.title}
         </p>
