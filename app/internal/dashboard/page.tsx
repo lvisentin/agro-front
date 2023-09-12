@@ -3,9 +3,9 @@
 import {
   faArrowTrendUp,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PieChart from '@/components/PieChart/PieChart';
 import LineChart from '@/components/LineChart/LineChart';
+import InfoCard from '@/components/InfoCard/InfoCard';
 
 
 export default function Home() {
@@ -14,57 +14,15 @@ export default function Home() {
         <h1 className="font-semibold text-4xl mb-4">Bom dia, Lucas!</h1>
 
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-1 mb-5">
-          <div className="col-span-1 bg-white flex justify-between w-full p-4 rounded-lg">
-            <div className="flex flex-col w-full pb-4">
-              <p className="text-2xl font-semibold">
-                Entradas
-              </p>
-              <h1 className="font-medium text-2xl mt-3 text-green-500">$21</h1>
-            </div>
-            <p className="flex justify-center items-center pr-3 rounded-lg">
-              +11.01% 
-              <FontAwesomeIcon 
-                icon={faArrowTrendUp}
-                className={'ml-1 mt-1 w-4'} 
-              />
-            </p>
-          </div>
-          <div className="col-span-1 bg-white flex justify-between w-full p-4 rounded-lg">
-            <div className="flex flex-col w-full pb-4">
-              <p className="text-2xl font-semibold">
-                Saídas
-              </p>
-              <h1 className="font-medium text-2xl mt-3 text-red-500">$21</h1>
-            </div>
-                <p className="flex justify-center items-center pr-3 rounded-lg">
-                  +11.01% 
-                  <FontAwesomeIcon 
-                    icon={faArrowTrendUp}
-                    className={'ml-1 mt-1 w-4'} 
-                  />
-                </p>
-          </div>
-          <div className=" col-span-1 bg-white flex justify-between w-full p-4 rounded-lg">
-            <div className="flex flex-col w-full pb-4">
-              <p className="text-2xl font-semibold">
-                Itens em estoque
-              </p>
-              <h1 className="font-medium text-2xl mt-3">590</h1>
-            </div>
-                <p className="flex justify-center items-center pr-3 rounded-lg">
-                  +11.01% 
-                  <FontAwesomeIcon 
-                    icon={faArrowTrendUp}
-                    className={'ml-1 mt-1 w-4'} 
-                  />
-                </p>
-          </div>
+          <InfoCard title='Entradas' text='$21' value='+11.01%' color='green'/>
+          <InfoCard title='Entradas' text='$21' value='+11.01%' color='red'/>
+          <InfoCard title='Entradas' text='590' value='+11.01%'/>
         </div>
         
         <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-2 p-1 mb-5">
-            <PieChart title={'Operações'} />
+            {/* <PieChart title={'Operações'} />
             <PieChart title={'Saídas'} />
-            <LineChart title={'Lucros30d'} />
+            <LineChart title={'Lucros30d'} /> */}
         </div>
       </main>
   )
