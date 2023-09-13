@@ -1,8 +1,5 @@
 'use client'
 
-import {
-  faArrowTrendUp,
-} from '@fortawesome/free-solid-svg-icons';
 import PieChart from '@/components/PieChart/PieChart';
 import LineChart from '@/components/LineChart/LineChart';
 import InfoCard from '@/components/InfoCard/InfoCard';
