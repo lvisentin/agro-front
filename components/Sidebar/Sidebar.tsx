@@ -95,7 +95,7 @@ const Sidebar: React.FC = () => {
               href={menuItem.route}
               data-sveltekit-preload-data="hover"
               className={
-                pathname === menuItem.route
+                pathname.includes(menuItem.route)
                   ? `${styles.activeItem} active h-full text-white p-4`
                   : `h-full p-4`
               }

@@ -3,13 +3,22 @@
 import DataTable from "@/components/DataTable/DataTable";
 import DeleteButton from "@/components/DeleteButton/DeleteButton";
 import EditButton from "@/components/EditButton/EditButton";
-import { Product } from "@/shared/services/products/Products.model";
+import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
+import { PageRoutes } from "@/shared/enums/PageRoutes";
 import { productsService } from "@/shared/services/products/ProductsService";
-import React, { useState } from "react";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 import { useQuery } from "react-query";
 
 function SupplyPage() {
-  const { isLoading, isError, data, error } = useQuery({
+  const { push } = useRouter();
+  
+  function goToNewPage() {
+    push(PageRoutes.NewProduct);
+  }
+
+  const { isLoading, data } = useQuery({
     queryKey: ["products"],
     queryFn: () => productsService.fetchProductsList(),
   });
@@ -50,8 +59,13 @@ function SupplyPage() {
 
   return (
     <div className="supply__wrapper">
-      <div className="prose">
+      <div className="prose flex justify-between w-full max-w-full">
         <h2 className="prose-h2">Estoque</h2>
+
+        <PrimaryButton onClick={goToNewPage}>
+          <FontAwesomeIcon icon={faPlus} />
+          Novo produto
+        </PrimaryButton>
       </div>
       <DataTable data={data} columns={columns} actionButtons={actionButtons} />
     </div>
