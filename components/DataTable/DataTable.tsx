@@ -1,11 +1,14 @@
+import DeleteButton from "../DeleteButton/DeleteButton";
+import EditButton from "../EditButton/EditButton";
 import { DataTableProps } from "./DataTable.model";
 import styles from "./DataTable.module.scss";
 
 export default function DataTable({
   data,
   columns,
-  actionButtons,
+  handleEditClick
 }: DataTableProps) {
+
   return (
     <table
       className={"table w-full rounded-md border-spacing-y-3 border-separate"}
@@ -45,9 +48,19 @@ export default function DataTable({
                   );
                 }
               })}
-              {actionButtons && (
-                <td className={`${styles.td} py-4 px-4`}>{actionButtons}</td>
-              )}
+              <td className={`${styles.td} py-4 px-4`}>
+                <div
+                  className={`action__buttons flex items-center justify-end`}
+                >
+                  <EditButton onClick={() => handleEditClick(row)} key={"edit"} />
+
+                  <DeleteButton
+                    onClick={(row) => row}
+                    className="ml-2"
+                    key={"delete"}
+                  />
+                </div>
+              </td>
             </tr>
           ))}
       </tbody>

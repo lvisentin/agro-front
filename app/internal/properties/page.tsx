@@ -5,6 +5,7 @@ import DeleteButton from "@/components/DeleteButton/DeleteButton";
 import EditButton from "@/components/EditButton/EditButton";
 import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
+import { Property } from "@/shared/services/properties/Properties.model";
 import { propertiesService } from "@/shared/services/properties/PropertiesService";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,15 +32,12 @@ function PropertiesPage() {
   ];
 
   function goToNewProperty() {
-    push(PageRoutes.NewPropery);
+    push(PageRoutes.NewProperty);
   }
 
-  const actionButtons = (
-    <div className={`action__buttons flex items-center justify-end`}>
-      <EditButton onClick={() => console.log("edit")} />
-      <DeleteButton onClick={() => console.log("edit")} className="ml-2" />
-    </div>
-  );
+  function editProperty(property: Property) {
+    push(`${PageRoutes.NewProperty}?id=${property._id}`);
+  }
 
   if (isLoading) {
     return <span className="loading loading-spinner loading-lg"></span>;
@@ -55,7 +53,7 @@ function PropertiesPage() {
           Nova propriedade
         </PrimaryButton>
       </div>
-      <DataTable data={data} columns={columns} actionButtons={actionButtons} />
+      <DataTable data={data} columns={columns} handleEditClick={editProperty} />
     </div>
   );
 }

@@ -44,13 +44,6 @@ function PlotsPage() {
     push(PageRoutes.NewPlot);
   }
 
-  const actionButtons = (
-    <div className={`action__buttons flex items-center justify-end`}>
-      <EditButton onClick={() => console.log("edit")} />
-      <DeleteButton onClick={() => console.log("edit")} className="ml-2" />
-    </div>
-  );
-
   if (isLoading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
@@ -66,7 +59,7 @@ function PlotsPage() {
         </PrimaryButton>
       </div>
 
-      <DataTable data={data} columns={columns} actionButtons={actionButtons} />
+      <DataTable data={data} columns={columns} />
     </div>
   );
 }

@@ -41,13 +41,6 @@ function OperationsPage() {
     },
   ];
 
-  const actionButtons = (
-    <div className={`action__buttons flex items-center justify-end`}>
-      <EditButton onClick={() => console.log("edit")} />
-      <DeleteButton onClick={() => console.log("edit")} className="ml-2" />
-    </div>
-  );
-
   if (isLoading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
@@ -57,7 +50,7 @@ function OperationsPage() {
       <div className="prose">
         <h2 className="prose-h2">Operações</h2>
       </div>
-      <DataTable data={data} columns={columns} actionButtons={actionButtons} />
+      <DataTable data={data} columns={columns} />
     </div>
   );
 }
