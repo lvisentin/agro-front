@@ -1,52 +1,41 @@
-"use client";
+'use client';
 
 import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
 import SecondaryButton from "@/components/SecondaryButton/SecondaryButton";
-import SelectField from "@/components/SelectField/SelectField";
-import { SelectOption } from "@/components/SelectField/SelectField.model";
 import TextField from "@/components/TextField/TextField";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
-import { newProductValidationSchema } from "@/shared/validationSchemas/NewProduct.schema";
+import { newPropertyValidationSchema } from "@/shared/validationSchemas/NewProperty.schema";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 
-function NewProductPage() {
+function NewPropertyPage() {
   const router = useRouter();
 
-  const categories: SelectOption[] = [
-    {
-      value: "test",
-      label: "test",
-    },
-  ];
-
-  function createProduct() {
-    console.log("createProduct");
+  function createProperty() {
+    console.log("createProperty");
   }
 
   function goBack() {
-    router.push(PageRoutes.ListProducts);
+    router.push(PageRoutes.ListProperties);
   }
 
   return (
-    <div className="new__product__wrapper">
+    <div className="new__property__wrapper">
       <div className="prose flex justify-between w-full max-w-full"></div>
 
       <div className="page__content">
         <div className="card w-full bg-base-100 shadow-xl rounded-md">
           <div className="card-title px-6 py-4">
-            <h2 className="prose-h2">Cadastrar produto</h2>
+            <h2 className="prose-h2">Cadastrar propriedade</h2>
           </div>
           <div className="card-body pt-2 pb-4">
             <Formik
               initialValues={{
                 name: "",
-                category: 0,
-                quantity: 0,
-                minQuantity: 0,
-                unitCost: 0,
+                description: "",
+                size: 0,
               }}
-              validationSchema={newProductValidationSchema}
+              validationSchema={newPropertyValidationSchema}
               onSubmit={(values) => console.log(values)}
             >
               {({
@@ -71,45 +60,24 @@ function NewProductPage() {
                       label="Nome"
                     />
 
-                    <SelectField
-                      name="category"
-                      options={categories}
-                      value={values.category}
+                    <TextField
+                      value={values.description}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      errors={touched.category ? errors.category : null}
-                      placeholder="Selecione uma categoria"
-                      label="Categoria"
+                      errors={touched.description ? errors.description : null}
+                      name="description"
+                      placeholder="Digite uma descrição..."
+                      label="Descrição"
                     />
 
                     <TextField
-                      value={values.quantity}
+                      value={values.size}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      name="quantity"
-                      errors={touched.quantity ? errors.quantity : null}
-                      placeholder="Quantidade em estoque..."
-                      label="Quantidade em estoque"
-                    />
-
-                    <TextField
-                      value={values.unitCost}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="unitCost"
-                      errors={touched.unitCost ? errors.unitCost : null}
-                      placeholder="Digite o valor..."
-                      label="Custo unitário"
-                    />
-
-                    <TextField
-                      value={values.minQuantity}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="minQuantity"
-                      errors={touched.minQuantity ? errors.minQuantity : null}
-                      placeholder="Digite o valor"
-                      label="Qtd mínima em estoque"
+                      errors={touched.size ? errors.size : null}
+                      name="size"
+                      placeholder="Digite o tamanho..."
+                      label="Tamanho da propriedade (ha)"
                     />
                   </div>
 
@@ -124,10 +92,10 @@ function NewProductPage() {
 
                     <PrimaryButton
                       type="submit"
-                      onClick={createProduct}
+                      onClick={createProperty}
                       disabled={!isValid || !dirty}
                     >
-                      Salvar Produto
+                      Salvar Propriedade
                     </PrimaryButton>
                   </div>
                 </form>
@@ -140,4 +108,4 @@ function NewProductPage() {
   );
 }
 
-export default NewProductPage;
+export default NewPropertyPage;

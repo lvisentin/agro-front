@@ -6,6 +6,7 @@ function PrimaryButton(props: PrimaryButtonProps) {
       disabled={props.disabled}
       {...props}
       className={`btn btn-primary disabled:border-transparent text-white ${props.className}`}
+      type={props.type ? props.type : "button"}
     >
       {props.children}
     </button>

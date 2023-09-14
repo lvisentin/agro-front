@@ -1,8 +1,5 @@
-"use client";
-
 import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
 import SecondaryButton from "@/components/SecondaryButton/SecondaryButton";
-import SelectField from "@/components/SelectField/SelectField";
 import { SelectOption } from "@/components/SelectField/SelectField.model";
 import TextField from "@/components/TextField/TextField";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
@@ -10,7 +7,7 @@ import { newProductValidationSchema } from "@/shared/validationSchemas/NewProduc
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 
-function NewProductPage() {
+function NewPurhcasePage() {
   const router = useRouter();
 
   const categories: SelectOption[] = [
@@ -71,37 +68,6 @@ function NewProductPage() {
                       label="Nome"
                     />
 
-                    <SelectField
-                      name="category"
-                      options={categories}
-                      value={values.category}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      errors={touched.category ? errors.category : null}
-                      placeholder="Selecione uma categoria"
-                      label="Categoria"
-                    />
-
-                    <TextField
-                      value={values.quantity}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="quantity"
-                      errors={touched.quantity ? errors.quantity : null}
-                      placeholder="Quantidade em estoque..."
-                      label="Quantidade em estoque"
-                    />
-
-                    <TextField
-                      value={values.unitCost}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="unitCost"
-                      errors={touched.unitCost ? errors.unitCost : null}
-                      placeholder="Digite o valor..."
-                      label="Custo unitário"
-                    />
-
                     <TextField
                       value={values.minQuantity}
                       onChange={handleChange}
@@ -127,7 +93,7 @@ function NewProductPage() {
                       onClick={createProduct}
                       disabled={!isValid || !dirty}
                     >
-                      Salvar Produto
+                      Salvar Compra
                     </PrimaryButton>
                   </div>
                 </form>
@@ -140,4 +106,4 @@ function NewProductPage() {
   );
 }
 
-export default NewProductPage;
+export default NewPurhcasePage;

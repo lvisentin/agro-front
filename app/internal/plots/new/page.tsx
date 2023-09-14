@@ -3,50 +3,43 @@
 import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
 import SecondaryButton from "@/components/SecondaryButton/SecondaryButton";
 import SelectField from "@/components/SelectField/SelectField";
-import { SelectOption } from "@/components/SelectField/SelectField.model";
 import TextField from "@/components/TextField/TextField";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
-import { newProductValidationSchema } from "@/shared/validationSchemas/NewProduct.schema";
+import { newPlotValidationSchema } from "@/shared/validationSchemas/NewPlot.schema";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 
-function NewProductPage() {
+function NewPlotPage() {
   const router = useRouter();
 
-  const categories: SelectOption[] = [
-    {
-      value: "test",
-      label: "test",
-    },
-  ];
+  const properties = [{ value: 1, label: "1" }];
 
-  function createProduct() {
-    console.log("createProduct");
+  function createPlot() {
+    console.log("createPlot");
   }
 
   function goBack() {
-    router.push(PageRoutes.ListProducts);
+    router.push(PageRoutes.ListPlots);
   }
 
   return (
-    <div className="new__product__wrapper">
+    <div className="new__plot__wrapper">
       <div className="prose flex justify-between w-full max-w-full"></div>
 
       <div className="page__content">
         <div className="card w-full bg-base-100 shadow-xl rounded-md">
           <div className="card-title px-6 py-4">
-            <h2 className="prose-h2">Cadastrar produto</h2>
+            <h2 className="prose-h2">Cadastrar Talhão</h2>
           </div>
           <div className="card-body pt-2 pb-4">
             <Formik
               initialValues={{
                 name: "",
-                category: 0,
-                quantity: 0,
-                minQuantity: 0,
-                unitCost: 0,
+                description: "",
+                size: 0,
+                property: 0,
               }}
-              validationSchema={newProductValidationSchema}
+              validationSchema={newPlotValidationSchema}
               onSubmit={(values) => console.log(values)}
             >
               {({
@@ -70,46 +63,34 @@ function NewProductPage() {
                       placeholder="Digite um nome..."
                       label="Nome"
                     />
+                    <TextField
+                      value={values.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      errors={touched.description ? errors.description : null}
+                      name="description"
+                      placeholder="Digite uma descrição..."
+                      label="Descrição"
+                    />
+                    <TextField
+                      value={values.size}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      errors={touched.size ? errors.size : null}
+                      name="size"
+                      placeholder="Digite o tamanho..."
+                      label="Tamanho do talhão (ha)"
+                    />
 
                     <SelectField
-                      name="category"
-                      options={categories}
-                      value={values.category}
+                      name="property"
+                      options={properties}
+                      value={values.property}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      errors={touched.category ? errors.category : null}
+                      errors={touched.property ? errors.property : null}
                       placeholder="Selecione uma categoria"
                       label="Categoria"
-                    />
-
-                    <TextField
-                      value={values.quantity}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="quantity"
-                      errors={touched.quantity ? errors.quantity : null}
-                      placeholder="Quantidade em estoque..."
-                      label="Quantidade em estoque"
-                    />
-
-                    <TextField
-                      value={values.unitCost}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="unitCost"
-                      errors={touched.unitCost ? errors.unitCost : null}
-                      placeholder="Digite o valor..."
-                      label="Custo unitário"
-                    />
-
-                    <TextField
-                      value={values.minQuantity}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="minQuantity"
-                      errors={touched.minQuantity ? errors.minQuantity : null}
-                      placeholder="Digite o valor"
-                      label="Qtd mínima em estoque"
                     />
                   </div>
 
@@ -124,10 +105,10 @@ function NewProductPage() {
 
                     <PrimaryButton
                       type="submit"
-                      onClick={createProduct}
+                      onClick={createPlot}
                       disabled={!isValid || !dirty}
                     >
-                      Salvar Produto
+                      Salvar Talhão
                     </PrimaryButton>
                   </div>
                 </form>
@@ -140,4 +121,4 @@ function NewProductPage() {
   );
 }
 
-export default NewProductPage;
+export default NewPlotPage;
