@@ -2,6 +2,14 @@ import { graphql } from 'msw';
 import { MOCK_PROPERTIES } from '../data/properties';
 
 export const handlers = [
+  graphql.query('GetPropertyById', (req, res, ctx) => {
+    console.log(req.variables)
+    return res(ctx.data({
+      property: MOCK_PROPERTIES[0]
+    }))
+  }),
+
+
   graphql.query('GetProperties', (req, res, ctx) => {
     return res(ctx.data({
       properties: MOCK_PROPERTIES
