@@ -1,8 +1,8 @@
 'use client';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import React from 'react';
-import styles from './layout.module.scss';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import styles from './layout.module.scss';
 
 export interface IInternalLayout {
   children: React.ReactNode;
@@ -10,6 +10,7 @@ export interface IInternalLayout {
 
 const InternalLayout: React.FC<IInternalLayout> = ({ children }) => {
   const queryClient = new QueryClient();
+
   return (
     <>
       <QueryClientProvider client={queryClient}>

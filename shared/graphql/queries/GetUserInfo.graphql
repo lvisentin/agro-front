@@ -1,0 +1,6 @@
+query GetUserInfo() {
+  user {
+    username
+    firstName
+  }
+}
