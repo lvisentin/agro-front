@@ -11,9 +11,7 @@ function TermsAndConditionsModal(props: any) {
           Termos e condições - English Helper
         </h3>
         <div className={styles.termsDiv}>
-          <p className="my-0">
-            termos
-          </p>
+          <p className="my-0">termos</p>
         </div>
         <button className="btn btn-primary mt-4 mx-auto" onClick={dismissModal}>
           Fechar

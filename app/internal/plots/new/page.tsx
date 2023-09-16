@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
-import SecondaryButton from "@/components/SecondaryButton/SecondaryButton";
-import SelectField from "@/components/SelectField/SelectField";
-import TextField from "@/components/TextField/TextField";
-import { PageRoutes } from "@/shared/enums/PageRoutes";
-import { newPlotValidationSchema } from "@/shared/validationSchemas/NewPlot.schema";
-import { Formik } from "formik";
-import { useRouter } from "next/navigation";
+import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
+import SelectField from '@/components/SelectField/SelectField';
+import TextField from '@/components/TextField/TextField';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { newPlotValidationSchema } from '@/shared/validationSchemas/NewPlot.schema';
+import { Formik } from 'formik';
+import { useRouter } from 'next/navigation';
 
 function NewPlotPage() {
   const router = useRouter();
 
-  const properties = [{ value: 1, label: "1" }];
+  const properties = [{ value: 1, label: '1' }];
 
   function createPlot() {
-    console.log("createPlot");
+    console.log('createPlot');
   }
 
   function goBack() {
@@ -34,8 +34,8 @@ function NewPlotPage() {
           <div className="card-body pt-2 pb-4">
             <Formik
               initialValues={{
-                name: "",
-                description: "",
+                name: '',
+                description: '',
                 size: 0,
                 property: 0,
               }}

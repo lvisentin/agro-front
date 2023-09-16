@@ -54,9 +54,11 @@
       "costPerPlot": 499
     }
   ],
-  "documents": [{
-    "_id": 1,
-    "name": "Escritura",
-    "src": "https://placehold.it/200x200"
-  }]
+  "documents": [
+    {
+      "_id": 1,
+      "name": "Escritura",
+      "src": "https://placehold.it/200x200"
+    }
+  ]
 }

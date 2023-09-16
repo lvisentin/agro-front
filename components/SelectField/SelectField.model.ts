@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent } from "react";
+import { ChangeEvent, FocusEvent } from 'react';
 
 export interface SelectFieldProps {
   disabled?: boolean;

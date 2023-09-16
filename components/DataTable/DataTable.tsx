@@ -1,24 +1,23 @@
-import DeleteButton from "../DeleteButton/DeleteButton";
-import EditButton from "../EditButton/EditButton";
-import { DataTableProps } from "./DataTable.model";
-import styles from "./DataTable.module.scss";
+import DeleteButton from '../DeleteButton/DeleteButton';
+import EditButton from '../EditButton/EditButton';
+import { DataTableProps } from './DataTable.model';
+import styles from './DataTable.module.scss';
 
 export default function DataTable({
   data,
   columns,
-  handleEditClick
+  handleEditClick,
 }: DataTableProps) {
-
   return (
     <table
-      className={"table w-full rounded-md border-spacing-y-3 border-separate"}
+      className={'table w-full rounded-md border-spacing-y-3 border-separate'}
     >
       <thead>
         <tr>
           {columns.length > 0 &&
             columns.map((column, key) => (
               <th
-                className={"text-left"}
+                className={'text-left'}
                 key={key}
                 id={`table-header-${column.field}`}
               >
@@ -52,12 +51,15 @@ export default function DataTable({
                 <div
                   className={`action__buttons flex items-center justify-end`}
                 >
-                  <EditButton onClick={() => handleEditClick(row)} key={"edit"} />
+                  <EditButton
+                    onClick={() => handleEditClick(row)}
+                    key={'edit'}
+                  />
 
                   <DeleteButton
                     onClick={(row) => row}
                     className="ml-2"
-                    key={"delete"}
+                    key={'delete'}
                   />
                 </div>
               </td>

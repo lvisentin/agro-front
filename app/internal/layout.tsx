@@ -1,8 +1,8 @@
 'use client';
-import Sidebar from "@/components/Sidebar/Sidebar";
-import React from "react";
-import styles from "./layout.module.scss";
-import { QueryClient, QueryClientProvider } from "react-query";
+import Sidebar from '@/components/Sidebar/Sidebar';
+import React from 'react';
+import styles from './layout.module.scss';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 export interface IInternalLayout {
   children: React.ReactNode;

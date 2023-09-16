@@ -1,41 +1,41 @@
-"use client";
+'use client';
 
-import DataTable from "@/components/DataTable/DataTable";
-import DeleteButton from "@/components/DeleteButton/DeleteButton";
-import EditButton from "@/components/EditButton/EditButton";
-import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
-import { PageRoutes } from "@/shared/enums/PageRoutes";
-import { Plot } from "@/shared/services/plots/Plots.model";
-import { plotsService } from "@/shared/services/plots/PlotsService";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/navigation";
-import { useQuery } from "react-query";
+import DataTable from '@/components/DataTable/DataTable';
+import DeleteButton from '@/components/DeleteButton/DeleteButton';
+import EditButton from '@/components/EditButton/EditButton';
+import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { Plot } from '@/shared/services/plots/Plots.model';
+import { plotsService } from '@/shared/services/plots/PlotsService';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/navigation';
+import { useQuery } from 'react-query';
 
 function PlotsPage() {
   const { push } = useRouter();
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["plots"],
+    queryKey: ['plots'],
     queryFn: () => plotsService.fetchPlotsList(),
   });
 
   const columns = [
     {
-      field: "_id",
-      name: "Código",
+      field: '_id',
+      name: 'Código',
     },
     {
-      field: "name",
-      name: "Nome",
+      field: 'name',
+      name: 'Nome',
     },
     {
-      field: "category",
-      name: "Categoria",
+      field: 'category',
+      name: 'Categoria',
     },
     {
-      field: "size",
-      name: "Tamanho",
+      field: 'size',
+      name: 'Tamanho',
       transformData: (data: Plot) => `${data.size}ha`,
     },
   ];

@@ -1,7 +1,7 @@
-import React from "react";
-import { DeleteButtonProps } from "./DeleteButton.model";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import { DeleteButtonProps } from './DeleteButton.model';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function DeleteButton(props: DeleteButtonProps) {
   return (

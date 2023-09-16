@@ -1,9 +1,9 @@
-import { Meta, StoryFn } from "@storybook/react";
-import SelectField from "./SelectField";
-import { SelectFieldProps } from "./SelectField.model";
+import { Meta, StoryFn } from '@storybook/react';
+import SelectField from './SelectField';
+import { SelectFieldProps } from './SelectField.model';
 
 export default {
-  title: "components/SelectField",
+  title: 'components/SelectField',
   component: SelectField,
   argTypes: {},
 } as Meta<typeof SelectField>;
@@ -15,5 +15,5 @@ const Template: StoryFn<typeof SelectField> = (args) => (
 export const Base = Template.bind({});
 
 Base.args = {
-    disabled: false,
+  disabled: false,
 } as SelectFieldProps;

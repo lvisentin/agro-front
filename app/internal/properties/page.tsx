@@ -1,33 +1,33 @@
-"use client";
+'use client';
 
-import DataTable from "@/components/DataTable/DataTable";
-import DeleteButton from "@/components/DeleteButton/DeleteButton";
-import EditButton from "@/components/EditButton/EditButton";
-import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
-import { PageRoutes } from "@/shared/enums/PageRoutes";
-import { Property } from "@/shared/services/properties/Properties.model";
-import { propertiesService } from "@/shared/services/properties/PropertiesService";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/navigation";
-import { useQuery } from "react-query";
+import DataTable from '@/components/DataTable/DataTable';
+import DeleteButton from '@/components/DeleteButton/DeleteButton';
+import EditButton from '@/components/EditButton/EditButton';
+import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { Property } from '@/shared/services/properties/Properties.model';
+import { propertiesService } from '@/shared/services/properties/PropertiesService';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/navigation';
+import { useQuery } from 'react-query';
 
 function PropertiesPage() {
   const { push } = useRouter();
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["properties"],
+    queryKey: ['properties'],
     queryFn: () => propertiesService.fetchPropertiesList(),
   });
 
   const columns = [
     {
-      field: "_id",
-      name: "Código",
+      field: '_id',
+      name: 'Código',
     },
     {
-      field: "name",
-      name: "Nome",
+      field: 'name',
+      name: 'Nome',
     },
   ];
 

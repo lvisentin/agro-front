@@ -1,4 +1,4 @@
-import { SecondaryButtonProps } from "./SecondaryButton.model";
+import { SecondaryButtonProps } from './SecondaryButton.model';
 
 function SecondaryButton(props: SecondaryButtonProps) {
   return (

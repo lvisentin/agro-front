@@ -1,4 +1,4 @@
-import { SelectFieldProps } from "./SelectField.model";
+import { SelectFieldProps } from './SelectField.model';
 
 function SelectField(props: SelectFieldProps) {
   return (
@@ -23,7 +23,7 @@ function SelectField(props: SelectFieldProps) {
         ))}
       </select>
       {props.errors && (
-        <label className={"label-text"}>
+        <label className={'label-text'}>
           <span className={`label-text-alt error text-error`}>
             {props.errors}
           </span>

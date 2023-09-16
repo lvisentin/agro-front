@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
-import SecondaryButton from "@/components/SecondaryButton/SecondaryButton";
-import TextField from "@/components/TextField/TextField";
-import { PageRoutes } from "@/shared/enums/PageRoutes";
-import { newPropertyValidationSchema } from "@/shared/validationSchemas/NewProperty.schema";
-import { Formik } from "formik";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
+import TextField from '@/components/TextField/TextField';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { newPropertyValidationSchema } from '@/shared/validationSchemas/NewProperty.schema';
+import { Formik } from 'formik';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 function NewPropertyPage() {
   const router = useRouter();
@@ -15,7 +15,7 @@ function NewPropertyPage() {
   const [editMode, setEditMode] = useState<boolean>(false);
 
   function createProperty() {
-    console.log("createProperty");
+    console.log('createProperty');
   }
 
   function goBack() {
@@ -23,7 +23,7 @@ function NewPropertyPage() {
   }
 
   useEffect(() => {
-    const id = params.get("id");
+    const id = params.get('id');
     if (id) {
       setEditMode(true);
     }
@@ -41,8 +41,8 @@ function NewPropertyPage() {
           <div className="card-body pt-2 pb-4">
             <Formik
               initialValues={{
-                name: "",
-                description: "",
+                name: '',
+                description: '',
                 size: 0,
               }}
               validationSchema={newPropertyValidationSchema}

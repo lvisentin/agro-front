@@ -1,24 +1,24 @@
-import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
-import SecondaryButton from "@/components/SecondaryButton/SecondaryButton";
-import { SelectOption } from "@/components/SelectField/SelectField.model";
-import TextField from "@/components/TextField/TextField";
-import { PageRoutes } from "@/shared/enums/PageRoutes";
-import { newProductValidationSchema } from "@/shared/validationSchemas/NewProduct.schema";
-import { Formik } from "formik";
-import { useRouter } from "next/navigation";
+import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
+import { SelectOption } from '@/components/SelectField/SelectField.model';
+import TextField from '@/components/TextField/TextField';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { newProductValidationSchema } from '@/shared/validationSchemas/NewProduct.schema';
+import { Formik } from 'formik';
+import { useRouter } from 'next/navigation';
 
 function NewPurhcasePage() {
   const router = useRouter();
 
   const categories: SelectOption[] = [
     {
-      value: "test",
-      label: "test",
+      value: 'test',
+      label: 'test',
     },
   ];
 
   function createProduct() {
-    console.log("createProduct");
+    console.log('createProduct');
   }
 
   function goBack() {
@@ -37,7 +37,7 @@ function NewPurhcasePage() {
           <div className="card-body pt-2 pb-4">
             <Formik
               initialValues={{
-                name: "",
+                name: '',
                 category: 0,
                 quantity: 0,
                 minQuantity: 0,

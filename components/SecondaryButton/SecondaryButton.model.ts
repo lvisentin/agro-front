@@ -3,5 +3,5 @@ export interface SecondaryButtonProps {
   className?: string;
   onClick: () => void;
   children: React.ReactNode;
-  type: "button" | "submit";
+  type: 'button' | 'submit';
 }

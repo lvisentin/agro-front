@@ -1,5 +1,5 @@
 export interface DeleteButtonProps {
-    disabled?: boolean;
-    className?: string;
-    onClick: (param: any) => any;
+  disabled?: boolean;
+  className?: string;
+  onClick: (param: any) => any;
 }
