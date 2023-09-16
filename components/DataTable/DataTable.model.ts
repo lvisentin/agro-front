@@ -5,6 +5,7 @@ export interface DataTableProps {
   columns: TableColumn[];
   actionButtons?: ReactElement[];
   handleEditClick?: (params?: any) => any;
+  handleDeleteClick?: (params?: any) => any;
 }
 
 export interface TableColumn {

@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import DeleteButton from '../DeleteButton/DeleteButton';
 import EditButton from '../EditButton/EditButton';
 import { DataTableProps } from './DataTable.model';
@@ -7,7 +8,25 @@ export default function DataTable({
   data,
   columns,
   handleEditClick,
+  handleDeleteClick,
 }: DataTableProps) {
+  
+  function confirmDelete(row: any) {
+    Swal.fire({
+      title: 'Você tem certeza?',
+      text: 'Gostaria de excluir?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, excluir',
+    }).then((result) => {
+      if (result.isConfirmed && handleDeleteClick) {
+        handleDeleteClick(row);
+      }
+    });
+  }
+
   return (
     <table
       className={'table w-full rounded-md border-spacing-y-3 border-separate'}
@@ -51,16 +70,20 @@ export default function DataTable({
                 <div
                   className={`action__buttons flex items-center justify-end`}
                 >
-                  <EditButton
-                    onClick={() => handleEditClick ? handleEditClick(row) : false}
-                    key={'edit'}
-                  />
+                  {handleEditClick && (
+                    <EditButton
+                      onClick={() => handleEditClick(row)}
+                      key={'edit'}
+                    />
+                  )}
 
-                  <DeleteButton
-                    onClick={(row) => row}
-                    className="ml-2"
-                    key={'delete'}
-                  />
+                  {handleDeleteClick && (
+                    <DeleteButton
+                      onClick={() => confirmDelete(row)}
+                      className="ml-2"
+                      key={'delete'}
+                    />
+                  )}
                 </div>
               </td>
             </tr>
