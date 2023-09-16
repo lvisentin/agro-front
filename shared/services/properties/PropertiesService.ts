@@ -3,10 +3,10 @@ import { gql } from '@apollo/client';
 
 class PropertiesService {
   private VERCEL_API_URL = process.env.VERCEL_API_URL;
+  private client = createApolloClient();
 
-  async fetchPropertiesList() {
-    const client = createApolloClient();
-    return await client.query({
+  async getProperties() {
+    const { data } = await this.client.query({
       query: gql`
         query GetProperties {
           _id
@@ -15,6 +15,20 @@ class PropertiesService {
         }
       `,
     });
+    return data;
+  }
+
+  async getPropertyById(id: string) {
+    console.log('search by id', id)
+    const { data } = await this.client.query({
+      query: gql`
+        query GetPropertyById {
+          _id
+          name
+          ownerId
+        }`,
+    });
+    return data;
   }
 }
 

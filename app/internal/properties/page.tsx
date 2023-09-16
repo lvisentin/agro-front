@@ -14,9 +14,9 @@ import { useQuery } from 'react-query';
 function PropertiesPage() {
   const { push } = useRouter();
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data: { properties } = {} } = useQuery({
     queryKey: ['properties'],
-    queryFn: () => propertiesService.fetchPropertiesList(),
+    queryFn: () => propertiesService.getProperties(),
   });
 
   const columns = [
@@ -28,10 +28,19 @@ function PropertiesPage() {
       field: 'name',
       name: 'Nome',
     },
+    {
+      field: 'size',
+      name: 'Tamanho da propriedade',
+      transformData: (data: Property) => `${data.size}ha`,
+    },
+    {
+      field: 'description',
+      name: 'Descrição',
+    },
   ];
 
   function deleteProperty(property: Property) {
-    console.log('property', property)
+    console.log('property', property);
   }
 
   function goToNewProperty() {
@@ -39,15 +48,11 @@ function PropertiesPage() {
   }
 
   function goToEdit(property: Property) {
-    push(`${PageRoutes.NewProperty}?id=${property._id}`);
+    push(`${PageRoutes.NewProperty}/${property._id}`);
   }
 
   if (isLoading) {
     return <span className="loading loading-spinner loading-lg"></span>;
-  }
-
-  if(data) {
-    console.log('test')
   }
 
   return (
@@ -60,15 +65,15 @@ function PropertiesPage() {
           Nova propriedade
         </PrimaryButton>
       </div>
-      {data.length > 0 ? (
+      {properties?.length > 0 ? (
         <DataTable
-          data={data}
+          data={properties}
           columns={columns}
           handleEditClick={goToEdit}
           handleDeleteClick={deleteProperty}
         />
       ) : (
-        <NoData message={"Não encontramos nenhuma propriedade cadastrada"} />
+        <NoData message={'Não encontramos nenhuma propriedade cadastrada'} />
       )}
     </div>
   );

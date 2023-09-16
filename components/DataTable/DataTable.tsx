@@ -61,7 +61,7 @@ export default function DataTable({
                     <td className={`${styles.td} px-4`} key={key}>
                       {currentColumn?.transformData
                         ? currentColumn.transformData(row)
-                        : row[column]}
+                        : row[currentColumn.field]}
                     </td>
                   );
                 }
