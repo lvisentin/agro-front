@@ -1,3 +1,5 @@
+'use client'
+
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
 import { SelectOption } from '@/components/SelectField/SelectField.model';
@@ -9,13 +11,6 @@ import { useRouter } from 'next/navigation';
 
 function NewPurhcasePage() {
   const router = useRouter();
-
-  const categories: SelectOption[] = [
-    {
-      value: 'test',
-      label: 'test',
-    },
-  ];
 
   function createProduct() {
     console.log('createProduct');

@@ -52,7 +52,7 @@ export default function DataTable({
                   className={`action__buttons flex items-center justify-end`}
                 >
                   <EditButton
-                    onClick={() => handleEditClick(row)}
+                    onClick={() => handleEditClick ? handleEditClick(row) : false}
                     key={'edit'}
                   />
 
