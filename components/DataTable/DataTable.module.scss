@@ -3,9 +3,14 @@
   padding: 10px;
 }
 
+.tr {
+  height: 64px;
+}
+
 .tr:first-child .td:first-child {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+  padding: 0 16px;
 }
 .tr:first-child .td:last-child {
   border-top-right-radius: 10px;
@@ -31,4 +36,11 @@
 }
 .tr .td:first-child {
   border-left-style: solid;
+}
+
+.buttons {
+  min-width: 36px;
+  max-width: 36px;
+  min-height: 36px;
+  max-height: 36px;
 }

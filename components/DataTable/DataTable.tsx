@@ -10,7 +10,6 @@ export default function DataTable({
   handleEditClick,
   handleDeleteClick,
 }: DataTableProps) {
-  
   function confirmDelete(row: any) {
     Swal.fire({
       title: 'Você tem certeza?',
@@ -20,6 +19,7 @@ export default function DataTable({
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sim, excluir',
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed && handleDeleteClick) {
         handleDeleteClick(row);
@@ -58,7 +58,7 @@ export default function DataTable({
                 const currentColumn = columns.find((cc) => cc.field === column);
                 if (currentColumn) {
                   return (
-                    <td className={`${styles.td} py-4 px-4`} key={key}>
+                    <td className={`${styles.td} px-4`} key={key}>
                       {currentColumn?.transformData
                         ? currentColumn.transformData(row)
                         : row[column]}
@@ -66,12 +66,13 @@ export default function DataTable({
                   );
                 }
               })}
-              <td className={`${styles.td} py-4 px-4`}>
+              <td className={`${styles.td} px-4`}>
                 <div
                   className={`action__buttons flex items-center justify-end`}
                 >
                   {handleEditClick && (
                     <EditButton
+                      className={`${styles.buttons}`}
                       onClick={() => handleEditClick(row)}
                       key={'edit'}
                     />
@@ -79,8 +80,8 @@ export default function DataTable({
 
                   {handleDeleteClick && (
                     <DeleteButton
+                      className={`${styles.buttons} ml-2`}
                       onClick={() => confirmDelete(row)}
-                      className="ml-2"
                       key={'delete'}
                     />
                   )}
