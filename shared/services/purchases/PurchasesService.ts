@@ -1,4 +1,4 @@
-import { httpClient } from "../httpClient/HttpClient";
+import { httpClient } from '../httpClient/HttpClient';
 
 class PurchasesService {
   private VERCEL_API_URL = process.env.VERCEL_API_URL;

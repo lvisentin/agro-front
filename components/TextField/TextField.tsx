@@ -45,7 +45,7 @@ export default function TextField({
 
   return (
     <>
-      <div className={`p-1 form-control ${className}`}>
+      <div className={`p-1 form-control ${className ? className : ''}`}>
         {label && (
           <label className="label">
             <span className="label-text">{label}</span>
@@ -63,7 +63,7 @@ export default function TextField({
               type={toggleState && trailingIcon ? 'password' : 'text'}
               placeholder={placeholder}
               disabled={disabled}
-              className={`input input-bordered flex-grow w-[inherit]`}
+              className={`input input-bordered rounded-sm flex-grow w-[inherit]`}
             />
             {renderTrailingIcon()}
           </label>

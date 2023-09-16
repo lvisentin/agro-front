@@ -1,4 +1,9 @@
-import { ChangeEvent, FocusEvent, KeyboardEventHandler, ReactNode } from 'react';
+import {
+  ChangeEvent,
+  FocusEvent,
+  KeyboardEventHandler,
+  ReactNode,
+} from 'react';
 
 interface TrailingIconProps {
   type: 'default' | 'toggle';

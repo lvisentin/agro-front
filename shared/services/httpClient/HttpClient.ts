@@ -1,9 +1,9 @@
 class HttpClient {
   async get(route: string, params: string = '') {
     const response = await fetch(route, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
 

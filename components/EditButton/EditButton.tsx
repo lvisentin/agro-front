@@ -1,7 +1,7 @@
-import React from "react";
-import { EditButtonProps } from "./EditButton.model";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import { EditButtonProps } from './EditButton.model';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 function EditButton(props: EditButtonProps) {
   return (

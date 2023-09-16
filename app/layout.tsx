@@ -1,11 +1,11 @@
-import PrimaryLayout from "@/components/layouts/primary/PrimaryLayout";
-import { Poppins } from "next/font/google";
-import { ToastContainer } from "react-toastify";
-import "../styles/globals.scss";
+import PrimaryLayout from '@/components/layouts/primary/PrimaryLayout';
+import { Poppins } from 'next/font/google';
+import { ToastContainer } from 'react-toastify';
+import '../styles/globals.scss';
 
 const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "900"],
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700', '900'],
 });
 
 export const metadata = {
