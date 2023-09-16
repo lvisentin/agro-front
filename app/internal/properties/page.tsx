@@ -1,8 +1,7 @@
 'use client';
 
 import DataTable from '@/components/DataTable/DataTable';
-import DeleteButton from '@/components/DeleteButton/DeleteButton';
-import EditButton from '@/components/EditButton/EditButton';
+import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { Property } from '@/shared/services/properties/Properties.model';
@@ -15,7 +14,7 @@ import { useQuery } from 'react-query';
 function PropertiesPage() {
   const { push } = useRouter();
 
-  const { isLoading, isError, data, error } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ['properties'],
     queryFn: () => propertiesService.fetchPropertiesList(),
   });
@@ -31,11 +30,15 @@ function PropertiesPage() {
     },
   ];
 
+  function deleteProperty(property: Property) {
+    console.log('property', property)
+  }
+
   function goToNewProperty() {
     push(PageRoutes.NewProperty);
   }
 
-  function editProperty(property: Property) {
+  function goToEdit(property: Property) {
     push(`${PageRoutes.NewProperty}?id=${property._id}`);
   }
 
@@ -53,7 +56,16 @@ function PropertiesPage() {
           Nova propriedade
         </PrimaryButton>
       </div>
-      <DataTable data={data} columns={columns} handleEditClick={editProperty} />
+      {data.length > 0 ? (
+        <DataTable
+          data={data}
+          columns={columns}
+          handleEditClick={goToEdit}
+          handleDeleteClick={deleteProperty}
+        />
+      ) : (
+        <NoData message={"Não encontramos nenhuma propriedade cadastrada"} />
+      )}
     </div>
   );
 }
