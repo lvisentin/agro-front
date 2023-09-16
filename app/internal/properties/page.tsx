@@ -46,6 +46,10 @@ function PropertiesPage() {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
+  if(data) {
+    console.log('test')
+  }
+
   return (
     <div className="properties__wrapper">
       <div className="prose flex justify-between w-full max-w-full">

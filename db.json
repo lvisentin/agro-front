@@ -26,7 +26,8 @@
   "properties": [
     {
       "_id": 2,
-      "name": "Propriedade 1"
+      "name": "Propriedade 1",
+      "ownerId": 3
     }
   ],
   "purchases": [
