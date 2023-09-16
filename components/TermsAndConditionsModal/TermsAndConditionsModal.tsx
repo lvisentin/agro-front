@@ -8,7 +8,7 @@ function TermsAndConditionsModal(props: any) {
     <dialog id="tec_modal" className="modal" {...props}>
       <form method="dialog" className="modal-box flex flex-col">
         <h3 className="font-bold text-lg mt-2 mb-4 text-center pb-2">
-          Termos e condições - English Helper
+          Termos e condições - GesRural
         </h3>
         <div className={styles.termsDiv}>
           <p className="my-0">termos</p>

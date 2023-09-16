@@ -16,8 +16,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import styles from './Sidebar.module.scss';
 import React from 'react';
+import styles from './Sidebar.module.scss';
 export interface MenuItem {
   icon: IconLookup;
   text: string;
@@ -80,8 +80,8 @@ const Sidebar: React.FC = () => {
     >
       <Link href="/internal/dashboard">
         <Image
-          src="/logo2.svg"
-          alt="Agro Logo"
+          src="/GesruralLogo.svg"
+          alt="GesRural Logo"
           width={100}
           height={100}
           className={'w-full pt-4 px-8'}

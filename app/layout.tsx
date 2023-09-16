@@ -9,8 +9,8 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: 'English Helper',
-  description: 'English Helper',
+  title: 'GesRural',
+  description: 'GesRural',
 };
 
 export default function RootLayout({

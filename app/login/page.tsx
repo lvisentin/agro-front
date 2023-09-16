@@ -1,18 +1,17 @@
 'use client';
 
+import LoadingButton from '@/components/LoadingButton/LoadingButton';
 import TextField from '@/components/TextField/TextField';
 import eyeSlashSvgSrc from '@/resources/svg/eye-slash.svg';
 import eyeSvgSrc from '@/resources/svg/eye.svg';
 import lockSvgSrc from '@/resources/svg/lock.svg';
 import mailSvgSrc from '@/resources/svg/mail.svg';
-import LoadingButton from '@/components/LoadingButton/LoadingButton';
 import { Formik } from 'formik';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import PageTransition from '@/components/PageTransition/PageTransition';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './Login.module.scss';
 
 export default function LoginPage() {
@@ -27,7 +26,7 @@ export default function LoginPage() {
       <div>
         <Image
           src="/eh-blue.svg"
-          alt="English Helper Logo"
+          alt="GesRural Logo"
           width={50}
           height={50}
           className={'w-full m-0 max-h-16'}
