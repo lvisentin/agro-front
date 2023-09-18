@@ -1,6 +1,9 @@
 'use client';
 
+import myApolloClient from '@/apollo-client';
 import PrimaryLayout from '@/components/layouts/primary/PrimaryLayout';
+import { ApolloProvider } from '@apollo/client';
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { Poppins } from 'next/font/google';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -22,28 +25,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      const { worker } = require('../shared/mocks/browser');
-      worker.start();
-      console.log('asdasd');
-    }
+    loadDevMessages();
+    loadErrorMessages();
   }, []);
-
   return (
-    <html lang="en" data-theme="light">
-      <body className={poppins.className}>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          pauseOnHover
-        />
-        <PrimaryLayout>{children}</PrimaryLayout>
-      </body>
-    </html>
+    <ApolloProvider client={myApolloClient}>
+      <html lang="en" data-theme="light">
+        <body className={poppins.className}>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            pauseOnHover
+          />
+          <PrimaryLayout>{children}</PrimaryLayout>
+        </body>
+      </html>
+    </ApolloProvider>
   );
 }

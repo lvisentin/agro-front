@@ -2,12 +2,11 @@
 
 import PropertyForm from '@/components/PropertyForm/PropertyForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
-import { UpdatePropertyMutation } from '@/shared/graphql/mutations/EditProperty.mutation';
+import { UpdatePropertyMutation } from '@/shared/graphql/mutations/UpdateProperty.mutation';
+import { GetPropertyByIdQuery } from '@/shared/graphql/queries/GetPropertyById.query';
 import { Property } from '@/shared/services/properties/Properties.model';
-import { propertiesService } from '@/shared/services/properties/PropertiesService';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/navigation';
-import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
 type PageProps = {
   params: {
@@ -18,38 +17,39 @@ type PageProps = {
 function EditPropertyPage({ params: { id } }: PageProps) {
   const router = useRouter();
 
-  const [editProperty, { loading }] = useMutation(UpdatePropertyMutation);
+  const {
+    loading,
+    error,
+    data: { property } = {},
+  } = useQuery(GetPropertyByIdQuery, { variables: { id: Number(id) } });
 
-  const { isLoading, data: { property } = {} } = useQuery(
-    {
-      queryKey: ['properties'],
-      queryFn: () => propertiesService.getPropertyById(id),
-    },
-    { refetchOnMount: false }
+  const [updateProperty, { loading: updateLoading }] = useMutation(
+    UpdatePropertyMutation
   );
 
   function handleEdit(values: Property) {
     const variables = {
-      property: { ...values, _id: property._id, ownerId: property.ownerId },
+      id: property.id,
+      input: {
+        ...values,
+      },
     };
 
-    editProperty({
-      variables,
-    })
-      .then((datatest) => {
-        console.log('data', datatest);
-      })
-      .catch(() => {
-        toast.error('Ocorrreu um erro, tente novamente!');
-      });
+    updateProperty({ variables: variables }).then(() =>
+      toast.success('Propriedade atualizada com sucesso.')
+    );
   }
 
   function goBack() {
     router.push(PageRoutes.ListProperties);
   }
 
-  if (isLoading) {
+  if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
+  }
+
+  if (error) {
+    toast.error('Ocorreu um erro, tente novamente');
   }
 
   return (
@@ -62,7 +62,7 @@ function EditPropertyPage({ params: { id } }: PageProps) {
             cancelFunction={goBack}
             submitFunction={handleEdit}
             property={property}
-            loading={loading}
+            loading={loading || updateLoading}
           />
         )}
       </div>

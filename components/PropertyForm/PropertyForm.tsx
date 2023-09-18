@@ -13,9 +13,6 @@ function PropertyForm({
   cancelFunction,
   loading = false,
 }: PropertyFormProps) {
-  if (property) {
-    console.log('property', property);
-  }
   return (
     <div className="card w-full bg-base-100 shadow-xl rounded-md">
       <div className="card-title px-6 py-4">

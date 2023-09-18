@@ -4,24 +4,25 @@ import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { Property } from '@/shared/services/properties/Properties.model';
-import { propertiesService } from '@/shared/services/properties/PropertiesService';
+import { useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import { useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 
 function PropertiesPage() {
   const { push } = useRouter();
-
-  const { isLoading, data: { properties } = {} } = useQuery({
-    queryKey: ['properties'],
-    queryFn: () => propertiesService.getProperties(),
-  }, {refetchOnMount: false});
+  const {
+    loading,
+    error,
+    data: { properties } = {},
+  } = useQuery(GetPropertiesQuery);
 
   const columns = [
     {
-      field: '_id',
+      field: 'id',
       name: 'Código',
     },
     {
@@ -48,11 +49,15 @@ function PropertiesPage() {
   }
 
   function goToEdit(property: Property) {
-    push(`${PageRoutes.NewProperty}/${property._id}`);
+    push(`${PageRoutes.NewProperty}/${property.id}`);
   }
 
-  if (isLoading) {
+  if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
+  }
+
+  if (error) {
+    toast.error('Ocorreu um erro, tente novamente');
   }
 
   return (

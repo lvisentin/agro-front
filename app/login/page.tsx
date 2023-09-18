@@ -11,11 +11,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import PageTransition from '@/components/PageTransition/PageTransition';
-import { useState } from 'react';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { SignInMutation } from '@/shared/graphql/mutations/SignIn.mutation';
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/navigation';
 import styles from './Login.module.scss';
 
 export default function LoginPage() {
-  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const [signIn, { loading }] = useMutation(SignInMutation);
 
   return (
     <PageTransition
@@ -44,7 +48,19 @@ export default function LoginPage() {
 
         <Formik
           initialValues={{ email: '', password: '' }}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={({ email, password }) =>
+            signIn({
+              variables: {
+                input: {
+                  email,
+                  password,
+                },
+              },
+            }).then(({ data: { signIn } }) => {
+              localStorage.setItem('authorization', signIn.accessToken);
+              router.push(PageRoutes.ListProperties);
+            })
+          }
         >
           {({ values, handleChange, handleBlur, handleSubmit }) => (
             <>

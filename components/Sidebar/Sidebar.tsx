@@ -75,7 +75,7 @@ const Sidebar: React.FC = () => {
   return (
     <nav
       className={
-        'bg-base-100 min-w-320 w-80 flex flex-col h-screen justify-between shadow-sm'
+        'bg-base-100 min-w-sidebar w-80 flex flex-col h-screen justify-between shadow-sm'
       }
     >
       <Link href="/internal/dashboard">
