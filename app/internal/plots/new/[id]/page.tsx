@@ -1,10 +1,10 @@
 'use client';
 
-import PropertyForm from '@/components/PropertyForm/PropertyForm';
+import PlotForm from '@/components/PlotForm/PlotForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
-import { UpdatePropertyMutation } from '@/shared/graphql/mutations/UpdateProperty.mutation';
-import { GetPropertyByIdQuery } from '@/shared/graphql/queries/GetPropertyById.query';
-import { Property } from '@/shared/models/properties/Properties.model';
+import { UpdatePlotMutation } from '@/shared/graphql/mutations/UpdatePlot.mutation';
+import { GetPlotByIdQuery } from '@/shared/graphql/queries/GetPlotById.query';
+import { Plot } from '@/shared/models/plots/Plots.model';
 import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -14,35 +14,34 @@ type PageProps = {
   };
 };
 
-function EditPropertyPage({ params: { id } }: PageProps) {
+function EditPlotPage({ params: { id } }: PageProps) {
   const router = useRouter();
 
   const {
     loading,
     error,
-    data: { property } = {},
-  } = useQuery(GetPropertyByIdQuery, { variables: { id: Number(id) } });
+    data: { plot } = {},
+  } = useQuery(GetPlotByIdQuery, { variables: { id: Number(id) } });
 
-  const [updateProperty, { loading: updateLoading }] = useMutation(
-    UpdatePropertyMutation
-  );
+  const [updatePlot, { loading: updateLoading }] =
+    useMutation(UpdatePlotMutation);
 
-  function handleEdit(values: Property) {
+  function handleEdit(values: Plot) {
     const variables = {
-      id: property.id,
+      id: plot.id,
       input: {
         ...values,
       },
     };
 
-    updateProperty({ variables: variables }).then(() => {
+    updatePlot({ variables: variables }).then(() => {
       toast.success('Propriedade atualizada com sucesso.');
-      router.push(PageRoutes.ListProperties);
+      router.push(PageRoutes.ListPlots);
     });
   }
 
   function goBack() {
-    router.push(PageRoutes.ListProperties);
+    router.push(PageRoutes.ListPlots);
   }
 
   if (loading) {
@@ -58,11 +57,11 @@ function EditPropertyPage({ params: { id } }: PageProps) {
       <div className="prose flex justify-between w-full max-w-full"></div>
 
       <div className="page__content">
-        {property && (
-          <PropertyForm
+        {plot && (
+          <PlotForm
             cancelFunction={goBack}
             submitFunction={handleEdit}
-            property={property}
+            plot={plot}
             loading={loading || updateLoading}
           />
         )}
@@ -71,4 +70,4 @@ function EditPropertyPage({ params: { id } }: PageProps) {
   );
 }
 
-export default EditPropertyPage;
+export default EditPlotPage;

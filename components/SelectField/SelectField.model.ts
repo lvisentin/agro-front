@@ -15,6 +15,6 @@ export interface SelectFieldProps {
 }
 
 export interface SelectOption {
-  value: any;
-  label: string;
+  id: any;
+  name: string;
 }

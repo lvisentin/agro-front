@@ -4,21 +4,31 @@ import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { DeletePropertyMutation } from '@/shared/graphql/mutations/DeleteProperty.mutation';
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
-import { Property } from '@/shared/services/properties/Properties.model';
-import { useQuery } from '@apollo/client';
+import { Property } from '@/shared/models/properties/Properties.model';
+import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 function PropertiesPage() {
   const { push } = useRouter();
+
   const {
     loading,
     error,
     data: { properties } = {},
+    refetch,
   } = useQuery(GetPropertiesQuery);
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const [deleteProperty] = useMutation(DeletePropertyMutation);
 
   const columns = [
     {
@@ -29,19 +39,24 @@ function PropertiesPage() {
       field: 'name',
       name: 'Nome',
     },
+
+    {
+      field: 'description',
+      name: 'Descrição',
+    },
     {
       field: 'size',
       name: 'Tamanho da propriedade',
       transformData: (data: Property) => `${data.size}ha`,
     },
-    {
-      field: 'description',
-      name: 'Descrição',
-    },
   ];
 
-  function deleteProperty(property: Property) {
+  function handleDelete(property: Property) {
     console.log('property', property);
+    deleteProperty({ variables: { id: property.id } }).then(() => {
+      toast.success('Propriedade deletada com sucesso!');
+      refetch();
+    });
   }
 
   function goToNewProperty() {
@@ -75,7 +90,7 @@ function PropertiesPage() {
           data={properties}
           columns={columns}
           handleEditClick={goToEdit}
-          handleDeleteClick={deleteProperty}
+          handleDeleteClick={handleDelete}
         />
       ) : (
         <NoData message={'Não encontramos nenhuma propriedade cadastrada'} />

@@ -1,4 +1,4 @@
-import { Property } from '@/shared/services/properties/Properties.model';
+import { Property } from '@/shared/models/properties/Properties.model';
 
 export interface PropertyFormProps {
   property?: Property;

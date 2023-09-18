@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const CreatePropertyMutation = gql`
+export const CreatePlotMutation = gql`
   mutation CreatePlot($input: CreatePlotInput!) {
     createPlot(createPlotInput: $input) {
       id

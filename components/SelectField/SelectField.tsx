@@ -17,8 +17,8 @@ function SelectField(props: SelectFieldProps) {
           {props.placeholder}
         </option>
         {props.options.map((option) => (
-          <option value={option.value} key={option.value}>
-            {option.label}
+          <option value={option.id} key={option.id}>
+            {option.name}
           </option>
         ))}
       </select>

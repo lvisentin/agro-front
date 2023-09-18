@@ -1,20 +1,24 @@
 'use client';
 
-import { Document } from '@/shared/services/documents/Documents.model';
-import { documentsService } from '@/shared/services/documents/DocumentsService';
+import { GetDocumentsQuery } from '@/shared/graphql/queries/GetDocuments.query';
+import { Document } from '@/shared/models/documents/Documents.model';
+import { useQuery } from '@apollo/client';
 import Image from 'next/image';
-import React from 'react';
-import { useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 import styles from './documents.module.scss';
-
 function DocumentsPage() {
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['documents'],
-    queryFn: () => documentsService.fetchDocuments(),
-  });
+  const {
+    loading,
+    error,
+    data: { documents } = {},
+  } = useQuery(GetDocumentsQuery);
 
-  if (isLoading) {
+  if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
+  }
+
+  if (error) {
+    toast.error('Ocorreu um erro, tente novamente');
   }
 
   return (
@@ -23,14 +27,14 @@ function DocumentsPage() {
         <h2 className="prose-h2">Documentos</h2>
       </div>
 
-      <div className="documents__list mt-4">
-        {data?.map((document: Document) => (
+      <div className="documents__list mt-4 flex flex-wrap items-center gap-8">
+        {documents?.map((document: Document, key: number) => (
           <div
             className={`${styles.document} document text-center w-fit cursor-pointer`}
-            key={document._id}
+            key={key}
           >
             <Image
-              src={document.src}
+              src={document.url}
               alt={document.name}
               className="mb-2 rounded-md"
               width={150}

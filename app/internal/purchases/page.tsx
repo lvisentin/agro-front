@@ -1,9 +1,7 @@
 'use client';
 
 import DataTable from '@/components/DataTable/DataTable';
-import DeleteButton from '@/components/DeleteButton/DeleteButton';
-import EditButton from '@/components/EditButton/EditButton';
-import { Purchase } from '@/shared/services/purchases/Purchases.model';
+import { Purchase } from '@/shared/models/purchases/Purchases.model';
 import { purchasesService } from '@/shared/services/purchases/PurchasesService';
 import { useQuery } from 'react-query';
 
