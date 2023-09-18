@@ -13,6 +13,12 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      width: {
+        'sidebar': '250px'
+      },
+      minWidth: {
+        'sidebar': '250px'
+      },
     },
   },
   plugins: [require('daisyui'), require('@tailwindcss/typography')],
