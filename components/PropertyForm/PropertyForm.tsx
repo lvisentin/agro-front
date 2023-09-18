@@ -1,17 +1,21 @@
 'use client';
 
-import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
 import TextField from '@/components/TextField/TextField';
 import { newPropertyValidationSchema } from '@/shared/validationSchemas/NewProperty.schema';
 import { Formik } from 'formik';
+import LoadingButton from '../LoadingButton/LoadingButton';
 import { PropertyFormProps } from './PropertyForm.model';
 
 function PropertyForm({
   property,
   submitFunction,
   cancelFunction,
+  loading = false,
 }: PropertyFormProps) {
+  if (property) {
+    console.log('property', property);
+  }
   return (
     <div className="card w-full bg-base-100 shadow-xl rounded-md">
       <div className="card-title px-6 py-4">
@@ -33,7 +37,6 @@ function PropertyForm({
             handleBlur,
             handleSubmit,
             isValid,
-            dirty,
             touched,
             errors,
           }) => (
@@ -45,6 +48,7 @@ function PropertyForm({
                   onBlur={handleBlur}
                   errors={touched.name ? errors.name : null}
                   name="name"
+                  disabled={loading}
                   placeholder="Digite um nome..."
                   label="Nome"
                 />
@@ -55,6 +59,7 @@ function PropertyForm({
                   onBlur={handleBlur}
                   errors={touched.description ? errors.description : null}
                   name="description"
+                  disabled={loading}
                   placeholder="Digite uma descrição..."
                   label="Descrição"
                 />
@@ -65,6 +70,7 @@ function PropertyForm({
                   onBlur={handleBlur}
                   errors={touched.size ? errors.size : null}
                   name="size"
+                  disabled={loading}
                   placeholder="Digite o tamanho..."
                   label="Tamanho da propriedade (ha)"
                 />
@@ -79,13 +85,14 @@ function PropertyForm({
                   Cancelar
                 </SecondaryButton>
 
-                <PrimaryButton
+                <LoadingButton
+                  loading={loading}
                   type="submit"
                   onClick={handleSubmit}
-                  disabled={!isValid || !dirty}
+                  disabled={!isValid}
                 >
                   Salvar Propriedade
-                </PrimaryButton>
+                </LoadingButton>
               </div>
             </form>
           )}

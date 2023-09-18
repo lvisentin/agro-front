@@ -17,7 +17,7 @@ function PropertiesPage() {
   const { isLoading, data: { properties } = {} } = useQuery({
     queryKey: ['properties'],
     queryFn: () => propertiesService.getProperties(),
-  });
+  }, {refetchOnMount: false});
 
   const columns = [
     {

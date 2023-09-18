@@ -2,10 +2,13 @@
 
 import PropertyForm from '@/components/PropertyForm/PropertyForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { UpdatePropertyMutation } from '@/shared/graphql/mutations/EditProperty.mutation';
+import { Property } from '@/shared/services/properties/Properties.model';
 import { propertiesService } from '@/shared/services/properties/PropertiesService';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useQuery } from 'react-query';
-
+import { toast } from 'react-toastify';
 type PageProps = {
   params: {
     id: string;
@@ -15,17 +18,30 @@ type PageProps = {
 function EditPropertyPage({ params: { id } }: PageProps) {
   const router = useRouter();
 
-  const { isLoading, data: {property} = {} } = useQuery({
-    queryKey: ['properties'],
-    queryFn: () => propertiesService.getPropertyById(id),
-  });
+  const [editProperty, { loading }] = useMutation(UpdatePropertyMutation);
 
-  if(property) {
-    console.log(property)
-  }
+  const { isLoading, data: { property } = {} } = useQuery(
+    {
+      queryKey: ['properties'],
+      queryFn: () => propertiesService.getPropertyById(id),
+    },
+    { refetchOnMount: false }
+  );
 
-  function createProperty() {
-    console.log('createProperty');
+  function handleEdit(values: Property) {
+    const variables = {
+      property: { ...values, _id: property._id, ownerId: property.ownerId },
+    };
+
+    editProperty({
+      variables,
+    })
+      .then((datatest) => {
+        console.log('data', datatest);
+      })
+      .catch(() => {
+        toast.error('Ocorrreu um erro, tente novamente!');
+      });
   }
 
   function goBack() {
@@ -41,11 +57,14 @@ function EditPropertyPage({ params: { id } }: PageProps) {
       <div className="prose flex justify-between w-full max-w-full"></div>
 
       <div className="page__content">
-        <PropertyForm
-          cancelFunction={goBack}
-          submitFunction={createProperty}
-          property={property}
-        />
+        {property && (
+          <PropertyForm
+            cancelFunction={goBack}
+            submitFunction={handleEdit}
+            property={property}
+            loading={loading}
+          />
+        )}
       </div>
     </div>
   );

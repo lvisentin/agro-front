@@ -25,7 +25,7 @@ export default function LoginPage() {
     >
       <div>
         <Image
-          src="/eh-blue.svg"
+          src="/GesruralLogo.svg"
           alt="GesRural Logo"
           width={50}
           height={50}

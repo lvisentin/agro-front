@@ -4,4 +4,5 @@ export interface PropertyFormProps {
   property?: Property;
   submitFunction: (values: any) => void;
   cancelFunction: () => void;
+  loading?: boolean;
 }
