@@ -1,5 +1,6 @@
 'use client';
 
+import DocumentModal from '@/components/DocumentModal/DocumentModal';
 import NewDocumentModal from '@/components/NewDocumentModal/NewDocumentModal';
 import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
@@ -10,13 +11,23 @@ import { useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './documents.module.scss';
 
 function DocumentsPage() {
-  function openModal() {
+  const [selectedDocument, setSelectedDocument] = useState<Document>();
+
+  function openNewDocumentModal() {
     (
       document.getElementById('create_document_modal') as HTMLFormElement
+    )?.showModal();
+  }
+
+  function openDetailsModal(selectedDocument: Document) {
+    setSelectedDocument(selectedDocument);
+    (
+      document.getElementById('document_details_modal') as HTMLFormElement
     )?.showModal();
   }
 
@@ -41,13 +52,14 @@ function DocumentsPage() {
         <div className="prose flex justify-between w-full max-w-full">
           <h2 className="prose-h2">Documentos</h2>
 
-          <PrimaryButton onClick={openModal}>
+          <PrimaryButton onClick={openNewDocumentModal}>
             <FontAwesomeIcon icon={faPlus} />
             Novo documento
           </PrimaryButton>
         </div>
 
         <NewDocumentModal refetch={refetch} />
+        <DocumentModal document={selectedDocument}/>
 
         <div className="documents__list mt-4 flex flex-wrap items-center justify-center gap-8">
           {documents.length > 0 ? (
@@ -55,6 +67,7 @@ function DocumentsPage() {
               <div
                 className={`${styles.document} document text-center w-fit cursor-pointer`}
                 key={key}
+                onClick={() => openDetailsModal(document)}
               >
                 <Image
                   src={document.path}

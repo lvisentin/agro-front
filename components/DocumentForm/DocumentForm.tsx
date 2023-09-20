@@ -1,4 +1,3 @@
-import { newDocumentValidationSchema } from '@/shared/validationSchemas/NewPlot.schema';
 import { Formik } from 'formik';
 import FileInput from '../FileInput/FileInput';
 import LoadingButton from '../LoadingButton/LoadingButton';
@@ -18,7 +17,7 @@ function DocumentForm({
         name: document ? document.name : '',
         file: [],
       }}
-      validationSchema={newDocumentValidationSchema}
+      // validationSchema={newDocumentValidationSchema}
       onSubmit={(values) => submitFunction(values)}
     >
       {({
