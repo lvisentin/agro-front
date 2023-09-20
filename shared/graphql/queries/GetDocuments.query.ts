@@ -4,7 +4,7 @@ export const GetDocumentsQuery = gql`
   query GetDocuments {
     documents {
       name
-      url
+      path
     }
   }
 `;

@@ -1,15 +1,13 @@
 'use client';
 
-import DataTable from '@/components/DataTable/DataTable';
 import { Operation } from '@/shared/models/operations/Operations.model';
-import { operationsService } from '@/shared/services/operations/OperationsService';
-import { useQuery } from 'react-query';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 
 function OperationsPage() {
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['operations'],
-    queryFn: () => operationsService.fetchOperationsList(),
-  });
+  // const { isLoading, isError, data, error } = useQuery({
+  //   queryKey: ['operations'],
+  //   queryFn: () => operationsService.fetchOperationsList(),
+  // });
 
   const columns = [
     {
@@ -39,17 +37,19 @@ function OperationsPage() {
     },
   ];
 
-  if (isLoading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
-  }
+  // if (isLoading) {
+  //   return <span className="loading loading-spinner loading-lg"></span>;
+  // }
 
   return (
-    <div className="operations__wrapper">
-      <div className="prose">
-        <h2 className="prose-h2">Operações</h2>
+    <AnimatedPage>
+      <div className="operations__wrapper">
+        <div className="prose">
+          <h2 className="prose-h2">Operações</h2>
+        </div>
+        {/* <DataTable data={data} columns={columns} /> */}
       </div>
-      <DataTable data={data} columns={columns} />
-    </div>
+    </AnimatedPage>
   );
 }
 

@@ -1,15 +1,11 @@
 'use client';
 
-import DataTable from '@/components/DataTable/DataTable';
-import DeleteButton from '@/components/DeleteButton/DeleteButton';
-import EditButton from '@/components/EditButton/EditButton';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
-import { productsService } from '@/shared/services/products/ProductsService';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import { useQuery } from 'react-query';
 
 function SupplyPage() {
   const { push } = useRouter();
@@ -17,12 +13,6 @@ function SupplyPage() {
   function goToNewPage() {
     push(PageRoutes.NewProduct);
   }
-
-  const { isLoading, data } = useQuery({
-    queryKey: ['products'],
-    queryFn: () => productsService.fetchProductsList(),
-  });
-
   const columns = [
     {
       field: '_id',
@@ -46,22 +36,24 @@ function SupplyPage() {
     },
   ];
 
-  if (isLoading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
-  }
+  // if (isLoading) {
+  //   return <span className="loading loading-spinner loading-lg"></span>;
+  // }
 
   return (
-    <div className="supply__wrapper">
-      <div className="prose flex justify-between w-full max-w-full">
-        <h2 className="prose-h2">Estoque</h2>
+    <AnimatedPage>
+      <div className="supply__wrapper">
+        <div className="prose flex justify-between w-full max-w-full">
+          <h2 className="prose-h2">Estoque</h2>
 
-        <PrimaryButton onClick={goToNewPage}>
-          <FontAwesomeIcon icon={faPlus} />
-          Novo produto
-        </PrimaryButton>
+          <PrimaryButton onClick={goToNewPage}>
+            <FontAwesomeIcon icon={faPlus} />
+            Novo produto
+          </PrimaryButton>
+        </div>
+        {/* <DataTable data={data} columns={columns} /> */}
       </div>
-      <DataTable data={data} columns={columns} />
-    </div>
+    </AnimatedPage>
   );
 }
 

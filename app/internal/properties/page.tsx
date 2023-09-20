@@ -7,6 +7,7 @@ import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { DeletePropertyMutation } from '@/shared/graphql/mutations/DeleteProperty.mutation';
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { Property } from '@/shared/models/properties/Properties.model';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -76,26 +77,28 @@ function PropertiesPage() {
   }
 
   return (
-    <div className="properties__wrapper">
-      <div className="prose flex justify-between w-full max-w-full">
-        <h2 className="prose-h2">Propriedades</h2>
+    <AnimatedPage>
+      <div className="properties__wrapper">
+        <div className="prose flex justify-between w-full max-w-full">
+          <h2 className="prose-h2">Propriedades</h2>
 
-        <PrimaryButton onClick={goToNewProperty}>
-          <FontAwesomeIcon icon={faPlus} />
-          Nova propriedade
-        </PrimaryButton>
+          <PrimaryButton onClick={goToNewProperty}>
+            <FontAwesomeIcon icon={faPlus} />
+            Nova propriedade
+          </PrimaryButton>
+        </div>
+        {properties?.length > 0 ? (
+          <DataTable
+            data={properties}
+            columns={columns}
+            handleEditClick={goToEdit}
+            handleDeleteClick={handleDelete}
+          />
+        ) : (
+          <NoData message={'Não encontramos nenhuma propriedade cadastrada'} />
+        )}
       </div>
-      {properties?.length > 0 ? (
-        <DataTable
-          data={properties}
-          columns={columns}
-          handleEditClick={goToEdit}
-          handleDeleteClick={handleDelete}
-        />
-      ) : (
-        <NoData message={'Não encontramos nenhuma propriedade cadastrada'} />
-      )}
-    </div>
+    </AnimatedPage>
   );
 }
 

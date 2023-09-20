@@ -9,6 +9,17 @@ class HttpClient {
 
     return response.json();
   }
+
+  postFormData(route: string, params: FormData) {
+    return fetch(route, {
+      method: 'POST',
+      body: params,
+    }).then((response) => {
+      if (response.status !== 200 && response.status !== 201) {
+        throw new Error('ocorreu algo');
+      }
+    });
+  }
 }
 
 export const httpClient = new HttpClient();

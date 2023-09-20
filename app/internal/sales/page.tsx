@@ -1,16 +1,9 @@
 'use client';
 
-import DataTable from '@/components/DataTable/DataTable';
 import { Sale } from '@/shared/models/sales/Sales.model';
-import { salesService } from '@/shared/services/sales/SalesService';
-import { useQuery } from 'react-query';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 
 function SalesPage() {
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['sales'],
-    queryFn: () => salesService.fetchSalesList(),
-  });
-
   const columns = [
     {
       field: 'description',
@@ -31,17 +24,19 @@ function SalesPage() {
     },
   ];
 
-  if (isLoading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
-  }
+  // if (isLoading) {
+  //   return <span className="loading loading-spinner loading-lg"></span>;
+  // }
 
   return (
-    <div className="sales__wrapper">
-      <div className="prose">
-        <h2 className="prose-h2">Vendas</h2>
+    <AnimatedPage>
+      <div className="sales__wrapper">
+        <div className="prose">
+          <h2 className="prose-h2">Vendas</h2>
+        </div>
+        {/* <DataTable data={data} columns={columns} /> */}
       </div>
-      <DataTable data={data} columns={columns} />
-    </div>
+    </AnimatedPage>
   );
 }
 

@@ -5,6 +5,7 @@ import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { UpdatePropertyMutation } from '@/shared/graphql/mutations/UpdateProperty.mutation';
 import { GetPropertyByIdQuery } from '@/shared/graphql/queries/GetPropertyById.query';
 import { Property } from '@/shared/models/properties/Properties.model';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -54,20 +55,22 @@ function EditPropertyPage({ params: { id } }: PageProps) {
   }
 
   return (
-    <div className="new__property__wrapper">
-      <div className="prose flex justify-between w-full max-w-full"></div>
+    <AnimatedPage>
+      <div className="new__property__wrapper">
+        <div className="prose flex justify-between w-full max-w-full"></div>
 
-      <div className="page__content">
-        {property && (
-          <PropertyForm
-            cancelFunction={goBack}
-            submitFunction={handleEdit}
-            property={property}
-            loading={loading || updateLoading}
-          />
-        )}
+        <div className="page__content">
+          {property && (
+            <PropertyForm
+              cancelFunction={goBack}
+              submitFunction={handleEdit}
+              property={property}
+              loading={loading || updateLoading}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </AnimatedPage>
   );
 }
 

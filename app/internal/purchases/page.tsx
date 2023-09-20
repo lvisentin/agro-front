@@ -1,15 +1,13 @@
 'use client';
 
-import DataTable from '@/components/DataTable/DataTable';
 import { Purchase } from '@/shared/models/purchases/Purchases.model';
-import { purchasesService } from '@/shared/services/purchases/PurchasesService';
-import { useQuery } from 'react-query';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 
 function PurchasesPage() {
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['purchases'],
-    queryFn: () => purchasesService.fetchPurchasesList(),
-  });
+  // const { isLoading, isError, data, error } = useQuery({
+  //   queryKey: ['purchases'],
+  //   queryFn: () => purchasesService.fetchPurchasesList(),
+  // });
 
   const columns = [
     {
@@ -31,17 +29,19 @@ function PurchasesPage() {
     },
   ];
 
-  if (isLoading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
-  }
+  // if (isLoading) {
+  //   return <span className="loading loading-spinner loading-lg"></span>;
+  // }
 
   return (
-    <div className="purchases__wrapper">
-      <div className="prose">
-        <h2 className="prose-h2">Compras</h2>
+    <AnimatedPage>
+      <div className="purchases__wrapper">
+        <div className="prose">
+          <h2 className="prose-h2">Compras</h2>
+        </div>
+        {/* <DataTable data={data} columns={columns} /> */}
       </div>
-      <DataTable data={data} columns={columns} />
-    </div>
+    </AnimatedPage>
   );
 }
 

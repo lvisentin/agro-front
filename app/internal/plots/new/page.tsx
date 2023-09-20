@@ -4,6 +4,7 @@ import PlotForm from '@/components/PlotForm/PlotForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { CreatePlotMutation } from '@/shared/graphql/mutations/CreatePlot.mutation';
 import { Plot } from '@/shared/models/plots/Plots.model';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -34,13 +35,15 @@ function NewPlotPage() {
   }
 
   return (
-    <div className="new__plot__wrapper">
-      <div className="prose flex justify-between w-full max-w-full"></div>
+    <AnimatedPage>
+      <div className="new__plot__wrapper">
+        <div className="prose flex justify-between w-full max-w-full"></div>
 
-      <div className="page__content">
-        <PlotForm cancelFunction={goBack} submitFunction={handleSubmit} />
+        <div className="page__content">
+          <PlotForm cancelFunction={goBack} submitFunction={handleSubmit} />
+        </div>
       </div>
-    </div>
+    </AnimatedPage>
   );
 }
 

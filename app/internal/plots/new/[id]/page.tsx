@@ -5,6 +5,7 @@ import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { UpdatePlotMutation } from '@/shared/graphql/mutations/UpdatePlot.mutation';
 import { GetPlotByIdQuery } from '@/shared/graphql/queries/GetPlotById.query';
 import { Plot } from '@/shared/models/plots/Plots.model';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -53,20 +54,22 @@ function EditPlotPage({ params: { id } }: PageProps) {
   }
 
   return (
-    <div className="new__property__wrapper">
-      <div className="prose flex justify-between w-full max-w-full"></div>
+    <AnimatedPage>
+      <div className="new__property__wrapper">
+        <div className="prose flex justify-between w-full max-w-full"></div>
 
-      <div className="page__content">
-        {plot && (
-          <PlotForm
-            cancelFunction={goBack}
-            submitFunction={handleEdit}
-            plot={plot}
-            loading={loading || updateLoading}
-          />
-        )}
+        <div className="page__content">
+          {plot && (
+            <PlotForm
+              cancelFunction={goBack}
+              submitFunction={handleEdit}
+              plot={plot}
+              loading={loading || updateLoading}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </AnimatedPage>
   );
 }
 

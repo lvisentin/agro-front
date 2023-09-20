@@ -6,6 +6,7 @@ import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { GetPlotsQuery } from '@/shared/graphql/queries/GetPlots.query';
 import { Plot } from '@/shared/models/plots/Plots.model';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -68,6 +69,7 @@ function PlotsPage() {
   }
 
   return (
+    <AnimatedPage>
     <div className="plots__wrapper">
       <div className="prose flex justify-between w-full max-w-full">
         <h2 className="prose-h2">Talhões</h2>
@@ -88,6 +90,7 @@ function PlotsPage() {
         <NoData message={'Não encontramos nenhum talhão cadastrada'} />
       )}
     </div>
+    </AnimatedPage>
   );
 }
 
