@@ -1,6 +1,6 @@
 'use client';
 
-import DocumentModal from '@/components/DocumentModal/DocumentModal';
+import NewDocumentModal from '@/components/NewDocumentModal/NewDocumentModal';
 import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { GetDocumentsQuery } from '@/shared/graphql/queries/GetDocuments.query';
@@ -11,6 +11,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
+import styles from './documents.module.scss';
 
 function DocumentsPage() {
   function openModal() {
@@ -23,6 +24,7 @@ function DocumentsPage() {
     loading,
     error,
     data: { documents } = {},
+    refetch,
   } = useQuery(GetDocumentsQuery);
 
   if (loading) {
@@ -45,13 +47,13 @@ function DocumentsPage() {
           </PrimaryButton>
         </div>
 
-        <DocumentModal />
+        <NewDocumentModal refetch={refetch} />
 
         <div className="documents__list mt-4 flex flex-wrap items-center justify-center gap-8">
           {documents.length > 0 ? (
             documents?.map((document: Document, key: number) => (
               <div
-                className={`document text-center w-fit cursor-pointer`}
+                className={`${styles.document} document text-center w-fit cursor-pointer`}
                 key={key}
               >
                 <Image

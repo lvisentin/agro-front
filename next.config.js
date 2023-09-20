@@ -5,7 +5,7 @@ module.exports = {
     VERCEL_API_URL: process.env.VERCEL_API_URL,
   },
   images: {
-    domains: ['placehold.it'],
+    domains: ['placehold.it', 'agro-dev-br.s3.amazonaws.com'],
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],

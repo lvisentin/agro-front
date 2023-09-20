@@ -18,6 +18,8 @@ class HttpClient {
       if (response.status !== 200 && response.status !== 201) {
         throw new Error('ocorreu algo');
       }
+
+      return response.text()
     });
   }
 }
