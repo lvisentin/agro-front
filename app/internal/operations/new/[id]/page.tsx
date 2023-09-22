@@ -65,6 +65,7 @@ function EditOperationPage({ params: { id } }: PageProps) {
               submitFunction={handleEdit}
               operation={operation}
               loading={loading || updateLoading}
+              confirmBtn='Salvar operação'
             />
           )}
         </div>

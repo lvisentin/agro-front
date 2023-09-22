@@ -50,7 +50,7 @@ function DocumentsPage() {
         <NewDocumentModal refetch={refetch} />
 
         <div className="documents__list mt-4 flex flex-wrap items-center justify-center gap-8">
-          {documents.length > 0 ? (
+          {documents?.length > 0 ? (
             documents?.map((document: Document, key: number) => (
               <div
                 className={`${styles.document} document text-center w-fit cursor-pointer`}
