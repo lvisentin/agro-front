@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LineChartProps } from "./LineChartProps.model";
+import { LineChartProps } from './LineChartProps.model';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -24,14 +24,12 @@ ChartJS.register(
   Legend
 );
 
-export default function LineChart({title}: LineChartProps) {
-
+export default function LineChart({ title }: LineChartProps) {
   const [chartData, setChartData] = useState<any>({
     datasets: [],
-  })
+  });
 
   const [chartOptions, setChartOptions] = useState({});
-
 
   useEffect(() => {
     setChartData({
@@ -45,26 +43,26 @@ export default function LineChart({title}: LineChartProps) {
           backgroundColor: '#DAD7FE',
         },
       ],
-    })
+    });
 
     setChartOptions({
       responsive: true,
       plugins: {
         legend: {
-          position:  'top',
+          position: 'top',
         },
         title: {
           display: false,
         },
       },
-  })
-  }, [])
+    });
+  }, []);
 
   return (
-    <div className='card w-94 bg-white rounded-lg shadow-md'>
-      <div className='card-body relative'>
-        <h2 className='card-title'>{title}</h2>
-        <div className=' lg:h-[40vh] h-[30vh] flex align-center justify-center lg:pt-12'>
+    <div className="card w-94 bg-white rounded-lg shadow-md">
+      <div className="card-body relative">
+        <h2 className="card-title">{title}</h2>
+        <div className=" lg:h-[40vh] h-[30vh] flex align-center justify-center lg:pt-12">
           <Line data={chartData} options={chartOptions} />
         </div>
       </div>

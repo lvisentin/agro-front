@@ -70,26 +70,26 @@ function PlotsPage() {
 
   return (
     <AnimatedPage>
-    <div className="plots__wrapper">
-      <div className="prose flex justify-between w-full max-w-full">
-        <h2 className="prose-h2">Talhões</h2>
+      <div className="plots__wrapper">
+        <div className="prose flex justify-between w-full max-w-full">
+          <h2 className="prose-h2">Talhões</h2>
 
-        <PrimaryButton onClick={goToNewPlot}>
-          <FontAwesomeIcon icon={faPlus} />
-          Novo talhão
-        </PrimaryButton>
+          <PrimaryButton onClick={goToNewPlot}>
+            <FontAwesomeIcon icon={faPlus} />
+            Novo talhão
+          </PrimaryButton>
+        </div>
+        {plots.length > 0 ? (
+          <DataTable
+            data={plots}
+            columns={columns}
+            handleEditClick={goToEdit}
+            handleDeleteClick={deletePlot}
+          />
+        ) : (
+          <NoData message={'Não encontramos nenhum talhão cadastrada'} />
+        )}
       </div>
-      {plots.length > 0 ? (
-        <DataTable
-          data={plots}
-          columns={columns}
-          handleEditClick={goToEdit}
-          handleDeleteClick={deletePlot}
-        />
-      ) : (
-        <NoData message={'Não encontramos nenhum talhão cadastrada'} />
-      )}
-    </div>
     </AnimatedPage>
   );
 }

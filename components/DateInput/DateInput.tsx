@@ -1,9 +1,9 @@
 'use client';
 
-import { TextFieldProps } from '@/components/TextField/TextField.model';
 import { useState } from 'react';
+import { DateInputProps } from './DateInput.model';
 
-export default function TextField({
+export default function DateInput({
   label,
   trailingIcon,
   leadingIcon,
@@ -17,7 +17,7 @@ export default function TextField({
   name,
   errors,
   disabled,
-}: TextFieldProps) {
+}: DateInputProps) {
   const [toggleState, setToggleState] = useState(true);
 
   function toggleTrailingIcon() {
@@ -45,7 +45,7 @@ export default function TextField({
 
   return (
     <>
-      <div className={`form-control ${className ? className : ''}`}>
+      <div className={`p-1 form-control ${className ? className : ''}`}>
         {label && (
           <label className="label">
             <h2 className="label-text font-bold text-lg">{label}</h2>
@@ -74,7 +74,7 @@ export default function TextField({
             onBlur={onBlur}
             value={value}
             name={name}
-            type={'text'}
+            type={'date'}
             disabled={disabled}
             placeholder={placeholder}
             className={`input input-bordered flex-grow w-[inherit]`}
