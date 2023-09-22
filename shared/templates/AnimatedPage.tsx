@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { ReactElement } from 'react';
 import {
-    fadeInTransition,
-    fadeInVariants,
+  fadeInTransition,
+  fadeInVariants,
 } from '../animations/fadeIn.animation';
 
 export interface AnimatedPageProps {

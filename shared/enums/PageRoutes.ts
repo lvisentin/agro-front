@@ -5,4 +5,6 @@ export enum PageRoutes {
   ListProperties = '/internal/properties',
   NewPlot = '/internal/plots/new',
   ListPlots = '/internal/plots',
+  NewOperations = '/internal/operations/new',
+  ListOperations = '/internal/operations',
 }

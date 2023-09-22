@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import DeleteButton from '../DeleteButton/DeleteButton';
+import DetailsButton from '../DetailsButton/DetailsButton';
 import EditButton from '../EditButton/EditButton';
 import { DataTableProps } from './DataTable.model';
 import styles from './DataTable.module.scss';
@@ -9,6 +10,7 @@ export default function DataTable({
   columns,
   handleEditClick,
   handleDeleteClick,
+  handlePreviewClick,
 }: DataTableProps) {
   function confirmDelete(row: any) {
     Swal.fire({
@@ -83,6 +85,14 @@ export default function DataTable({
                       className={`${styles.buttons} ml-2`}
                       onClick={() => confirmDelete(row)}
                       key={'delete'}
+                    />
+                  )}
+
+                  {handlePreviewClick && (
+                    <DetailsButton
+                      className={`${styles.buttons} ml-2`}
+                      onClick={() => handlePreviewClick(row)}
+                      key={'details'}
                     />
                   )}
                 </div>

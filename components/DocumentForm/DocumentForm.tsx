@@ -49,7 +49,7 @@ function DocumentForm({
             placeholder="Escolha um arquivo..."
             label="Documento"
             onChange={(event) => {
-              console.log(event.currentTarget.files)
+              console.log(event.currentTarget.files);
               setFieldValue('file', event.currentTarget.files[0]);
             }}
           />

@@ -4,4 +4,10 @@ export interface Operation {
   date: string;
   product: string;
   costPerPlot: number;
+  costPerHa: number;
+  unityCost: number;
+  productType: string;
+  unity: number;
+  dose: number;
+  plot: string;
 }

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import DocumentForm from '../DocumentForm/DocumentForm';
 import { NewDocumentModalProps } from './NewDocumentModal.model';
 
-function NewDocumentModal({refetch}: NewDocumentModalProps) {
+function NewDocumentModal({ refetch }: NewDocumentModalProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
