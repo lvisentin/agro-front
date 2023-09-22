@@ -2,7 +2,7 @@
 
 import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
-// import OperarionFormModal from '@/components/OperarionFormModal/OperarionFormModal';
+import OperarionFormModal from '@/components/OperarionFormModal/OperarionFormModal';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
@@ -13,6 +13,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+// import { toast } from 'react-toastify';
 
 function OperationsPage() {
   const { push } = useRouter();
@@ -92,12 +93,14 @@ function OperationsPage() {
     console.log('Operation', operation);
   }
 
-  function goToPreview(operation: Operation) {
-    push(`${PageRoutes.NewOperations}/${operation._id}`)
-  }
-
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
+  }
+
+  function openModal() {
+    (
+      document.getElementById('operation_details_modal') as HTMLFormElement
+    )?.showModal();
   }
 
   // if (error) {
@@ -116,7 +119,7 @@ function OperationsPage() {
           </PrimaryButton>
         </div>
 
-        {/* <OperarionFormModal cancelFunction={goBack} submitFunction={handleSubmit} /> */}
+        <OperarionFormModal />
 
         {operations.length >= 0 ? (
           <DataTable
@@ -124,7 +127,7 @@ function OperationsPage() {
           columns={columns}
           handleEditClick={goToEdit}
           handleDeleteClick={deleteOperation}
-          handlePreviewClick={goToPreview}
+          handlePreviewClick={openModal}
         />
         ) : (
           <NoData message={'Não encontramos nenhuma operação cadastrada'} />

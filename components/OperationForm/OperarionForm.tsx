@@ -9,6 +9,8 @@ function OperarionForm({
   operation,
   cancelFunction,
   submitFunction,
+  disabled,
+  confirmBtn
 }: OperationFormProps) {
   return (
     <div className="card w-full bg-base-100 shadow-xl rounded-md">
@@ -36,8 +38,6 @@ function OperarionForm({
             handleChange,
             handleBlur,
             handleSubmit,
-            isValid,
-            dirty,
             touched,
             errors,
           }) => (
@@ -48,6 +48,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.name ? errors.name : null}
+                  disabled={disabled}
                   name="name"
                   placeholder="Digite o nome da operação"
                   label="Operação"
@@ -58,6 +59,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.plot ? errors.plot : null}
+                  disabled={disabled}
                   name="plot"
                   placeholder="Digite o nome do talhão"
                   label="Talhão"
@@ -68,6 +70,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.product ? errors.product : null}
+                  disabled={disabled}
                   name="product"
                   placeholder="Digite o nome do produto"
                   label="Produto"
@@ -78,6 +81,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.dose ? errors.dose : null}
+                  disabled={disabled}
                   name="dose"
                   placeholder="Digite o nome do produto"
                   label="Dose/ha"
@@ -88,6 +92,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.unity ? errors.unity : null}
+                  disabled={disabled}
                   name="unity"
                   placeholder="Digite a unidade"
                   label="Unidade por medida"
@@ -98,6 +103,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.productType ? errors.productType : null}
+                  disabled={disabled}
                   name="productType"
                   placeholder="Digite o tipo de produto"
                   label="Tipo de produto"
@@ -108,6 +114,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.unityCost ? errors.unityCost : null}
+                  disabled={disabled}
                   name="unityCost"
                   placeholder="Digite o custo unitário"
                   label="Custo unitário"
@@ -118,6 +125,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.costPerHa ? errors.costPerHa : null}
+                  disabled={disabled}
                   name="costPerHa"
                   placeholder="Digite o custo por ha"
                   label="Custo por ha"
@@ -128,6 +136,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.costPerPlot ? errors.costPerPlot : null}
+                  disabled={disabled}
                   name="costPerPlot"
                   placeholder="Digite o custo por talhão"
                   label="Custo por talhão"
@@ -138,6 +147,7 @@ function OperarionForm({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   errors={touched.date ? errors.date : null}
+                  disabled={disabled}
                   name="date"
                   placeholder="Data"
                   label="Insira a data"
@@ -156,9 +166,8 @@ function OperarionForm({
                 <PrimaryButton
                   type="submit"
                   onClick={handleSubmit}
-                  disabled={!isValid || !dirty}
                 >
-                  Salvar Operação
+                  {confirmBtn}
                 </PrimaryButton>
               </div>
             </form>

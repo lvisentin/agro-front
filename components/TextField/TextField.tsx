@@ -13,6 +13,7 @@ export default function TextField({
   onChange,
   onBlur,
   onKeyDown,
+  type,
   value,
   name,
   errors,
@@ -48,7 +49,7 @@ export default function TextField({
       <div className={`form-control ${className ? className : ''}`}>
         {label && (
           <label className="label">
-            <h2 className="label-text font-bold text-lg">{label}</h2>
+            <span className="label-text">{label}</span>
           </label>
         )}
         {leadingIcon || trailingIcon ? (
@@ -74,7 +75,7 @@ export default function TextField({
             onBlur={onBlur}
             value={value}
             name={name}
-            type={'text'}
+            type={type || 'text'}
             disabled={disabled}
             placeholder={placeholder}
             className={`input input-bordered flex-grow w-[inherit]`}

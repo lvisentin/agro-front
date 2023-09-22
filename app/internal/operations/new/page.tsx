@@ -55,7 +55,11 @@ function NewOperationPage() {
       <div className="prose flex justify-between w-full max-w-full"></div>
 
       <div className="page__content">
-        <OperationForm cancelFunction={goBack} submitFunction={handleSubmit} />
+        <OperationForm 
+          cancelFunction={goBack} 
+          submitFunction={handleSubmit} 
+          confirmBtn='Salvar operação'
+        />
       </div>
     </div>
   );
