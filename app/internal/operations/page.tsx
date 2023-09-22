@@ -2,7 +2,7 @@
 
 import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
-import OperarionFormModal from '@/components/OperarionFormModal/OperarionFormModal';
+// import OperarionFormModal from '@/components/OperarionFormModal/OperarionFormModal';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
@@ -116,7 +116,7 @@ function OperationsPage() {
           </PrimaryButton>
         </div>
 
-        <OperarionFormModal cancelFunction={goBack} submitFunction={handleSubmit} />
+        {/* <OperarionFormModal cancelFunction={goBack} submitFunction={handleSubmit} /> */}
 
         {operations.length >= 0 ? (
           <DataTable
