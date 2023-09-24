@@ -50,11 +50,13 @@ function NewProductPage() {
             <div className="card-title px-6 py-4">
               <h2 className="prose-h2">Cadastrar produto</h2>
             </div>
-
-            <ProductForm
-              cancelFunction={goBack}
-              submitFunction={handleSubmit}
-            />
+            
+            <div className="card-body pt-2 pb-4">
+              <ProductForm
+                cancelFunction={goBack}
+                submitFunction={handleSubmit}
+              />
+            </div>
           </div>
         </div>
       </div>
