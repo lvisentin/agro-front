@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import OperationForm from '../OperationForm/OperarionForm';
+import OperationForm from '../OperationForm/OperationForm';
 
-function OperarionFormModal() {
+function OperationFormModal() {
   const [error] = useState<boolean>(false);
 
   function goToEdit() {
@@ -18,7 +18,7 @@ function OperarionFormModal() {
     <dialog id="operation_details_modal" className="modal">
       <div className="modal-box w-9/10 max-w-5xl">
         <h3 className="font-bold text-lg">Detalhes da operação</h3>
-        <div className='modal-body'>
+        <div className="modal-body">
           {error ? (
             <p className="text-red-500 error mt-4 text-center">
               Algo errado aconteceu, tente novamente
@@ -26,15 +26,20 @@ function OperarionFormModal() {
           ) : (
             ''
           )}
-          <OperationForm
-            submitFunction={goToEdit}
-            cancelFunction={closeModal}
-            disabled={true}
-            confirmBtn='Editar'
-          />
+          <div className="card w-full bg-base-100 shadow-xl rounded-md">
+            <div className="card-body pt-2 pb-4">
+              <OperationForm
+                submitFunction={goToEdit}
+                cancelFunction={closeModal}
+                disabled={true}
+                confirmBtn="Editar"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </dialog>
-  );}
+  );
+}
 
-export default OperarionFormModal;
+export default OperationFormModal;

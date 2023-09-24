@@ -1,6 +1,6 @@
 'use client';
 
-import OperationForm from '@/components/OperationForm/OperarionForm';
+import OperationForm from '@/components/OperationForm/OperationForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { CreatePlotMutation } from '@/shared/graphql/mutations/CreatePlot.mutation';
 import { Operation } from '@/shared/models/operations/Operations.model';

@@ -2,7 +2,7 @@
 
 import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
-import OperarionFormModal from '@/components/OperarionFormModal/OperarionFormModal';
+import OperationFormModal from '@/components/OperarionFormModal/OperarionFormModal';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
@@ -13,45 +13,21 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-// import { toast } from 'react-toastify';
 
 function OperationsPage() {
   const { push } = useRouter();
 
   const {
     loading,
-    // error,
-    // data: { operations } = {},
+    error,
+    data: { operations } = {},
     refetch,
   } = useQuery(GetOperationsQuery);
 
   useEffect(() => {
     refetch();
   }, []);
-  
-  const operations = [
-      {
-        "_id": 2,
-        "name": "Dessecação",
-        "date": "11/09/2023",
-        "product": "Glifosato",
-        "costPerPlot": 499
-      },
-      {
-        "_id": 2,
-        "name": "Dessecação",
-        "date": "11/09/2023",
-        "product": "Glifosato",
-        "costPerPlot": 499
-      },
-      {
-        "_id": 2,
-        "name": "Dessecação",
-        "date": "11/09/2023",
-        "product": "Glifosato",
-        "costPerPlot": 499
-      }
-  ]
+
 
   const columns = [
     {
@@ -103,10 +79,6 @@ function OperationsPage() {
     )?.showModal();
   }
 
-  // if (error) {
-  //   toast.error('Ocorreu um erro, tente novamente');
-  // }
-
   return (
     <AnimatedPage>
       <div className="operations__wrapper">
@@ -119,20 +91,19 @@ function OperationsPage() {
           </PrimaryButton>
         </div>
 
-        <OperarionFormModal />
+        <OperationFormModal />
 
-        {operations.length >= 0 ? (
+        {operations?.length >= 0 ? (
           <DataTable
-          data={operations}
-          columns={columns}
-          handleEditClick={goToEdit}
-          handleDeleteClick={deleteOperation}
-          handlePreviewClick={openModal}
-        />
+            data={operations}
+            columns={columns}
+            handleEditClick={goToEdit}
+            handleDeleteClick={deleteOperation}
+            handlePreviewClick={openModal}
+          />
         ) : (
           <NoData message={'Não encontramos nenhuma operação cadastrada'} />
         )}
-        
       </div>
     </AnimatedPage>
   );
