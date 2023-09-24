@@ -1,3 +1,3 @@
 export interface NoDataProps {
-    message?: string;
+  message?: string;
 }

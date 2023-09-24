@@ -13,6 +13,7 @@ export default function TextField({
   onChange,
   onBlur,
   onKeyDown,
+  type,
   value,
   name,
   errors,
@@ -74,7 +75,7 @@ export default function TextField({
             onBlur={onBlur}
             value={value}
             name={name}
-            type={'text'}
+            type={type || 'text'}
             disabled={disabled}
             placeholder={placeholder}
             className={`input input-bordered flex-grow w-[inherit]`}
