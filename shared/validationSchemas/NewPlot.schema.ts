@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
-export const newDocumentValidationSchema = Yup.object().shape({
+export const newPlotValidationSchema = Yup.object().shape({
   name: Yup.string().required('Por favor, digite seu nome.'),
-  file: Yup.mixed().required('File is required'),
+  description: Yup.string().required('Por favor, digite uma descrição.'),
+  size: Yup.number().required('Por favor, digite o tamanho da propriedade.'),
 });

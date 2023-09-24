@@ -65,15 +65,16 @@ function EditProductPage({ params: { id } }: PageProps) {
             <div className="card-title px-6 py-4">
               <h2 className="prose-h2">Editar produto</h2>
             </div>
-            
-            {product && (
-              <ProductForm
-                cancelFunction={goBack}
-                submitFunction={handleEdit}
-                product={product}
-                loading={loading || updateLoading}
-              />
-            )}
+            <div className="card-body pt-2 pb-4">
+              {product && (
+                <ProductForm
+                  cancelFunction={goBack}
+                  submitFunction={handleEdit}
+                  product={product}
+                  loading={loading || updateLoading}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

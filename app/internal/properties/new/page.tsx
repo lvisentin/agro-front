@@ -44,11 +44,19 @@ function NewPropertyPage() {
         <div className="prose flex justify-between w-full max-w-full"></div>
 
         <div className="page__content">
-          <PropertyForm
-            cancelFunction={goBack}
-            submitFunction={handleSubmit}
-            loading={loading}
-          />
+          <div className="card w-full bg-base-100 shadow-xl rounded-md">
+            <div className="card-title px-6 py-4">
+              <h2 className="prose-h2">Cadastrar propriedade</h2>
+            </div>
+            
+            <div className="card-body pt-2 pb-4">
+              <PropertyForm
+                cancelFunction={goBack}
+                submitFunction={handleSubmit}
+                loading={loading}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </AnimatedPage>
