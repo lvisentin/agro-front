@@ -1,3 +1,3 @@
 export interface NewDocumentModalProps {
-    refetch: () => void;
+  refetch: () => void;
 }

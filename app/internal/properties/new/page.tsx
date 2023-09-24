@@ -2,14 +2,36 @@
 
 import PropertyForm from '@/components/PropertyForm/PropertyForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { CreatePropertyMutation } from '@/shared/graphql/mutations/CreateProperty.mutation';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 function NewPropertyPage() {
   const router = useRouter();
 
-  function createProperty() {
-    console.log('createProperty');
+  const [createProperty, { loading }] = useMutation(CreatePropertyMutation);
+
+  function handleSubmit(values: {
+    size: string;
+    name: string;
+    description: string;
+  }) {
+    createProperty({
+      variables: {
+        input: {
+          ...values,
+          size: Number(values.size),
+        },
+      },
+    })
+      .then(() => {
+        toast.success('Propriedade criada com sucesso!');
+      })
+      .catch(() => {
+        toast.error('Ocorreu um erro, tente novamente');
+      });
   }
 
   function goBack() {
@@ -24,7 +46,8 @@ function NewPropertyPage() {
         <div className="page__content">
           <PropertyForm
             cancelFunction={goBack}
-            submitFunction={createProperty}
+            submitFunction={handleSubmit}
+            loading={loading}
           />
         </div>
       </div>

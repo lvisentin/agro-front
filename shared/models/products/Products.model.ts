@@ -1,7 +1,29 @@
+import { Property } from '../properties/Properties.model';
+
 export interface Product {
-  _id: string;
+  id: number;
+  categoryId: number;
+  category: ProductCategory;
+  propertyId: number;
+  property: Property;
   name: string;
-  category: string;
+  code: string;
   quantity: number;
-  minQuantity: number;
+  unitPrice: number;
+  minimumQuantity: number;
+  measurementUnit: ProductMeasurementUnit;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export enum ProductMeasurementUnit {
+  kg = 'kg',
+  g = 'g',
+  l = 'l',
+  ml = 'ml',
+}
+
+export interface ProductCategory {
+  id: number;
+  name: string;
 }

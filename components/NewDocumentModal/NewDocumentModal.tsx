@@ -6,10 +6,9 @@ import { toast } from 'react-toastify';
 import DocumentForm from '../DocumentForm/DocumentForm';
 import { NewDocumentModalProps } from './NewDocumentModal.model';
 
-function NewDocumentModal({refetch}: NewDocumentModalProps) {
+function NewDocumentModal({ refetch }: NewDocumentModalProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-
   const [createDocument] = useMutation(CreateDocumentMutation);
 
   async function onDocumentCreate({
@@ -48,7 +47,6 @@ function NewDocumentModal({refetch}: NewDocumentModalProps) {
     const formData = new FormData();
     formData.append('filename', name);
     formData.append('file', file);
-
     return httpClient
       .postFormData('http://localhost:3000/file/upload', formData)
       .then((response) => ({ serverFileName: response, fileName: name }));

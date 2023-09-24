@@ -11,6 +11,13 @@ function DocumentForm({
   cancelFunction,
   loading = false,
 }: DocumentFormProps) {
+  
+  function fResetForm(resetFormFormik: () => void, setFieldValueFunc: any) {
+    resetFormFormik();
+    setFieldValueFunc('file', []);
+    (window.document.getElementById('fileInput') as HTMLFormElement).value = '';
+  }
+
   return (
     <Formik
       initialValues={{
@@ -29,6 +36,7 @@ function DocumentForm({
         touched,
         errors,
         setFieldValue,
+        resetForm,
       }) => (
         <form onSubmit={handleSubmit} className="flex flex-col">
           <TextField
@@ -42,13 +50,13 @@ function DocumentForm({
           />
 
           <FileInput
+            id="fileInput"
             value={undefined}
             errors={touched.file ? errors.file : null}
             name="file"
             placeholder="Escolha um arquivo..."
             label="Documento"
             onChange={(event) => {
-              console.log(event.currentTarget.files)
               setFieldValue('file', event.currentTarget.files[0]);
             }}
           />
@@ -56,7 +64,10 @@ function DocumentForm({
           <div className="card-footer flex items-center justify-end pt-8">
             <SecondaryButton
               type="button"
-              onClick={cancelFunction}
+              onClick={() => {
+                cancelFunction();
+                fResetForm(resetForm, setFieldValue);
+              }}
               className="mr-3"
             >
               Cancelar
