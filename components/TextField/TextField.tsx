@@ -45,7 +45,7 @@ export default function TextField({
 
   return (
     <>
-      <div className={`p-1 form-control ${className ? className : ''}`}>
+      <div className={`form-control ${className ? className : ''}`}>
         {label && (
           <label className="label">
             <span className="label-text">{label}</span>

@@ -32,8 +32,8 @@ function ProductForm({
       <Formik
         initialValues={{
           code: product?.code ? product.code : '',
-          categoryId: product?.categoryId ? product.categoryId : 0,
-          propertyId: product?.propertyId ? product.propertyId : 0,
+          categoryId: product?.category ? product.category.id : 0,
+          propertyId: product?.property ? product.property.id : 0,
           measurementUnit: product?.measurementUnit
             ? product.measurementUnit
             : 0,

@@ -27,12 +27,13 @@ function NewProductPage() {
           propertyId: Number(values.propertyId),
         },
       },
-    }).then(() => {
-      toast.success('Produto criado com sucesso!');
     })
-    .catch(() => {
-      toast.error('Ocorreu um erro, tente novamente');
-    });
+      .then(() => {
+        toast.success('Produto criado com sucesso!');
+      })
+      .catch(() => {
+        toast.error('Ocorreu um erro, tente novamente');
+      });
   }
 
   function goBack() {

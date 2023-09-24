@@ -4,10 +4,11 @@ import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { DeleteProductMutation } from '@/shared/graphql/mutations/DeleteProduct.mutation';
 import { GetProductsQuery } from '@/shared/graphql/queries/GetProducts.query';
 import { Product } from '@/shared/models/products/Products.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
@@ -24,13 +25,7 @@ function SupplyPage() {
     refetch,
   } = useQuery(GetProductsQuery);
 
-  function goToNewPage() {
-    push(PageRoutes.NewProduct);
-  }
-
-  useEffect(() => {
-    refetch();
-  }, []);
+  const [deleteProduct, { deleteLoading }] = useMutation(DeleteProductMutation);
 
   const columns = [
     {
@@ -56,16 +51,37 @@ function SupplyPage() {
     },
   ];
 
-  if (loading) {
+  function goToNewPage() {
+    push(PageRoutes.NewProduct);
+  }
+
+  function goToEdit(product: Product) {
+    push(`${PageRoutes.NewProduct}/${product.id}`);
+  }
+
+  function handleDeleteProduct(product: Product) {
+    deleteProduct({
+      variables: {
+        id: product.id,
+      },
+    })
+      .then(() => {
+        toast.success('Produto deletado com sucesso');
+        refetch();
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+  }
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  if (loading || deleteLoading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
   if (error) {
     toast.error('Ocorreu um erro, tente novamente');
-  }
-
-  if (products) {
-    console.log('products', products);
   }
 
   return (
@@ -81,7 +97,12 @@ function SupplyPage() {
         </div>
 
         {products?.length > 0 ? (
-          <DataTable data={products} columns={columns} />
+          <DataTable
+            data={products}
+            columns={columns}
+            handleEditClick={goToEdit}
+            handleDeleteClick={handleDeleteProduct}
+          />
         ) : (
           <NoData message={'Não encontramos nenhum produto cadastrado'} />
         )}
