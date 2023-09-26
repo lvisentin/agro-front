@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3000/graphql',
+  uri: 'http://agro-main.us-east-1.elasticbeanstalk.com/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
