@@ -79,7 +79,7 @@ function PlotsPage() {
             Novo talhão
           </PrimaryButton>
         </div>
-        {plots.length > 0 ? (
+        {plots?.length > 0 ? (
           <DataTable
             data={plots}
             columns={columns}

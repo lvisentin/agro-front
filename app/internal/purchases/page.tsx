@@ -26,29 +26,26 @@ function PurchasesPage() {
     refetch();
   }, []);
 
-  // const fakeObj = [
-  //   {
-  //     "_id": 2,
-  //     "description": "Dessecação",
-  //     "category": "Glifosato",
-  //     "total": "123345",
-  //     "createdAt": "29/06/2000"
-  //   },
-  //   {
-  //     "_id": 2,
-  //     "description": "Dessecação",
-  //     "category": "Glifosato",
-  //     "total": "123345",
-  //     "createdAt": "29/06/2000"
-  //   },
-  //   {
-  //     "_id": 2,
-  //     "description": "Dessecação",
-  //     "category": "Glifosato",
-  //     "total": "123345",
-  //     "createdAt": "29/06/2000"
-  //   }
-  // ]
+  const fakeObj:Array<Purchase> = [
+    {
+      id: "2",
+      product: "Dessecação",
+      quantity: 123,
+      total: 123,
+      category: "string",
+      description: "string",
+      createdAt: "28/06/2000"
+    },
+    {
+      id: "3",
+      product: "Dessecação",
+      quantity: 123,
+      total: 123,
+      category: "string",
+      description: "string",
+      createdAt: "29/06/2000"
+    },
+  ]
 
   const columns = [
     {
@@ -68,14 +65,18 @@ function PurchasesPage() {
           currency: 'BRL',
         })}`,
     },
+    {
+      field: 'createdAt',
+      name: 'Cadastrado em',
+    },
   ];
 
   function goToNewPurchases() {
     push(PageRoutes.NewPurchases);
   }
 
-  function goToEdit(purchase: Purchase) {
-    push(`${PageRoutes.NewPurchases}/${purchase._id}`);
+  function goToPreview(purchase: Purchase) {
+    push(`${PageRoutes.NewPurchases}/${purchase.id}`);
   }
 
   function deletePurchase(purchase: Purchase) {
@@ -98,11 +99,11 @@ function PurchasesPage() {
           </PrimaryButton>
         </div>
 
-        {purchases?.length >= 0 ? (
+        {fakeObj?.length >= 0 ? (
           <DataTable 
-            data={purchases} 
+            data={fakeObj} 
             columns={columns}
-            handleEditClick={goToEdit}
+            handlePreviewClick={goToPreview}
             handleDeleteClick={deletePurchase}
           />
         ) : (

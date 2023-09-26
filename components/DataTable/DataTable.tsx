@@ -76,19 +76,19 @@ export default function DataTable({
                     />
                   )}
 
-                  {handleDeleteClick && (
-                    <DeleteButton
-                      className={`${styles.buttons} ml-2`}
-                      onClick={() => confirmDelete(row)}
-                      key={'delete'}
-                    />
-                  )}
-
                   {handlePreviewClick && (
                     <DetailsButton
                       className={`${styles.buttons} ml-2`}
                       onClick={() => handlePreviewClick(row)}
                       key={'details'}
+                    />
+                  )}
+
+                  {handleDeleteClick && (
+                    <DeleteButton
+                      className={`${styles.buttons} ml-2`}
+                      onClick={() => confirmDelete(row)}
+                      key={'delete'}
                     />
                   )}
                 </div>

@@ -1,6 +1,9 @@
 export interface Purchase {
-  _id: string;
+  id: string;
   description: string;
   category: string;
+  product: string;
+  quantity: number;
   total: number;
+  createdAt: string
 }

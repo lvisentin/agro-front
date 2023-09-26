@@ -18,11 +18,12 @@ function NewPurhcasePage() {
 
   return (
     <AnimatedPage>
-      <div className="new__product__wrapper">
+      <div className="new__purchase__wrapper">
         <div className="page__content">
           <PurcharseForm
             submitFunction={createProduct}
             cancelFunction={goBack}
+            pageTitle="Nova Compra"
           />
         </div>
       </div>
