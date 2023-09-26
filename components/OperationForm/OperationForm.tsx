@@ -1,7 +1,19 @@
+import { GetPlotsQuery } from '@/shared/graphql/queries/GetPlots.query';
+import { GetProductCategoriesQuery } from '@/shared/graphql/queries/GetProductCategories.query';
+import { GetProductsQuery } from '@/shared/graphql/queries/GetProducts.query';
+import { Plot } from '@/shared/models/plots/Plots.model';
+import {
+  Product,
+  ProductMeasurementUnit,
+} from '@/shared/models/products/Products.model';
+import { useQuery } from '@apollo/client';
 import { Formik } from 'formik';
+import { useEffect } from 'react';
+import CurrencyField from '../CurrencyInput/CurrencyField';
 import DateInput from '../DateInput/DateInput';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
+import SelectField from '../SelectField/SelectField';
 import TextField from '../TextField/TextField';
 import { OperationFormProps } from './OperationForm.model';
 
@@ -12,19 +24,40 @@ function OperationForm({
   disabled,
   confirmBtn,
 }: OperationFormProps) {
+  useEffect(() => {
+    console.log(operation);
+  }, []);
+
+  const { loading: getPlotsLoading, data: { plots } = {} } =
+    useQuery(GetPlotsQuery);
+
+  const { loading: categoriesLoading, data: { productCategories } = {} } =
+    useQuery(GetProductCategoriesQuery);
+
+  const { loading: getProductsLoading, data: { products } = {} } =
+    useQuery(GetProductsQuery);
+
   return (
     <Formik
       initialValues={{
-        name: operation ? operation.name : '',
-        plot: operation ? operation.plot : '',
-        product: operation ? operation.product : '',
-        dose: operation ? operation.dose : 0,
-        unity: operation ? operation.unity : 0,
-        productType: operation ? operation.productType : '',
-        unityCost: operation ? operation.unityCost : 0,
-        costPerHa: operation ? operation.costPerHa : 0,
-        costPerPlot: operation ? operation.costPerPlot : 0,
-        date: operation ? operation.date : '',
+        description: operation ? operation?.description : '',
+        plotId: operation ? operation?.plot?.id : 0,
+        productId: operation ? operation?.product?.id : 0,
+        quantity: operation ? operation?.quantity : 0,
+        executionDate: operation ? operation.executionDate : new Date(),
+        productCategory: operation ? operation?.product?.category?.id : 0,
+        unitCost: operation ? operation?.product?.unitPrice : 0,
+        hectareCost:
+          operation && operation?.plot
+            ? operation?.totalCost / operation?.plot?.size
+            : '',
+        plotCost:
+          operation && operation?.plot && operation?.product
+            ? operation?.plot?.size * operation?.product?.unitPrice
+            : 0,
+        measurementUnit: operation
+          ? operation?.product?.measurementUnit
+          : ProductMeasurementUnit.kg,
       }}
       onSubmit={(values) => submitFunction(values)}
     >
@@ -33,119 +66,144 @@ function OperationForm({
         handleChange,
         handleBlur,
         handleSubmit,
+        setValues,
         touched,
         errors,
       }) => (
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
             <TextField
-              value={values.name}
+              value={values.description}
               onChange={handleChange}
               onBlur={handleBlur}
-              errors={touched.name ? errors.name : null}
+              errors={touched.description ? errors.description : null}
               disabled={disabled}
-              name="name"
+              name="description"
               placeholder="Digite o nome da operação"
               label="Operação"
             />
 
-            <TextField
-              value={values.plot}
+            <SelectField
+              name="plotId"
+              disabled={getPlotsLoading}
+              options={plots?.length > 0 ? plots : []}
+              value={values.plotId}
               onChange={handleChange}
               onBlur={handleBlur}
-              errors={touched.plot ? errors.plot : null}
-              disabled={disabled}
-              name="plot"
-              placeholder="Digite o nome do talhão"
+              errors={touched.plotId ? errors.plotId : null}
+              placeholder="Selecione um talhão"
               label="Talhão"
             />
 
-            <TextField
-              value={values.product}
+            <SelectField
+              name="productId"
+              disabled={getProductsLoading || !values.plotId}
+              options={products?.length > 0 ? products : []}
+              value={values.productId}
               onChange={handleChange}
               onBlur={handleBlur}
-              errors={touched.product ? errors.product : null}
-              disabled={disabled}
-              name="product"
-              placeholder="Digite o nome do produto"
+              errors={touched.productId ? errors.productId : null}
+              placeholder="Selecione um produto"
               label="Produto"
             />
 
             <TextField
-              value={values.dose}
-              onChange={handleChange}
+              value={values.quantity}
+              onChange={($e) => {
+                const selectedPlot = plots.find(
+                  (curr: Plot) => curr.id === Number(values.plotId)
+                );
+                const selectedProduct = products.find(
+                  (curr: Product) => curr.id === Number(values.productId)
+                );
+                
+                setValues({
+                  ...values,
+                  productId: selectedProduct.id,
+                  unitCost: selectedProduct.unitPrice,
+                  measurementUnit: selectedProduct.measurementUnit,
+                  productCategory: selectedProduct.category.id,
+                  plotCost: selectedPlot.size * selectedProduct.unitPrice,
+                  hectareCost:
+                    ((+values.quantity * selectedProduct.unitPrice) /
+                    selectedPlot.size).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}),
+                  quantity: $e.target.value,
+                });
+              }}
               onBlur={handleBlur}
-              errors={touched.dose ? errors.dose : null}
-              disabled={disabled}
-              name="dose"
-              placeholder="Digite o nome do produto"
-              label="Dose/ha"
-            />
-
-            <TextField
-              value={values.unity}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.unity ? errors.unity : null}
-              disabled={disabled}
-              name="unity"
-              placeholder="Digite a unidade"
-              label="Unidade por medida"
-            />
-
-            <TextField
-              value={values.productType}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.productType ? errors.productType : null}
-              disabled={disabled}
-              name="productType"
-              placeholder="Digite o tipo de produto"
-              label="Tipo de produto"
-            />
-
-            <TextField
-              value={values.unityCost}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.unityCost ? errors.unityCost : null}
-              disabled={disabled}
-              name="unityCost"
-              placeholder="Digite o custo unitário"
-              label="Custo unitário"
-            />
-
-            <TextField
-              value={values.costPerHa}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.costPerHa ? errors.costPerHa : null}
-              disabled={disabled}
-              name="costPerHa"
-              placeholder="Digite o custo por ha"
-              label="Custo por ha"
-            />
-
-            <TextField
-              value={values.costPerPlot}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.costPerPlot ? errors.costPerPlot : null}
-              disabled={disabled}
-              name="costPerPlot"
-              placeholder="Digite o custo por talhão"
-              label="Custo por talhão"
+              errors={touched.quantity ? errors.quantity : null}
+              disabled={disabled || !values.productId}
+              name="quantity"
+              type="number"
+              placeholder="Digite a quantidade"
+              label="Quantidade"
             />
 
             <DateInput
-              value={values.date}
+              value={values.executionDate}
               onChange={handleChange}
               onBlur={handleBlur}
-              errors={touched.date ? errors.date : null}
+              errors={touched.executionDate ? errors.executionDate : null}
               disabled={disabled}
-              name="date"
+              name="executionDate"
               placeholder="Data"
               label="Insira a data"
+            />
+
+            <TextField
+              value={values.measurementUnit}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errors={touched.measurementUnit ? errors.measurementUnit : null}
+              disabled={true}
+              name="measurementUnit"
+              placeholder="Escolha uma unidade de medida"
+              label="Unidade de medida"
+            />
+
+            <SelectField
+              name="productCategory"
+              options={productCategories}
+              value={values.productCategory}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              disabled={true}
+              errors={touched.productCategory ? errors.productCategory : null}
+              placeholder="Selecione uma categoria"
+              label="Categoria"
+            />
+
+            <CurrencyField
+              value={values.unitCost}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errors={touched.unitCost ? errors.unitCost : null}
+              disabled={true}
+              name="unitCost"
+              placeholder="Custo unitário"
+              label="Custo unitário"
+            />
+
+            <CurrencyField
+              value={values.hectareCost}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errors={touched.hectareCost ? errors.hectareCost : null}
+              disabled={true}
+              name="hectareCost"
+              placeholder="Custo por ha"
+              label="Custo por ha"
+            />
+
+            <CurrencyField
+              value={values.plotCost}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errors={touched.plotCost ? errors.plotCost : null}
+              disabled={true}
+              name="plotCost"
+              placeholder="Custo por talhão"
+              label="Custo por talhão"
             />
           </div>
 

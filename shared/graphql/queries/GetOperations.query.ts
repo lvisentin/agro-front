@@ -2,11 +2,22 @@ import { gql } from '@apollo/client';
 
 export const GetOperationsQuery = gql`
   query GetOperations {
-    plots {
+    operations {
       id
-      name
-      date
-      product
+      description
+      plot {
+        id
+        name
+      }
+      product {
+        id
+        name
+      }
+      quantity
+      totalCost
+      createdAt
+      updatedAt
+      executionDate
     }
   }
 `;

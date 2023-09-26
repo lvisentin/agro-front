@@ -2,7 +2,6 @@
 
 import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
-import OperationFormModal from '@/components/OperarionFormModal/OperarionFormModal';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
@@ -19,7 +18,6 @@ function OperationsPage() {
 
   const {
     loading,
-    error,
     data: { operations } = {},
     refetch,
   } = useQuery(GetOperationsQuery);
@@ -28,29 +26,30 @@ function OperationsPage() {
     refetch();
   }, []);
 
-
   const columns = [
     {
-      field: '_id',
+      field: 'id',
       name: 'Código',
     },
     {
-      field: 'name',
+      field: 'description',
       name: 'Operação',
     },
     {
-      field: 'date',
-      name: 'Data',
+      field: 'executionDate',
+      name: 'Data da operação',
+      transformData: (data: Operation) =>  new Date(data.executionDate).toLocaleDateString('pt-BR'),
     },
     {
       field: 'product',
       name: 'Produto',
+      transformData: (data: Operation) => data.product?.name,
     },
     {
-      field: 'costPerPlot',
-      name: 'Valor',
+      field: 'totalCost',
+      name: 'Custo Total',
       transformData: (data: Operation) =>
-        `${data.costPerPlot.toLocaleString('pt-BR', {
+        `${data.totalCost.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         })}`,
@@ -61,10 +60,6 @@ function OperationsPage() {
     push(PageRoutes.NewOperations);
   }
 
-  function goToEdit(operation: Operation) {
-    push(`${PageRoutes.NewOperations}/${operation._id}`);
-  }
-
   function deleteOperation(operation: Operation) {
     console.log('Operation', operation);
   }
@@ -73,17 +68,11 @@ function OperationsPage() {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
-  function openModal() {
-    (
-      document.getElementById('operation_details_modal') as HTMLFormElement
-    )?.showModal();
-  }
-
   return (
     <AnimatedPage>
       <div className="operations__wrapper">
         <div className="prose flex justify-between w-full max-w-full">
-          <h2 className="prose-h2">Propriedades</h2>
+          <h2 className="prose-h2">Operações</h2>
 
           <PrimaryButton onClick={goToNewOperation}>
             <FontAwesomeIcon icon={faPlus} />
@@ -91,15 +80,11 @@ function OperationsPage() {
           </PrimaryButton>
         </div>
 
-        <OperationFormModal />
-
         {operations?.length >= 0 ? (
           <DataTable
             data={operations}
             columns={columns}
-            handleEditClick={goToEdit}
             handleDeleteClick={deleteOperation}
-            handlePreviewClick={openModal}
           />
         ) : (
           <NoData message={'Não encontramos nenhuma operação cadastrada'} />
