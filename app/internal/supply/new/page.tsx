@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 function NewProductPage() {
   const router = useRouter();
 
-  const [createProduct] = useMutation(CreateProductMutation);
+  const [createProduct, { loading }] = useMutation(CreateProductMutation);
 
   function handleSubmit(values: any) {
     console.log('values', values);
@@ -53,6 +53,7 @@ function NewProductPage() {
 
             <div className="card-body pt-2 pb-4">
               <ProductForm
+                loading={loading}
                 cancelFunction={goBack}
                 submitFunction={handleSubmit}
               />

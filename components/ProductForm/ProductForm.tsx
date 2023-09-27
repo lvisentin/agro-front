@@ -58,6 +58,7 @@ function ProductForm({
           <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
             <TextField
               value={values.code}
+              disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
               errors={touched.code ? errors.code : null}
@@ -68,6 +69,7 @@ function ProductForm({
 
             <TextField
               value={values.name}
+              disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
               errors={touched.name ? errors.name : null}
@@ -82,7 +84,7 @@ function ProductForm({
               value={values.categoryId}
               onChange={handleChange}
               onBlur={handleBlur}
-              disabled={categoriesLoading}
+              disabled={categoriesLoading || loading}
               errors={touched.categoryId ? errors.categoryId : null}
               placeholder="Selecione uma categoria"
               label="Categoria"
@@ -94,7 +96,7 @@ function ProductForm({
               value={values.propertyId}
               onChange={handleChange}
               onBlur={handleBlur}
-              disabled={propertiesLoading}
+              disabled={propertiesLoading || loading}
               errors={touched.propertyId ? errors.propertyId : null}
               placeholder="Selecione uma propriedade"
               label="Propriedade"
@@ -106,6 +108,7 @@ function ProductForm({
               value={values.measurementUnit}
               onChange={handleChange}
               onBlur={handleBlur}
+              disabled={loading}
               errors={touched.measurementUnit ? errors.measurementUnit : null}
               placeholder="Selecione uma unidade de medida"
               label="Unidade de medida"
@@ -116,6 +119,7 @@ function ProductForm({
               onChange={handleChange}
               onBlur={handleBlur}
               name="quantity"
+              disabled={loading}
               errors={touched.quantity ? errors.quantity : null}
               placeholder="Quantidade em estoque..."
               label="Quantidade em estoque"
@@ -126,6 +130,7 @@ function ProductForm({
               onChange={handleChange}
               onBlur={handleBlur}
               name="unitPrice"
+              disabled={loading}
               errors={touched.unitPrice ? errors.unitPrice : null}
               placeholder="Digite o valor..."
               label="Custo unitário"
@@ -135,6 +140,7 @@ function ProductForm({
               value={values.minimumQuantity}
               onChange={handleChange}
               onBlur={handleBlur}
+              disabled={loading}
               name="minimumQuantity"
               errors={touched.minimumQuantity ? errors.minimumQuantity : null}
               placeholder="Digite o valor"

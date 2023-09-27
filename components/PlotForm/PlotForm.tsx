@@ -43,6 +43,7 @@ function PlotForm({
           <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
             <TextField
               value={values.name}
+              disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
               errors={touched.name ? errors.name : null}
@@ -52,6 +53,7 @@ function PlotForm({
             />
             <TextField
               value={values.description}
+              disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
               errors={touched.description ? errors.description : null}
@@ -61,6 +63,7 @@ function PlotForm({
             />
             <TextField
               value={values.size}
+              disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
               errors={touched.size ? errors.size : null}
