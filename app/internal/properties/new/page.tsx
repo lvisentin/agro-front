@@ -28,6 +28,7 @@ function NewPropertyPage() {
     })
       .then(() => {
         toast.success('Propriedade criada com sucesso!');
+        router.push(PageRoutes.ListProperties);
       })
       .catch(() => {
         toast.error('Ocorreu um erro, tente novamente');
