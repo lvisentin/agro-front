@@ -1,64 +1,116 @@
-"use client";
+'use client';
 
-import DataTable from "@/components/DataTable/DataTable";
-import DeleteButton from "@/components/DeleteButton/DeleteButton";
-import EditButton from "@/components/EditButton/EditButton";
-import { Operation } from "@/shared/services/operations/Operations.model";
-import { operationsService } from "@/shared/services/operations/OperationsService";
-import { useQuery } from "react-query";
+import DataTable from '@/components/DataTable/DataTable';
+import NoData from '@/components/NoData/NoData';
+import OperationDetailModal from '@/components/OperationDetailModal/OperationDetailModal';
+import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { DeleteOperationMutation } from '@/shared/graphql/mutations/DeleteOperation.mutation';
+import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
+import { Operation } from '@/shared/models/operations/Operations.model';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
+import { useMutation, useQuery } from '@apollo/client';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 function OperationsPage() {
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["operations"],
-    queryFn: () => operationsService.fetchOperationsList(),
-  });
-
+  const { push } = useRouter();
+  const {
+    loading,
+    data: { operations } = {},
+    refetch,
+  } = useQuery(GetOperationsQuery);
+  const [deleteOperation] = useMutation(DeleteOperationMutation);
+  const [selectedOperation, setSelectedOperation] = useState(null);
   const columns = [
     {
-      field: "_id",
-      name: "Código",
+      field: 'id',
+      name: 'Código',
     },
     {
-      field: "name",
-      name: "Operação",
+      field: 'description',
+      name: 'Operação',
     },
     {
-      field: "date",
-      name: "Data",
-    },
-    {
-      field: "product",
-      name: "Produto",
-    },
-    {
-      field: "costPerPlot",
-      name: "Valor",
+      field: 'executionDate',
+      name: 'Data da operação',
       transformData: (data: Operation) =>
-        `${data.costPerPlot.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
+        new Date(data.executionDate).toLocaleDateString('pt-BR'),
+    },
+    {
+      field: 'product',
+      name: 'Produto',
+      transformData: (data: Operation) => data.product?.name,
+    },
+    {
+      field: 'totalCost',
+      name: 'Custo Total',
+      transformData: (data: Operation) =>
+        `${data.totalCost.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
         })}`,
     },
   ];
 
-  const actionButtons = (
-    <div className={`action__buttons flex items-center justify-end`}>
-      <EditButton onClick={() => console.log("edit")} />
-      <DeleteButton onClick={() => console.log("edit")} className="ml-2" />
-    </div>
-  );
+  useEffect(() => {
+    refetch();
+  }, []);
 
-  if (isLoading) {
+  function goToNewOperation() {
+    push(PageRoutes.NewOperations);
+  }
+
+  function handleDelete(operation: Operation) {
+    deleteOperation({ variables: { id: operation.id } })
+      .then(() => {
+        toast.success('Operação deletada com sucesso');
+        refetch();
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+  }
+
+  function showModal(test: any) {
+    console.log('test', test);
+    setSelectedOperation(test);
+    (
+      document.getElementById('operation_details_modal') as HTMLFormElement
+    ).showModal();
+  }
+
+  if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
   return (
-    <div className="operations__wrapper">
-      <div className="prose">
-        <h2 className="prose-h2">Operações</h2>
+    <AnimatedPage>
+      <div className="operations__wrapper">
+        <div className="prose flex justify-between w-full max-w-full">
+          <h2 className="prose-h2">Operações</h2>
+
+          <PrimaryButton onClick={goToNewOperation}>
+            <FontAwesomeIcon icon={faPlus} />
+            Nova operação
+          </PrimaryButton>
+        </div>
+
+        <OperationDetailModal operation={selectedOperation || undefined} />
+
+        {operations?.length >= 0 ? (
+          <DataTable
+            data={operations}
+            columns={columns}
+            handleDeleteClick={handleDelete}
+            handlePreviewClick={showModal}
+          />
+        ) : (
+          <NoData message={'Não encontramos nenhuma operação cadastrada'} />
+        )}
       </div>
-      <DataTable data={data} columns={columns} actionButtons={actionButtons} />
-    </div>
+    </AnimatedPage>
   );
 }
 

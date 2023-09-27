@@ -1,46 +1,105 @@
-"use client";
+'use client';
 
-import DataTable from "@/components/DataTable/DataTable";
-import DeleteButton from "@/components/DeleteButton/DeleteButton";
-import EditButton from "@/components/EditButton/EditButton";
-import { propertiesService } from "@/shared/services/properties/PropertiesService";
-import { useQuery } from "react-query";
+import DataTable from '@/components/DataTable/DataTable';
+import NoData from '@/components/NoData/NoData';
+import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { DeletePropertyMutation } from '@/shared/graphql/mutations/DeleteProperty.mutation';
+import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
+import { Property } from '@/shared/models/properties/Properties.model';
+import AnimatedPage from '@/shared/templates/AnimatedPage';
+import { useMutation, useQuery } from '@apollo/client';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 function PropertiesPage() {
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["properties"],
-    queryFn: () => propertiesService.fetchPropertiesList(),
-  });
+  const { push } = useRouter();
+
+  const {
+    loading,
+    error,
+    data: { properties } = {},
+    refetch,
+  } = useQuery(GetPropertiesQuery);
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const [deleteProperty] = useMutation(DeletePropertyMutation);
 
   const columns = [
     {
-      field: "_id",
-      name: "Código",
+      field: 'id',
+      name: 'Código',
     },
     {
-      field: "name",
-      name: "Nome",
+      field: 'name',
+      name: 'Nome',
+    },
+
+    {
+      field: 'description',
+      name: 'Descrição',
+    },
+    {
+      field: 'size',
+      name: 'Tamanho da propriedade',
+      transformData: (data: Property) => `${data.size}ha`,
     },
   ];
 
-  const actionButtons = (
-    <div className={`action__buttons flex items-center justify-end`}>
-      <EditButton onClick={() => console.log("edit")} />
-      <DeleteButton onClick={() => console.log("edit")} className="ml-2" />
-    </div>
-  );
+  function handleDelete(property: Property) {
+    console.log('property', property);
+    deleteProperty({ variables: { id: property.id } }).then(() => {
+      toast.success('Propriedade deletada com sucesso!');
+      refetch();
+    });
+  }
 
-  if (isLoading) {
+  function goToNewProperty() {
+    push(PageRoutes.NewProperty);
+  }
+
+  function goToEdit(property: Property) {
+    push(`${PageRoutes.NewProperty}/${property.id}`);
+  }
+
+  if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
+  if (error) {
+    toast.error('Ocorreu um erro, tente novamente');
+  }
+
   return (
-    <div className="properties__wrapper">
-      <div className="prose">
-        <h2 className="prose-h2">Propriedades</h2>
+    <AnimatedPage>
+      <div className="properties__wrapper">
+        <div className="prose flex justify-between w-full max-w-full">
+          <h2 className="prose-h2">Propriedades</h2>
+
+          <PrimaryButton onClick={goToNewProperty}>
+            <FontAwesomeIcon icon={faPlus} />
+            Nova propriedade
+          </PrimaryButton>
+        </div>
+
+        {properties?.length > 0 ? (
+          <DataTable
+            data={properties}
+            columns={columns}
+            handleEditClick={goToEdit}
+            handleDeleteClick={handleDelete}
+          />
+        ) : (
+          <NoData message={'Não encontramos nenhuma propriedade cadastrada'} />
+        )}
       </div>
-      <DataTable data={data} columns={columns} actionButtons={actionButtons} />
-    </div>
+    </AnimatedPage>
   );
 }
 

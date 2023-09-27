@@ -26,7 +26,8 @@
   "properties": [
     {
       "_id": 2,
-      "name": "Propriedade 1"
+      "name": "Propriedade 1",
+      "ownerId": 3
     }
   ],
   "purchases": [
@@ -54,9 +55,11 @@
       "costPerPlot": 499
     }
   ],
-  "documents": [{
-    "_id": 1,
-    "name": "Escritura",
-    "src": "https://placehold.it/200x200"
-  }]
+  "documents": [
+    {
+      "_id": 1,
+      "name": "Escritura",
+      "src": "https://placehold.it/200x200"
+    }
+  ]
 }

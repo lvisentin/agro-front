@@ -1,22 +1,25 @@
 'use client';
 
+import LoadingButton from '@/components/LoadingButton/LoadingButton';
 import TextField from '@/components/TextField/TextField';
 import eyeSlashSvgSrc from '@/resources/svg/eye-slash.svg';
 import eyeSvgSrc from '@/resources/svg/eye.svg';
 import lockSvgSrc from '@/resources/svg/lock.svg';
 import mailSvgSrc from '@/resources/svg/mail.svg';
-import LoadingButton from '@/components/LoadingButton/LoadingButton';
 import { Formik } from 'formik';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import PageTransition from '@/components/PageTransition/PageTransition';
-import { useEffect, useState } from 'react';
+import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { SignInMutation } from '@/shared/graphql/mutations/SignIn.mutation';
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/navigation';
 import styles from './Login.module.scss';
 
 export default function LoginPage() {
-  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const [signIn, { loading }] = useMutation(SignInMutation);
 
   return (
     <PageTransition
@@ -26,8 +29,8 @@ export default function LoginPage() {
     >
       <div>
         <Image
-          src="/eh-blue.svg"
-          alt="English Helper Logo"
+          src="/GesruralLogo.svg"
+          alt="GesRural Logo"
           width={50}
           height={50}
           className={'w-full m-0 max-h-16'}
@@ -45,7 +48,19 @@ export default function LoginPage() {
 
         <Formik
           initialValues={{ email: '', password: '' }}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={({ email, password }) =>
+            signIn({
+              variables: {
+                input: {
+                  email,
+                  password,
+                },
+              },
+            }).then(({ data: { signIn } }) => {
+              localStorage.setItem('authorization', signIn.accessToken);
+              router.push(PageRoutes.ListProperties);
+            })
+          }
         >
           {({ values, handleChange, handleBlur, handleSubmit }) => (
             <>

@@ -13,6 +13,7 @@ export default function TextField({
   onChange,
   onBlur,
   onKeyDown,
+  type,
   value,
   name,
   errors,
@@ -45,7 +46,7 @@ export default function TextField({
 
   return (
     <>
-      <div className={`p-1 form-control ${className}`}>
+      <div className={`form-control ${className ? className : ''}`}>
         {label && (
           <label className="label">
             <span className="label-text">{label}</span>
@@ -63,7 +64,7 @@ export default function TextField({
               type={toggleState && trailingIcon ? 'password' : 'text'}
               placeholder={placeholder}
               disabled={disabled}
-              className={`input input-bordered flex-grow w-[inherit]`}
+              className={`input input-bordered rounded-sm flex-grow w-[inherit]`}
             />
             {renderTrailingIcon()}
           </label>
@@ -74,7 +75,7 @@ export default function TextField({
             onBlur={onBlur}
             value={value}
             name={name}
-            type={'text'}
+            type={type || 'text'}
             disabled={disabled}
             placeholder={placeholder}
             className={`input input-bordered flex-grow w-[inherit]`}
