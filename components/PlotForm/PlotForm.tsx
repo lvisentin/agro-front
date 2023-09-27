@@ -65,6 +65,7 @@ function PlotForm({
               onBlur={handleBlur}
               errors={touched.size ? errors.size : null}
               name="size"
+              type="number"
               placeholder="Digite o tamanho..."
               label="Tamanho do talhão (ha)"
             />

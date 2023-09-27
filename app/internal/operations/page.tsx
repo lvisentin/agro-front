@@ -104,7 +104,7 @@ function OperationsPage() {
 
         <OperationDetailModal operation={selectedOperation || undefined} />
 
-        {operations?.length >= 0 ? (
+        {operations?.length > 0 ? (
           <DataTable
             data={operations}
             columns={columns}
