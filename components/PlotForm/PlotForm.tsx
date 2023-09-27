@@ -1,5 +1,4 @@
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
-import { newPlotValidationSchema } from '@/shared/validationSchemas/NewPlot.schema';
 import { useQuery } from '@apollo/client';
 import { Formik } from 'formik';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
@@ -28,7 +27,6 @@ function PlotForm({
         size: plot ? plot.size : 0,
         propertyId: plot ? plot.propertyId : 0,
       }}
-      validationSchema={newPlotValidationSchema}
       onSubmit={(values) => submitFunction(values)}
     >
       {({
@@ -45,6 +43,7 @@ function PlotForm({
           <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
             <TextField
               value={values.name}
+              disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
               errors={touched.name ? errors.name : null}
@@ -54,6 +53,7 @@ function PlotForm({
             />
             <TextField
               value={values.description}
+              disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
               errors={touched.description ? errors.description : null}
@@ -63,10 +63,12 @@ function PlotForm({
             />
             <TextField
               value={values.size}
+              disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
               errors={touched.size ? errors.size : null}
               name="size"
+              type="number"
               placeholder="Digite o tamanho..."
               label="Tamanho do talhão (ha)"
             />

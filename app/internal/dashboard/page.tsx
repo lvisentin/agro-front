@@ -9,8 +9,8 @@ import { toast } from 'react-toastify';
 export default function Home() {
   const {
     loading,
-    data: { analyticsDashboard } = {},
     error,
+    data: { analyticsDashboard } = {},
   } = useQuery(GetAnalyticsQuery);
 
   if (loading) {

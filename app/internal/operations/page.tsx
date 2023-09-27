@@ -20,6 +20,7 @@ function OperationsPage() {
   const { push } = useRouter();
   const {
     loading,
+    error,
     data: { operations } = {},
     refetch,
   } = useQuery(GetOperationsQuery);
@@ -85,6 +86,10 @@ function OperationsPage() {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
+  if (error) {
+    toast.error('Ocorreu um erro, tente novamente');
+  }
+
   return (
     <AnimatedPage>
       <div className="operations__wrapper">
@@ -99,7 +104,7 @@ function OperationsPage() {
 
         <OperationDetailModal operation={selectedOperation || undefined} />
 
-        {operations?.length >= 0 ? (
+        {operations?.length > 0 ? (
           <DataTable
             data={operations}
             columns={columns}

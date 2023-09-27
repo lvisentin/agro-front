@@ -54,10 +54,12 @@ function PropertiesPage() {
 
   function handleDelete(property: Property) {
     console.log('property', property);
-    deleteProperty({ variables: { id: property.id } }).then(() => {
-      toast.success('Propriedade deletada com sucesso!');
-      refetch();
-    });
+    deleteProperty({ variables: { id: property.id } })
+      .then(() => {
+        toast.success('Propriedade deletada com sucesso!');
+        refetch();
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goToNewProperty() {

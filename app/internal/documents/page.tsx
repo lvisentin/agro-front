@@ -21,6 +21,13 @@ function DocumentsPage() {
   const [selectedDocument, setSelectedDocument] = useState<Document>();
   const [deleteDocument] = useMutation(DeleteDocumentMutation);
 
+  const {
+    loading,
+    error,
+    data: { documents } = {},
+    refetch,
+  } = useQuery(GetDocumentsQuery);
+
   function handleDeleteDocumentClick(document: Document) {
     Swal.fire({
       title: 'Você tem certeza?',
@@ -53,19 +60,16 @@ function DocumentsPage() {
     )?.showModal();
   }
 
-  const {
-    loading,
-    error,
-    data: { documents } = {},
-    refetch,
-  } = useQuery(GetDocumentsQuery);
-
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
   if (error) {
     toast.error('Ocorreu um erro, tente novamente');
+  }
+
+  if (documents) {
+    console.log(documents);
   }
 
   return (

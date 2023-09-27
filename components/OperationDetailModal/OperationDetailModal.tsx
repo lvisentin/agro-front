@@ -1,5 +1,5 @@
 import { Operation } from '@/shared/models/operations/Operations.model';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import OperationForm from '../OperationForm/OperationForm';
 
 interface OperationDetailModalProps {
@@ -9,12 +9,6 @@ interface OperationDetailModalProps {
 function OperationDetailModal({ operation }: OperationDetailModalProps) {
   const [error] = useState<boolean>(false);
 
-  useEffect(() => console.log('bbb'), [operation]);
-
-  function goToEdit() {
-    console.log('goToEdit');
-  }
-
   function closeModal() {
     (
       document.getElementById('operation_details_modal') as HTMLFormElement
@@ -23,7 +17,7 @@ function OperationDetailModal({ operation }: OperationDetailModalProps) {
 
   return (
     <dialog id="operation_details_modal" className="modal">
-      <div className="modal-box w-9/10 max-w-5xl">
+      <div className="modal-box w-9/10 max-w-5xl pb-0">
         <h3 className="font-bold text-lg">Detalhes da operação</h3>
         <div className="modal-body">
           {error ? (

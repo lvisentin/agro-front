@@ -8,7 +8,6 @@ import lockSvgSrc from '@/resources/svg/lock.svg';
 import mailSvgSrc from '@/resources/svg/mail.svg';
 import { Formik } from 'formik';
 import Image from 'next/image';
-import Link from 'next/link';
 
 import PageTransition from '@/components/PageTransition/PageTransition';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
@@ -16,6 +15,7 @@ import { SignInMutation } from '@/shared/graphql/mutations/SignIn.mutation';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import styles from './Login.module.scss';
 
 export default function LoginPage() {
@@ -43,7 +43,7 @@ export default function LoginPage() {
           className={'w-full m-0 max-h-16'}
         />
 
-        <p className={'text-center mb-2'}>
+        {/* <p className={'text-center mb-2'}>
           Novo aqui?{' '}
           <span className={'prose-a:hover:underline'}>
             <Link href={'/sign-up'} className={'text-primary'}>
@@ -51,7 +51,7 @@ export default function LoginPage() {
               Crie uma conta
             </Link>
           </span>
-        </p>
+        </p> */}
 
         <Formik
           initialValues={{ email: '', password: '' }}
@@ -63,10 +63,13 @@ export default function LoginPage() {
                   password,
                 },
               },
-            }).then(({ data: { signIn } }) => {
-              localStorage.setItem('authorization', signIn.accessToken);
-              router.push(PageRoutes.Dashboard);
             })
+              .then(({ data: { signIn } }) => {
+                localStorage.setItem('authorization', signIn.accessToken);
+                localStorage.setItem('userData', JSON.stringify(signIn.user));
+                router.push(PageRoutes.Dashboard);
+              })
+              .catch(() => toast.error('Usuário ou senha incorretos!'))
           }
         >
           {({ values, handleChange, handleBlur, handleSubmit }) => (
@@ -131,7 +134,7 @@ export default function LoginPage() {
                     <span
                       className={'prose-a:no-underline prose-a:hover:underline'}
                     >
-                      <Link href={'/password-reset'}>Esqueceu sua senha?</Link>
+                      {/* <Link href={'/password-reset'}>Esqueceu sua senha?</Link> */}
                     </span>
                   </p>
 

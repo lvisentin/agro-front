@@ -2,7 +2,6 @@
 
 import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
 import TextField from '@/components/TextField/TextField';
-import { newPropertyValidationSchema } from '@/shared/validationSchemas/NewProperty.schema';
 import { Formik } from 'formik';
 import LoadingButton from '../LoadingButton/LoadingButton';
 import { PropertyFormProps } from './PropertyForm.model';
@@ -20,7 +19,6 @@ function PropertyForm({
         description: property ? property.description : '',
         size: property ? property.size : 0,
       }}
-      validationSchema={newPropertyValidationSchema}
       onSubmit={(values) => submitFunction(values)}
     >
       {({

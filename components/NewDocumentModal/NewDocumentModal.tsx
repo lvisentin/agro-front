@@ -22,34 +22,45 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
     setError(false);
 
     uploadFile(file, name)
-      .then(({ fileName, serverFileName }) => {
-        saveFilePath(fileName, serverFileName);
+      .then(({ fileName, path }: { fileName: string; path: string }) => {
+        console.log(fileName, path);
+        saveFilePath(fileName, path);
       })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'))
       .finally(() => setLoading(false));
   }
 
-  function saveFilePath(fileName: string, serverFileName: string) {
+  function saveFilePath(fileName: string, path: string) {
     createDocument({
       variables: {
         input: {
           name: fileName,
-          path: `https://agro-dev-br.s3.amazonaws.com/${serverFileName}`,
+          path,
         },
       },
-    }).then(() => {
-      toast.success('Documento criado');
-      refetch();
-      closeModal();
-    });
+    })
+      .then(() => {
+        toast.success('Documento criado');
+        refetch();
+        closeModal();
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function uploadFile(file: File, name: string) {
     const formData = new FormData();
     formData.append('filename', name);
     formData.append('file', file);
+    console.log(name);
     return httpClient
-      .postFormData('http://localhost:3000/file/upload', formData)
-      .then((response) => ({ serverFileName: response, fileName: name }));
+      .postFormData('https://api.gesrural.com.br/file/upload', formData)
+      .then((response: any) => {
+        console.log(response);
+        return {
+          path: response.url,
+          fileName: name,
+        };
+      });
   }
 
   function closeModal() {
