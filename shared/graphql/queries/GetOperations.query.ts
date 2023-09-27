@@ -15,7 +15,7 @@ export const GetOperationsQuery = gql`
         name
         category {
           id
-        } 
+        }
         measurementUnit
         unitPrice
       }

@@ -3,11 +3,7 @@ import RadioButton from '@/components/RadioButton/RadioButton';
 import TextField from '@/components/TextField/TextField';
 import eyeSlashSvgSrc from '@/resources/svg/eye-slash.svg';
 import eyeSvgSrc from '@/resources/svg/eye.svg';
-import {
-    faAt,
-    faLock,
-    faUser
-} from '@fortawesome/free-solid-svg-icons';
+import { faAt, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Formik } from 'formik';
 import Image from 'next/image';

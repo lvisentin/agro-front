@@ -8,5 +8,5 @@ export enum PageRoutes {
   ListPlots = '/internal/plots',
   NewOperations = '/internal/operations/new',
   ListOperations = '/internal/operations',
-  Login = '/login'
+  Login = '/login',
 }

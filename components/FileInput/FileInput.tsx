@@ -9,7 +9,7 @@ function FileInput({
   name,
   placeholder,
   disabled,
-  id
+  id,
 }: FileInputProps) {
   return (
     <>

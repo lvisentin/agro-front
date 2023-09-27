@@ -44,7 +44,7 @@ function NewPlotPage() {
             <div className="card-title px-6 py-4">
               <h2 className="prose-h2">Cadastrar Talhão</h2>
             </div>
-            
+
             <div className="card-body pt-2 pb-4">
               <PlotForm cancelFunction={goBack} submitFunction={handleSubmit} />
             </div>

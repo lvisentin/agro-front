@@ -11,7 +11,6 @@ function DocumentForm({
   cancelFunction,
   loading = false,
 }: DocumentFormProps) {
-  
   function fResetForm(resetFormFormik: () => void, setFieldValueFunc: any) {
     resetFormFormik();
     setFieldValueFunc('file', []);

@@ -1,8 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  env: {
-  },
+  env: {},
   images: {
     domains: ['placehold.it', 'agro-dev-br.s3.amazonaws.com'],
   },
