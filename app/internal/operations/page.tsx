@@ -2,30 +2,29 @@
 
 import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
+import OperationDetailModal from '@/components/OperationDetailModal/OperationDetailModal';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { DeleteOperationMutation } from '@/shared/graphql/mutations/DeleteOperation.mutation';
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
 import { Operation } from '@/shared/models/operations/Operations.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 function OperationsPage() {
   const { push } = useRouter();
-
   const {
     loading,
     data: { operations } = {},
     refetch,
   } = useQuery(GetOperationsQuery);
-
-  useEffect(() => {
-    refetch();
-  }, []);
-
+  const [deleteOperation] = useMutation(DeleteOperationMutation);
+  const [selectedOperation, setSelectedOperation] = useState(null);
   const columns = [
     {
       field: 'id',
@@ -38,7 +37,8 @@ function OperationsPage() {
     {
       field: 'executionDate',
       name: 'Data da operação',
-      transformData: (data: Operation) =>  new Date(data.executionDate).toLocaleDateString('pt-BR'),
+      transformData: (data: Operation) =>
+        new Date(data.executionDate).toLocaleDateString('pt-BR'),
     },
     {
       field: 'product',
@@ -56,12 +56,29 @@ function OperationsPage() {
     },
   ];
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   function goToNewOperation() {
     push(PageRoutes.NewOperations);
   }
 
-  function deleteOperation(operation: Operation) {
-    console.log('Operation', operation);
+  function handleDelete(operation: Operation) {
+    deleteOperation({ variables: { id: operation.id } })
+      .then(() => {
+        toast.success('Operação deletada com sucesso');
+        refetch();
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+  }
+
+  function showModal(test: any) {
+    console.log('test', test);
+    setSelectedOperation(test);
+    (
+      document.getElementById('operation_details_modal') as HTMLFormElement
+    ).showModal();
   }
 
   if (loading) {
@@ -80,11 +97,14 @@ function OperationsPage() {
           </PrimaryButton>
         </div>
 
+        <OperationDetailModal operation={selectedOperation || undefined} />
+
         {operations?.length >= 0 ? (
           <DataTable
             data={operations}
             columns={columns}
-            handleDeleteClick={deleteOperation}
+            handleDeleteClick={handleDelete}
+            handlePreviewClick={showModal}
           />
         ) : (
           <NoData message={'Não encontramos nenhuma operação cadastrada'} />

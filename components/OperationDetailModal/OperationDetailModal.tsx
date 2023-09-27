@@ -1,5 +1,5 @@
 import { Operation } from '@/shared/models/operations/Operations.model';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OperationForm from '../OperationForm/OperationForm';
 
 interface OperationDetailModalProps {
@@ -8,6 +8,8 @@ interface OperationDetailModalProps {
 
 function OperationDetailModal({ operation }: OperationDetailModalProps) {
   const [error] = useState<boolean>(false);
+
+  useEffect(() => console.log('bbb'), [operation]);
 
   function goToEdit() {
     console.log('goToEdit');
@@ -32,13 +34,11 @@ function OperationDetailModal({ operation }: OperationDetailModalProps) {
             ''
           )}
           <div className="card w-full bg-base-100 shadow-xl rounded-md">
-            <div className="card-body pt-2 pb-4">
+            <div className="card-body pt-2 pb-4 px-0">
               <OperationForm
                 operation={operation}
-                submitFunction={goToEdit}
                 cancelFunction={closeModal}
                 disabled={true}
-                confirmBtn="Editar"
               />
             </div>
           </div>

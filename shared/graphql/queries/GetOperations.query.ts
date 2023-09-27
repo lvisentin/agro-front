@@ -7,11 +7,17 @@ export const GetOperationsQuery = gql`
       description
       plot {
         id
+        size
         name
       }
       product {
         id
         name
+        category {
+          id
+        } 
+        measurementUnit
+        unitPrice
       }
       quantity
       totalCost
