@@ -35,10 +35,12 @@ function EditPlotPage({ params: { id } }: PageProps) {
       },
     };
 
-    updatePlot({ variables: variables }).then(() => {
-      toast.success('Propriedade atualizada com sucesso.');
-      router.push(PageRoutes.ListPlots);
-    });
+    updatePlot({ variables: variables })
+      .then(() => {
+        toast.success('Propriedade atualizada com sucesso.');
+        router.push(PageRoutes.ListPlots);
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goBack() {

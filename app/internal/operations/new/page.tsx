@@ -30,10 +30,12 @@ function NewOperationPage() {
           executionDate,
         },
       },
-    }).then(() => {
-      toast.success('Operação criado com sucesso');
-      router.push(PageRoutes.ListOperations);
-    });
+    })
+      .then(() => {
+        toast.success('Operação criado com sucesso');
+        router.push(PageRoutes.ListOperations);
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goBack() {

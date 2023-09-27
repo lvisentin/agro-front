@@ -23,9 +23,10 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
 
     uploadFile(file, name)
       .then(({ fileName, path }) => {
-        console.log(fileName, path)
+        console.log(fileName, path);
         saveFilePath(fileName, path);
       })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'))
       .finally(() => setLoading(false));
   }
 
@@ -37,27 +38,30 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
           path,
         },
       },
-    }).then(() => {
-      toast.success('Documento criado');
-      refetch();
-      closeModal();
-    });
+    })
+      .then(() => {
+        toast.success('Documento criado');
+        refetch();
+        closeModal();
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function uploadFile(file: File, name: string) {
     const formData = new FormData();
     formData.append('filename', name);
     formData.append('file', file);
-    console.log(name)
+    console.log(name);
     return httpClient
       .postFormData('https://api.gesrural.com.br/file/upload', formData)
       .then((response: any) => {
-        console.log(response)
+        console.log(response);
         return {
           path: response.url,
-          fileName: name
-        }
-      });
+          fileName: name,
+        };
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function closeModal() {

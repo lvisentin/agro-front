@@ -36,10 +36,12 @@ function EditPropertyPage({ params: { id } }: PageProps) {
       },
     };
 
-    updateProperty({ variables: variables }).then(() => {
-      toast.success('Propriedade atualizada com sucesso.');
-      router.push(PageRoutes.ListProperties);
-    });
+    updateProperty({ variables: variables })
+      .then(() => {
+        toast.success('Propriedade atualizada com sucesso.');
+        router.push(PageRoutes.ListProperties);
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goBack() {
