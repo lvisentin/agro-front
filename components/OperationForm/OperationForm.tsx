@@ -55,7 +55,9 @@ function OperationForm({
         : ProductMeasurementUnit.kg,
     },
     onSubmit: (values) => {
-      submitFunction(values);
+      if (submitFunction) {
+        submitFunction(values);
+      }
     },
   });
 
