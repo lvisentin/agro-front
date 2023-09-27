@@ -5,5 +5,5 @@ export interface Purchase {
   product: string;
   quantity: number;
   total: number;
-  createdAt: string
+  createdAt: string;
 }

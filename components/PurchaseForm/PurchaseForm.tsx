@@ -6,6 +6,7 @@ import DataTable from "../DataTable/DataTable";
 import NoData from "../NoData/NoData";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import SecondaryButton from "../SecondaryButton/SecondaryButton";
+import SelectFieldWithFilter from '../SelectFieldWithFilter/SelectFieldWithFilter';
 import TextField from "../TextField/TextField";
 import { PurcharseFormProps } from "./PurchaseForm.model";
 
@@ -21,14 +22,15 @@ function PurcharseForm({
 
   // const {
   //   data: { purchases } = {},
+  //   loading: getPurchasesLoading
   // } = useQuery(GetPurchasesQuery);
 
   const fakeObj:Array<Purchase> = [
     {
       id: "2",
       product: "Dessecação",
-      quantity: 123,
-      total: 123,
+      quantity: 1243,
+      total: 1523,
       category: "string",
       description: "string",
       createdAt: "2806/2000"
@@ -36,13 +38,19 @@ function PurcharseForm({
     {
       id: "1",
       product: "Dessecação",
-      quantity: 123,
-      total: 123,
+      quantity: 1213,
+      total: 1233,
       category: "string",
       description: "string",
       createdAt: "2806/2000"
     },
   ]
+
+  const options = [
+    { id: 1, name: 'Opção 1' },
+    { id: 2, name: 'Opção 2' },
+    { id: 3, name: 'Opção 3' },
+  ];
 
   const columns = [
     {
@@ -83,7 +91,6 @@ function PurcharseForm({
 
   function onSubmit(purchase: Purchase) {
     if (isEditing) {
-      console.log('Editando');
       setIsEditing(false)
       setValues({
         id: "",
@@ -96,7 +103,6 @@ function PurcharseForm({
       })
       return
     }
-    console.log('Adicionando');
     setValues({
       id: "",
       product: "",
@@ -111,6 +117,7 @@ function PurcharseForm({
   const {
     values,
     handleChange,
+    setFieldValue,
     handleBlur,
     handleSubmit,
     touched,
@@ -133,6 +140,10 @@ function PurcharseForm({
   function goToEdit(purchase: Purchase) {
     setValues(purchase);
     setIsEditing(true)
+  }
+
+  function getData (item:any) {
+    console.log('log', item);
   }
   
   return (
@@ -163,9 +174,13 @@ function PurcharseForm({
 
         <div className="card bg-base-100 rounded-lg">
           <div className="card-body flex flex-row">
-            <TextField
-              value={values.id}
-              onChange={handleChange}
+            <SelectFieldWithFilter
+              options={options?.length > 0 ? options : []}
+              value={values.product}
+              onChange={(e) => {
+                setFieldValue('id', e.value)
+                getData(e)
+              }}
               onBlur={handleBlur}
               errors={touched.id ? errors.id : null}
               disabled={disabled}

@@ -48,8 +48,6 @@ function ProductForm({
         handleChange,
         handleBlur,
         handleSubmit,
-        isValid,
-        dirty,
         touched,
         errors,
       }) => (
