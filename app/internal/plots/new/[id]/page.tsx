@@ -63,7 +63,7 @@ function EditPlotPage({ params: { id } }: PageProps) {
             <div className="card-title px-6 py-4">
               <h2 className="prose-h2">Editar Talhão</h2>
             </div>
-            
+
             {plot && (
               <PlotForm
                 cancelFunction={goBack}

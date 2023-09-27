@@ -1,4 +1,5 @@
 export enum PageRoutes {
+  Dashboard = '/internal/dashboard',
   NewProduct = '/internal/supply/new',
   ListProducts = '/internal/supply',
   NewProperty = '/internal/properties/new',
@@ -8,5 +9,6 @@ export enum PageRoutes {
   NewOperations = '/internal/operations/new',
   ListOperations = '/internal/operations',
   NewPurchases = '/internal/purchases/new',
-  ListPurchases = '/internal/purchases'
+  ListPurchases = '/internal/purchases',
+  Login = '/login',
 }

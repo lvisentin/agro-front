@@ -87,7 +87,7 @@ function PropertiesPage() {
             Nova propriedade
           </PrimaryButton>
         </div>
-        
+
         {properties?.length > 0 ? (
           <DataTable
             data={properties}

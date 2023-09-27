@@ -48,7 +48,7 @@ function NewPropertyPage() {
             <div className="card-title px-6 py-4">
               <h2 className="prose-h2">Cadastrar propriedade</h2>
             </div>
-            
+
             <div className="card-body pt-2 pb-4">
               <PropertyForm
                 cancelFunction={goBack}

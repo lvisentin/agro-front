@@ -1,5 +1,6 @@
 'use client';
 
+import { PageRoutes } from '@/shared/enums/PageRoutes';
 import {
   faArrowRightFromBracket,
   faBoxesStacked,
@@ -15,7 +16,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import styles from './Sidebar.module.scss';
 export interface MenuItem {
@@ -68,9 +69,13 @@ const menuItems: MenuItem[] = [
 ];
 
 const Sidebar: React.FC = () => {
+  const router = useRouter();
   const pathname = usePathname();
 
-  function logout() {}
+  function logout() {
+    localStorage.removeItem('authorization');
+    router.push(PageRoutes.Login);
+  }
 
   return (
     <nav

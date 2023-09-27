@@ -3,16 +3,26 @@ import { gql } from '@apollo/client';
 export const GetOperationByIdQuery = gql`
   query GetOperationById($id: Int!) {
     operation(id: $id) {
+      id
+      description
+      plot {
+        id
+        size
         name
-        date
-        product
-        costPerPlot
-        costPerHa
-        unityCost
-        productType
-        unity
-        dose
-        plot
       }
+      product {
+        id
+        name
+        category {
+          id
+        }
+        measurementUnit
+        unitPrice
+      }
+      quantity
+      totalCost
+      createdAt
+      updatedAt
+    }
   }
 `;

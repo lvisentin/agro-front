@@ -2,7 +2,7 @@
 
 import OperationForm from '@/components/OperationForm/OperationForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
-import { CreatePlotMutation } from '@/shared/graphql/mutations/CreatePlot.mutation';
+import { CreateOperationMutation } from '@/shared/graphql/mutations/CreateOperation.mutation';
 import { Operation } from '@/shared/models/operations/Operations.model';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
@@ -11,33 +11,23 @@ import { toast } from 'react-toastify';
 function NewOperationPage() {
   const router = useRouter();
 
-  const [createOperation] = useMutation(CreatePlotMutation);
+  const [createOperation] = useMutation(CreateOperationMutation);
 
   function handleSubmit({
-    name,
-    date,
-    product,
-    costPerPlot,
-    costPerHa,
-    unityCost,
-    productType,
-    unity,
-    dose,
-    plot,
+    description,
+    plotId,
+    productId,
+    quantity,
+    executionDate,
   }: Operation) {
     createOperation({
       variables: {
         input: {
-          name,
-          date,
-          product,
-          costPerPlot: Number(costPerPlot),
-          costPerHa: Number(costPerHa),
-          unityCost: Number(unityCost),
-          productType,
-          unity: Number(unity),
-          dose: Number(dose),
-          plot,
+          description,
+          plotId: Number(plotId),
+          productId,
+          quantity: Number(quantity),
+          executionDate,
         },
       },
     }).then(() => {
