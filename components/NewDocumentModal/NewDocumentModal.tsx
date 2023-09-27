@@ -48,7 +48,7 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
     formData.append('filename', name);
     formData.append('file', file);
     return httpClient
-      .postFormData('http://localhost:3000/file/upload', formData)
+      .postFormData('https://api.gesrural.com.br/graphql/file/upload', formData)
       .then((response) => ({ serverFileName: response, fileName: name }));
   }
 

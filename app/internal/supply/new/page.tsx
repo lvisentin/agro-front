@@ -29,6 +29,7 @@ function NewProductPage() {
     })
       .then(() => {
         toast.success('Produto criado com sucesso!');
+        router.push(PageRoutes.ListProducts);
       })
       .catch(() => {
         toast.error('Ocorreu um erro, tente novamente');
