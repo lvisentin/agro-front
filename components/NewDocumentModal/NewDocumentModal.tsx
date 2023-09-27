@@ -22,18 +22,19 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
     setError(false);
 
     uploadFile(file, name)
-      .then(({ fileName, serverFileName }) => {
-        saveFilePath(fileName, serverFileName);
+      .then(({ fileName, path }) => {
+        console.log(fileName, path)
+        saveFilePath(fileName, path);
       })
       .finally(() => setLoading(false));
   }
 
-  function saveFilePath(fileName: string, serverFileName: string) {
+  function saveFilePath(fileName: string, path: string) {
     createDocument({
       variables: {
         input: {
           name: fileName,
-          path: `https://agro-dev-br.s3.amazonaws.com/${serverFileName}`,
+          path,
         },
       },
     }).then(() => {
@@ -47,9 +48,16 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
     const formData = new FormData();
     formData.append('filename', name);
     formData.append('file', file);
+    console.log(name)
     return httpClient
       .postFormData('https://api.gesrural.com.br/file/upload', formData)
-      .then((response) => ({ serverFileName: response, fileName: name }));
+      .then((response: any) => {
+        console.log(response)
+        return {
+          path: response.url,
+          fileName: name
+        }
+      });
   }
 
   function closeModal() {

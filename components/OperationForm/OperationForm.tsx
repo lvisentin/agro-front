@@ -242,7 +242,7 @@ function OperationForm({
           onClick={cancelFunction}
           className="mr-3"
         >
-          Cancelar
+          {operation ? 'Fechar' : 'Cancelar'}
         </SecondaryButton>
 
         {submitFunction && (

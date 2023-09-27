@@ -113,8 +113,8 @@ const Sidebar: React.FC = () => {
         <ul className="menu menu-sm lg:menu-md px-4 py-4 w-full">
           <div className={'flex align-items-center px-4'}>
             <div className={'hidden md:block'}>
-              <p className={'truncate font-mono'}>Lucas</p>
-              <p className={'truncate font-mono'}>Lucas@lucas.com</p>
+              <p className={'truncate font-mono'}>{JSON.parse(localStorage.getItem('userData')!).name}</p>
+              <p className={'truncate font-mono'}>{JSON.parse(localStorage.getItem('userData')!).email}</p>
             </div>
           </div>
           <li className="w-full">

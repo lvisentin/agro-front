@@ -16,6 +16,7 @@ import { SignInMutation } from '@/shared/graphql/mutations/SignIn.mutation';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import styles from './Login.module.scss';
 
 export default function LoginPage() {
@@ -66,7 +67,7 @@ export default function LoginPage() {
             }).then(({ data: { signIn } }) => {
               localStorage.setItem('authorization', signIn.accessToken);
               router.push(PageRoutes.Dashboard);
-            })
+            }).catch(() => toast.error('Usuário ou senha incorretos!'))
           }
         >
           {({ values, handleChange, handleBlur, handleSubmit }) => (

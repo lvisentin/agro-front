@@ -64,14 +64,16 @@ function EditPlotPage({ params: { id } }: PageProps) {
               <h2 className="prose-h2">Editar Talhão</h2>
             </div>
 
-            {plot && (
-              <PlotForm
-                cancelFunction={goBack}
-                submitFunction={handleEdit}
-                plot={plot}
-                loading={loading || updateLoading}
-              />
-            )}
+            <div className="card-body pt-2 pb-4">
+              {plot && (
+                <PlotForm
+                  cancelFunction={goBack}
+                  submitFunction={handleEdit}
+                  plot={plot}
+                  loading={loading || updateLoading}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
