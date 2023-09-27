@@ -14,7 +14,7 @@ function FileInput({
   return (
     <>
       {label && (
-        <label className="label pb-0">
+        <label className="label pb-0 mt-2">
           <span className="label-text">{label}</span>
         </label>
       )}

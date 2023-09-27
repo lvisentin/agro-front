@@ -5,13 +5,11 @@ import {
   faArrowRightFromBracket,
   faBoxesStacked,
   faChartSimple,
-  faDollarSign,
   faFolder,
   faReceipt,
-  faShoppingCart,
   faTractor,
   faWheatAwn,
-  IconLookup,
+  IconLookup
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -46,16 +44,16 @@ const menuItems: MenuItem[] = [
     text: 'Estoque',
     route: '/internal/supply',
   },
-  {
-    icon: faShoppingCart,
-    text: 'Compras',
-    route: '/internal/purchases',
-  },
-  {
-    icon: faDollarSign,
-    text: 'Vendas',
-    route: '/internal/sales',
-  },
+  // {
+  //   icon: faShoppingCart,
+  //   text: 'Compras',
+  //   route: '/internal/purchases',
+  // },
+  // {
+  //   icon: faDollarSign,
+  //   text: 'Vendas',
+  //   route: '/internal/sales',
+  // },
   {
     icon: faReceipt,
     text: 'Operações',

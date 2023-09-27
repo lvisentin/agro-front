@@ -20,6 +20,7 @@ function OperationsPage() {
   const { push } = useRouter();
   const {
     loading,
+    error,
     data: { operations } = {},
     refetch,
   } = useQuery(GetOperationsQuery);
@@ -83,6 +84,10 @@ function OperationsPage() {
 
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
+  }
+
+  if (error) {
+    toast.error('Ocorreu um erro, tente novamente');
   }
 
   return (
