@@ -67,6 +67,7 @@ export default function LoginPage() {
             })
               .then(({ data: { signIn } }) => {
                 localStorage.setItem('authorization', signIn.accessToken);
+                localStorage.setItem('userData', JSON.stringify(signIn.user));
                 router.push(PageRoutes.Dashboard);
               })
               .catch(() => toast.error('Usuário ou senha incorretos!'))

@@ -1,5 +1,4 @@
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
-import { newPlotValidationSchema } from '@/shared/validationSchemas/NewPlot.schema';
 import { useQuery } from '@apollo/client';
 import { Formik } from 'formik';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
@@ -28,7 +27,6 @@ function PlotForm({
         size: plot ? plot.size : 0,
         propertyId: plot ? plot.propertyId : 0,
       }}
-      validationSchema={newPlotValidationSchema}
       onSubmit={(values) => submitFunction(values)}
     >
       {({

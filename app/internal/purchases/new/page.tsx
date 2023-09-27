@@ -5,7 +5,6 @@ import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
 import TextField from '@/components/TextField/TextField';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
-import { newProductValidationSchema } from '@/shared/validationSchemas/NewProduct.schema';
 import { Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
@@ -39,7 +38,6 @@ function NewPurhcasePage() {
                   minQuantity: 0,
                   unitCost: 0,
                 }}
-                validationSchema={newProductValidationSchema}
                 onSubmit={(values) => console.log(values)}
               >
                 {({
