@@ -1,23 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SelectFieldWithFilterProps } from './SelectFieldWithFilter.model';
 
 function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
   const [filter, setFilter] = useState('');
   const [showOptions, setShowOptions] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState<any>()
+  const selectFieldRef = useRef<any>(null);
 
   useEffect(() => {
     props.value ? setFilter(props.value) : ''
 
-    console.log(props);
-  }, []);
+    document.addEventListener('click', handleClickOutside);
 
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [props.value]);
+
+  const handleClickOutside = (event: any) => {
+    if (selectFieldRef.current && !selectFieldRef.current.contains(event.target)) {
+      setShowOptions(false);
+    }
+  };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter(e.target.value);
-    const filteredOptions = props.options.filter( option => option.name.includes(e.target.value))
-
-    setFilteredOptions(filteredOptions)
+    const filterText = e.target.value.toLowerCase(); 
+    setFilter(filterText);
+  
+    const filteredOptions = props.options.filter(option =>
+      option.name.toLowerCase().includes(filterText)
+    );
+  
+    setFilteredOptions(filteredOptions);
     setShowOptions(true);
   };
 
@@ -30,7 +44,7 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
   };
 
     return (
-    <div className="form-control">
+    <div className="form-control" ref={selectFieldRef}>
       {props.label && (
         <label className="label">
           <span className="label-text">{props.label}</span>
@@ -53,7 +67,7 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
                 className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSelectOption(option)}
               >
-                #{option.id} - {option.name}
+                {option.name}
               </div>
             ))}
           </div>

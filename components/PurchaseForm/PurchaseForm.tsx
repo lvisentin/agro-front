@@ -25,32 +25,31 @@ function PurcharseForm({
   //   loading: getPurchasesLoading
   // } = useQuery(GetPurchasesQuery);
 
-  const fakeObj:Array<Purchase> = [
+  const purchases:Array<Purchase> = [
     {
       id: "2",
       product: "Dessecação",
       quantity: 1243,
       total: 1523,
-      category: "string",
-      description: "string",
-      createdAt: "2806/2000"
+      category: "string 1",
+      description: "string 1",
+      createdAt: "28/06/2000"
     },
     {
       id: "1",
-      product: "Dessecação",
+      product: "Pedro",
       quantity: 1213,
       total: 1233,
-      category: "string",
-      description: "string",
-      createdAt: "2806/2000"
+      category: "string 2",
+      description: "string 2",
+      createdAt: "28/06/2000"
     },
   ]
 
-  const options = [
-    { id: 1, name: 'Opção 1' },
-    { id: 2, name: 'Opção 2' },
-    { id: 3, name: 'Opção 3' },
-  ];
+  const options = purchases.map(item => ({
+    id: item.id,
+    name: item.product
+  }));
 
   const columns = [
     {
@@ -185,8 +184,8 @@ function PurcharseForm({
               errors={touched.id ? errors.id : null}
               disabled={disabled}
               name="id"
-              placeholder="Pesquisar produto por código"
-              label="Código"
+              placeholder="Pesquisar produto por produto"
+              label="Produto"
             />
             
             <TextField
@@ -218,9 +217,9 @@ function PurcharseForm({
         </div>
       </form>
 
-        {fakeObj?.length >= 0 ? (
+        {purchases?.length >= 0 ? (
           <DataTable
-            data={fakeObj} 
+            data={purchases} 
             columns={columns}
             handleEditClick={goToEdit}
             handleDeleteClick={deletePurchase}
