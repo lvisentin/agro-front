@@ -15,11 +15,18 @@ import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { SignInMutation } from '@/shared/graphql/mutations/SignIn.mutation';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import styles from './Login.module.scss';
 
 export default function LoginPage() {
   const router = useRouter();
   const [signIn, { loading }] = useMutation(SignInMutation);
+
+  useEffect(() => {
+    if (localStorage.getItem('authorization')) {
+      router.push(PageRoutes.Dashboard);
+    }
+  }, []);
 
   return (
     <PageTransition
@@ -58,7 +65,7 @@ export default function LoginPage() {
               },
             }).then(({ data: { signIn } }) => {
               localStorage.setItem('authorization', signIn.accessToken);
-              router.push(PageRoutes.ListProperties);
+              router.push(PageRoutes.Dashboard);
             })
           }
         >
