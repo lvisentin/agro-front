@@ -15,13 +15,12 @@ function NewProductPage() {
 
   function handleSubmit(values: any) {
     console.log('values', values);
-
     createProduct({
       variables: {
         input: {
           ...values,
           quantity: Number(values.quantity),
-          unitPrice: Number(values.unitPrice),
+          unitPrice: Number(values.unitPrice.split('R$')[1]),
           minimumQuantity: Number(values.minimumQuantity),
           categoryId: Number(values.categoryId),
           propertyId: Number(values.propertyId),
@@ -50,7 +49,7 @@ function NewProductPage() {
             <div className="card-title px-6 py-4">
               <h2 className="prose-h2">Cadastrar produto</h2>
             </div>
-            
+
             <div className="card-body pt-2 pb-4">
               <ProductForm
                 cancelFunction={goBack}

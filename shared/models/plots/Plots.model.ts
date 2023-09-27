@@ -1,5 +1,5 @@
 export interface Plot {
-  id: string;
+  id: number;
   name: string;
   description: string;
   size: number;

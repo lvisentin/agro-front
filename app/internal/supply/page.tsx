@@ -25,7 +25,7 @@ function SupplyPage() {
     refetch,
   } = useQuery(GetProductsQuery);
 
-  const [deleteProduct, { deleteLoading }] = useMutation(DeleteProductMutation);
+  const [deleteProduct, { loading: deleteLoading }] = useMutation(DeleteProductMutation);
 
   const columns = [
     {

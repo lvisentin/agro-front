@@ -19,6 +19,8 @@ function PlotForm({
     data: { properties } = {},
   } = useQuery(GetPropertiesQuery);
 
+
+  if(properties) console.log(properties)
   return (
     <Formik
       initialValues={{
