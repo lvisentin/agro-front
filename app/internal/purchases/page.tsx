@@ -12,12 +12,14 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 function PurchasesPage() {
   const { push } = useRouter();
 
   const { 
-    loading, 
+    loading,
+    error,
     data: { purchases } = {},
     refetch
   } = useQuery(GetPurchasesQuery);
@@ -85,6 +87,10 @@ function PurchasesPage() {
 
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
+  }
+
+  if (error) {
+    toast.error('Ocorreu um erro, tente novamente');
   }
 
   return (
