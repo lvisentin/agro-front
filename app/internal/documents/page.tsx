@@ -68,8 +68,8 @@ function DocumentsPage() {
     toast.error('Ocorreu um erro, tente novamente');
   }
 
-  if(documents) {
-    console.log(documents)
+  if (documents) {
+    console.log(documents);
   }
 
   return (

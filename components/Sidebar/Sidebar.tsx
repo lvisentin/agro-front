@@ -9,13 +9,13 @@ import {
   faReceipt,
   faTractor,
   faWheatAwn,
-  IconLookup
+  IconLookup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Sidebar.module.scss';
 export interface MenuItem {
   icon: IconLookup;
@@ -69,11 +69,19 @@ const menuItems: MenuItem[] = [
 const Sidebar: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [userData, setUserData] = useState<any>(null);
 
   function logout() {
     localStorage.removeItem('authorization');
     router.push(PageRoutes.Login);
   }
+
+  useEffect(() => {
+    const localData = JSON.parse(localStorage.getItem('userData')!);
+    if (localData) {
+      setUserData(localData);
+    }
+  }, []);
 
   return (
     <nav
@@ -113,8 +121,8 @@ const Sidebar: React.FC = () => {
         <ul className="menu menu-sm lg:menu-md px-4 py-4 w-full">
           <div className={'flex align-items-center px-4'}>
             <div className={'hidden md:block'}>
-              <p className={'truncate font-mono'}>{JSON.parse(localStorage.getItem('userData')!).name}</p>
-              <p className={'truncate font-mono'}>{JSON.parse(localStorage.getItem('userData')!).email}</p>
+              <p className={'truncate font-mono'}>{userData?.name}</p>
+              <p className={'truncate font-mono'}>{userData?.email}</p>
             </div>
           </div>
           <li className="w-full">

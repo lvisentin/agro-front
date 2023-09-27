@@ -64,10 +64,12 @@ export default function LoginPage() {
                   password,
                 },
               },
-            }).then(({ data: { signIn } }) => {
-              localStorage.setItem('authorization', signIn.accessToken);
-              router.push(PageRoutes.Dashboard);
-            }).catch(() => toast.error('Usuário ou senha incorretos!'))
+            })
+              .then(({ data: { signIn } }) => {
+                localStorage.setItem('authorization', signIn.accessToken);
+                router.push(PageRoutes.Dashboard);
+              })
+              .catch(() => toast.error('Usuário ou senha incorretos!'))
           }
         >
           {({ values, handleChange, handleBlur, handleSubmit }) => (

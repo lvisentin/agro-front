@@ -22,7 +22,7 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
     setError(false);
 
     uploadFile(file, name)
-      .then(({ fileName, path }: {fileName: string, path: string}) => {
+      .then(({ fileName, path }: { fileName: string; path: string }) => {
         console.log(fileName, path);
         saveFilePath(fileName, path);
       })
@@ -60,7 +60,7 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
           path: response.url,
           fileName: name,
         };
-      })
+      });
   }
 
   function closeModal() {
