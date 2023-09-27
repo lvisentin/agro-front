@@ -22,7 +22,7 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
     setError(false);
 
     uploadFile(file, name)
-      .then(({ fileName, path }) => {
+      .then(({ fileName, path }: {fileName: string, path: string}) => {
         console.log(fileName, path);
         saveFilePath(fileName, path);
       })
@@ -61,7 +61,6 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
           fileName: name,
         };
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function closeModal() {
