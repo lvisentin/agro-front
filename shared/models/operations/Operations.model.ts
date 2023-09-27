@@ -1,13 +1,16 @@
+import { Plot } from '../plots/Plots.model';
+import { Product } from '../products/Products.model';
+
 export interface Operation {
-  _id: number;
-  name: string;
-  date: string;
-  product: string;
-  costPerPlot: number;
-  costPerHa: number;
-  unityCost: number;
-  productType: string;
-  unity: number;
-  dose: number;
-  plot: string;
+  id: number;
+  description: String;
+  plotId?: number;
+  plot?: Plot;
+  productId?: number;
+  product?: Product;
+  quantity: number;
+  totalCost: number;
+  createdAt?: Date;
+  executionDate: Date;
+  updatedAt?: Date;
 }

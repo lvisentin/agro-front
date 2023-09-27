@@ -4,6 +4,7 @@ import { ProductMeasurementUnit } from '@/shared/models/products/Products.model'
 import getEnumValues from '@/shared/utils/getEnumValues';
 import { useQuery } from '@apollo/client';
 import { Formik } from 'formik';
+import CurrencyField from '../CurrencyInput/CurrencyField';
 import LoadingButton from '../LoadingButton/LoadingButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
 import SelectField from '../SelectField/SelectField';
@@ -120,7 +121,7 @@ function ProductForm({
               label="Quantidade em estoque"
             />
 
-            <TextField
+            <CurrencyField
               value={values.unitPrice}
               onChange={handleChange}
               onBlur={handleBlur}
