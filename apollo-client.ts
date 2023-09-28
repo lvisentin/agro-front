@@ -8,10 +8,10 @@ const httpLink = createHttpLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+    graphQLErrors.forEach(({ message, locations, path, extensions }: any) => {
       const status = extensions.originalError.statusCode;
       if (status === 403 || status === 401) {
-        window.location.href = process.env.LOGIN_URL
+        window.location.href = process.env.LOGIN_URL!
       }
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
