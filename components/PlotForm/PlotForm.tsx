@@ -58,8 +58,8 @@ function PlotForm({
               onBlur={handleBlur}
               errors={touched.description ? errors.description : null}
               name="description"
-              placeholder="Digite uma descrição..."
-              label="Descrição"
+              placeholder="Digite uma Cultura agrícola..."
+              label="Cultura agrícola"
             />
             <TextField
               value={values.size}
