@@ -1,7 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  env: {},
+  env: {
+    LOGIN_URL: process.env.LOGIN_URL
+  },
   images: {
     domains: [
       'placehold.it',
