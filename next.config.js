@@ -18,7 +18,7 @@ module.exports = {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: '/internal/dashboard',
+        pathname: '/internal/login',
       },
     },
   },
