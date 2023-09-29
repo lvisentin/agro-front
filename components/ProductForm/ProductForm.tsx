@@ -2,6 +2,7 @@ import { GetProductCategoriesQuery } from '@/shared/graphql/queries/GetProductCa
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { ProductMeasurementUnit } from '@/shared/models/products/Products.model';
 import getEnumValues from '@/shared/utils/getEnumValues';
+import { newProductValidationSchema } from '@/shared/validationSchemas/NewProduct.schema';
 import { useQuery } from '@apollo/client';
 import { Formik } from 'formik';
 import CurrencyField from '../CurrencyInput/CurrencyField';
@@ -42,6 +43,7 @@ function ProductForm({
           : 0,
         unitPrice: product?.unitPrice ? product?.unitPrice : 0,
       }}
+      validationSchema={newProductValidationSchema}
       onSubmit={(values) => submitFunction(values)}
     >
       {({
