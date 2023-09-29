@@ -6,6 +6,7 @@ import {
   Product,
   ProductMeasurementUnit,
 } from '@/shared/models/products/Products.model';
+import { newOperationValidationSchema } from '@/shared/validationSchemas/NewOperation.schema';
 import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
@@ -55,6 +56,7 @@ function OperationForm({
         ? operation?.product?.measurementUnit
         : ProductMeasurementUnit.kg,
     },
+    validationSchema: newOperationValidationSchema,
     onSubmit: (values) => {
       if (submitFunction) {
         submitFunction(values);
@@ -62,8 +64,8 @@ function OperationForm({
     },
   });
 
+
   useEffect(() => {
-    console.log('operation', operation);
     if (operation) {
       formik.setValues({
         description: operation?.description,
@@ -84,6 +86,8 @@ function OperationForm({
       });
     }
   }, [operation]);
+
+  const isSubmitDisabled = !formik.dirty || !formik.isValid || formik.isSubmitting;
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
@@ -247,7 +251,11 @@ function OperationForm({
         </SecondaryButton>
 
         {submitFunction && (
-          <PrimaryButton type="submit" onClick={formik.handleSubmit}>
+          <PrimaryButton 
+            type="submit" 
+            disabled={isSubmitDisabled}
+            onClick={formik.handleSubmit}
+          >
             {confirmBtn}
           </PrimaryButton>
         )}
