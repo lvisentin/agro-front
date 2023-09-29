@@ -7,7 +7,11 @@ import { useEffect } from 'react';
 export default function InternalPage() {
   const { push } = useRouter();
   useEffect(() => {
-    push('/internal/dashboard');
+    if (localStorage.getItem('authorization')) {
+      push('/internal/dashboard');
+    } else {
+      push('/login');
+    }
   }, []);
 
   return <Loading />;
