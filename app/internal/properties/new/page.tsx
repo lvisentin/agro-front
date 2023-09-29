@@ -2,14 +2,36 @@
 
 import PropertyForm from '@/components/PropertyForm/PropertyForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { CreatePropertyMutation } from '@/shared/graphql/mutations/CreateProperty.mutation';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 function NewPropertyPage() {
   const router = useRouter();
 
-  function createProperty() {
-    console.log('createProperty');
+  const [createProperty, { loading }] = useMutation(CreatePropertyMutation);
+
+  function handleSubmit(values: {
+    size: string;
+    name: string;
+    description: string;
+  }) {
+    createProperty({
+      variables: {
+        input: {
+          ...values,
+          size: Number(values.size),
+        },
+      },
+    })
+      .then(() => {
+        toast.success('Propriedade criada com sucesso!');
+      })
+      .catch(() => {
+        toast.error('Ocorreu um erro, tente novamente');
+      });
   }
 
   function goBack() {
@@ -22,10 +44,19 @@ function NewPropertyPage() {
         <div className="prose flex justify-between w-full max-w-full"></div>
 
         <div className="page__content">
-          <PropertyForm
-            cancelFunction={goBack}
-            submitFunction={createProperty}
-          />
+          <div className="card w-full bg-base-100 shadow-xl rounded-md">
+            <div className="card-title px-6 py-4">
+              <h2 className="prose-h2">Cadastrar propriedade</h2>
+            </div>
+            
+            <div className="card-body pt-2 pb-4">
+              <PropertyForm
+                cancelFunction={goBack}
+                submitFunction={handleSubmit}
+                loading={loading}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </AnimatedPage>

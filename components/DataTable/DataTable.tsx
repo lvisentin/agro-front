@@ -56,18 +56,14 @@ export default function DataTable({
               className={`bg-white rounded-md hover ${styles.tr}`}
               key={key}
             >
-              {Object.keys(row).map((column: string, key) => {
-                const currentColumn = columns.find((cc) => cc.field === column);
-                if (currentColumn) {
-                  return (
-                    <td className={`${styles.td} px-4`} key={key}>
-                      {currentColumn?.transformData
-                        ? currentColumn.transformData(row)
-                        : row[currentColumn.field]}
-                    </td>
-                  );
+              {columns.map((column, key) => {
+                if (!column.transformData) {
+                  return <td key={key}>{row[column.field]}</td>;
                 }
+
+                return <td key={key}> {column.transformData(row)}</td>;
               })}
+
               <td className={`${styles.td} px-4`}>
                 <div
                   className={`action__buttons flex items-center justify-end`}

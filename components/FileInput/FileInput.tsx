@@ -9,17 +9,19 @@ function FileInput({
   name,
   placeholder,
   disabled,
+  id
 }: FileInputProps) {
   return (
     <>
       {label && (
-        <label className="label">
+        <label className="label pb-0">
           <span className="label-text">{label}</span>
         </label>
       )}
 
       <div className="form-control p-1">
         <input
+          id={id}
           onChange={onChange}
           type="file"
           accept="image/*"

@@ -1,21 +1,35 @@
 'use client';
 
+import DataTable from '@/components/DataTable/DataTable';
+import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { DeleteProductMutation } from '@/shared/graphql/mutations/DeleteProduct.mutation';
+import { GetProductsQuery } from '@/shared/graphql/queries/GetProducts.query';
+import { Product } from '@/shared/models/products/Products.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 function SupplyPage() {
   const { push } = useRouter();
 
-  function goToNewPage() {
-    push(PageRoutes.NewProduct);
-  }
+  const {
+    loading,
+    error,
+    data: { products } = {},
+    refetch,
+  } = useQuery(GetProductsQuery);
+
+  const [deleteProduct, { deleteLoading }] = useMutation(DeleteProductMutation);
+
   const columns = [
     {
-      field: '_id',
+      field: 'code',
       name: 'Código',
     },
     {
@@ -25,20 +39,50 @@ function SupplyPage() {
     {
       field: 'category',
       name: 'Categoria',
+      transformData: (product: Product) => product.category.name,
     },
     {
       field: 'quantity',
       name: 'Qtd em estoque',
     },
     {
-      field: 'minQuantity',
+      field: 'minimumQuantity',
       name: 'Qtd mínima em estoque',
     },
   ];
 
-  // if (isLoading) {
-  //   return <span className="loading loading-spinner loading-lg"></span>;
-  // }
+  function goToNewPage() {
+    push(PageRoutes.NewProduct);
+  }
+
+  function goToEdit(product: Product) {
+    push(`${PageRoutes.NewProduct}/${product.id}`);
+  }
+
+  function handleDeleteProduct(product: Product) {
+    deleteProduct({
+      variables: {
+        id: product.id,
+      },
+    })
+      .then(() => {
+        toast.success('Produto deletado com sucesso');
+        refetch();
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+  }
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  if (loading || deleteLoading) {
+    return <span className="loading loading-spinner loading-lg"></span>;
+  }
+
+  if (error) {
+    toast.error('Ocorreu um erro, tente novamente');
+  }
 
   return (
     <AnimatedPage>
@@ -51,7 +95,17 @@ function SupplyPage() {
             Novo produto
           </PrimaryButton>
         </div>
-        {/* <DataTable data={data} columns={columns} /> */}
+
+        {products?.length > 0 ? (
+          <DataTable
+            data={products}
+            columns={columns}
+            handleEditClick={goToEdit}
+            handleDeleteClick={handleDeleteProduct}
+          />
+        ) : (
+          <NoData message={'Não encontramos nenhum produto cadastrado'} />
+        )}
       </div>
     </AnimatedPage>
   );
