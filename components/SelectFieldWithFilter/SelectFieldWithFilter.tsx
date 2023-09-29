@@ -26,13 +26,15 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const filterText = e.target.value.toLowerCase(); 
     setFilter(filterText);
-  
-    const filteredOptions = props.options.filter(option =>
-      option.name.toLowerCase().includes(filterText)
-    );
-  
-    setFilteredOptions(filteredOptions);
-    setShowOptions(true);
+
+    setTimeout(() => {
+      const filteredOptions = props.options.filter(option =>
+        option.name.toLowerCase().includes(filterText)
+      );
+
+      setFilteredOptions(filteredOptions);
+      setShowOptions(true);
+    }, 3000);
   };
 
   const handleSelectOption = (option: any) => {
