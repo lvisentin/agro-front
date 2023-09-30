@@ -2,14 +2,15 @@
 
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import {
+  IconLookup,
   faArrowRightFromBracket,
   faBoxesStacked,
   faChartSimple,
+  faComment,
   faFolder,
   faReceipt,
   faTractor,
-  faWheatAwn,
-  IconLookup,
+  faWheatAwn
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -64,6 +65,11 @@ const menuItems: MenuItem[] = [
     text: 'Documentos',
     route: '/internal/documents',
   },
+  {
+    icon: faComment,
+    text: 'Consultoria',
+    route: 'https://api.whatsapp.com/send/?phone=%2B554691319623&text&type=phone_number&app_absent=0',
+  },
 ];
 
 const Sidebar: React.FC = () => {
@@ -105,6 +111,7 @@ const Sidebar: React.FC = () => {
             <Link
               href={menuItem.route}
               data-sveltekit-preload-data="hover"
+              {...(menuItem.text === 'Consultoria' ? { target: "_blank" } : {})}
               className={
                 pathname.includes(menuItem.route)
                   ? `${styles.activeItem} active h-full text-white p-4`
