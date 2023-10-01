@@ -10,6 +10,7 @@ export default function TextField({
   helperText,
   placeholder,
   className,
+  id,
   onChange,
   onClick,
   onBlur,
@@ -47,7 +48,7 @@ export default function TextField({
 
   return (
     <>
-      <div className={`form-control ${className ? className : ''}`}>
+      <div className={`form-control relative ${className ? className : ''}`}>
         {label && (
           <label className="label">
             <span className="label-text">{label}</span>
@@ -57,6 +58,7 @@ export default function TextField({
           <label className="not-prose input-group">
             {leadingIcon && <span>{leadingIcon}</span>}
             <input
+              id={id}
               onChange={onChange}
               onKeyDown={onKeyDown}
               onBlur={onBlur}
@@ -71,6 +73,7 @@ export default function TextField({
           </label>
         ) : (
           <input
+            id={id}
             onChange={onChange}
             onKeyDown={onKeyDown}
             onBlur={onBlur}
@@ -88,11 +91,15 @@ export default function TextField({
             <span className={`label-text-alt`}>{helperText}</span>
           </label>
         )}
-        {errors && (
-          <label className={'label-text'}>
-            <span className={`label-text-alt error text-error`}>{errors}</span>
-          </label>
-        )}
+        <label
+          className={`label-text relative h-5 py-1 ${
+            errors ? 'opacity-1' : 'opacity-0'
+          }`}
+        >
+          <span className={`label-text-alt error text-error absolute`}>
+            {errors ? errors : ''}
+          </span>
+        </label>
       </div>
     </>
   );

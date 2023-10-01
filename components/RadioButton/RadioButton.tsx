@@ -18,7 +18,7 @@ export default function RadioButton({
 
   return (
     <>
-      <div className={`form-control ${className}`}>
+      <div className={`form-control relative ${className}`}>
         <label className="label cursor-pointer justify-start gap-4">
           <input
             onChange={onChange}

@@ -2,6 +2,7 @@ import { GetProductCategoriesQuery } from '@/shared/graphql/queries/GetProductCa
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { ProductMeasurementUnit } from '@/shared/models/products/Products.model';
 import getEnumValues from '@/shared/utils/getEnumValues';
+import { newProductValidationSchema } from '@/shared/validationSchemas/NewProduct.schema';
 import { useQuery } from '@apollo/client';
 import { Formik } from 'formik';
 import CurrencyField from '../CurrencyInput/CurrencyField';
@@ -42,6 +43,7 @@ function ProductForm({
           : 0,
         unitPrice: product?.unitPrice ? product?.unitPrice : 0,
       }}
+      validationSchema={newProductValidationSchema}
       onSubmit={(values) => submitFunction(values)}
     >
       {({
@@ -51,9 +53,11 @@ function ProductForm({
         handleSubmit,
         touched,
         errors,
+        isValid,
+        dirty
       }) => (
         <form onSubmit={handleSubmit} className="flex flex-col">
-          <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
+          <div className="inputs flex flex-row flex-wrap items-start justify-start gap-4">
             <TextField
               value={values.code}
               disabled={loading}
@@ -117,6 +121,7 @@ function ProductForm({
               onChange={handleChange}
               onBlur={handleBlur}
               name="quantity"
+              type="number"
               disabled={loading}
               errors={touched.quantity ? errors.quantity : null}
               placeholder="Quantidade em estoque..."
@@ -139,6 +144,7 @@ function ProductForm({
               onChange={handleChange}
               onBlur={handleBlur}
               disabled={loading}
+              type="number"
               name="minimumQuantity"
               errors={touched.minimumQuantity ? errors.minimumQuantity : null}
               placeholder="Digite o valor"
@@ -158,6 +164,7 @@ function ProductForm({
             <LoadingButton
               loading={loading}
               type="submit"
+              disabled={!(isValid && dirty)}
               onClick={handleSubmit}
             >
               Salvar Produto

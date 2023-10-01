@@ -58,10 +58,18 @@ export default function DataTable({
             >
               {columns.map((column, key) => {
                 if (!column.transformData) {
-                  return <td key={key}>{row[column.field]}</td>;
+                  return (
+                    <td className={`${styles.td} px-4`} key={key}>
+                      {row[column.field]}
+                    </td>
+                  );
                 }
 
-                return <td key={key}> {column.transformData(row)}</td>;
+                return (
+                  <td className={`${styles.td} px-4`} key={key}>
+                    {column.transformData(row)}
+                  </td>
+                );
               })}
 
               <td className={`${styles.td} px-4`}>

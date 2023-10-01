@@ -2,7 +2,7 @@ import { SelectFieldProps } from './SelectField.model';
 
 function SelectField(props: SelectFieldProps) {
   return (
-    <div className="form-control">
+    <div className="form-control relative">
       {props.label && (
         <label className="label">
           <span className="label-text">{props.label}</span>
@@ -22,13 +22,15 @@ function SelectField(props: SelectFieldProps) {
           </option>
         ))}
       </select>
-      {props.errors && (
-        <label className={'label-text'}>
-          <span className={`label-text-alt error text-error`}>
-            {props.errors}
-          </span>
-        </label>
-      )}
+      <label
+        className={`label-text relative h-5 py-1 ${
+          props.errors ? 'opacity-1' : 'opacity-0'
+        }`}
+      >
+        <span className={`label-text-alt error text-error absolute`}>
+          {props.errors ? props.errors : ''}
+        </span>
+      </label>
     </div>
   );
 }
