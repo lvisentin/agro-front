@@ -34,6 +34,7 @@ function DocumentForm({
         handleSubmit,
         isValid,
         touched,
+        dirty,
         errors,
         setFieldValue,
         resetForm,
@@ -77,7 +78,7 @@ function DocumentForm({
               loading={loading}
               type="submit"
               onClick={handleSubmit}
-              disabled={!isValid}
+              disabled={!isValid || !dirty}
             >
               Salvar Documento
             </LoadingButton>
