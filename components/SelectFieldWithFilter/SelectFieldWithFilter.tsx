@@ -4,11 +4,11 @@ import { SelectFieldWithFilterProps } from './SelectFieldWithFilter.model';
 function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
   const [filter, setFilter] = useState('');
   const [showOptions, setShowOptions] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState<any>()
+  const [filteredOptions, setFilteredOptions] = useState<any>();
   const selectFieldRef = useRef<any>(null);
 
   useEffect(() => {
-    props.value ? setFilter(props.value) : ''
+    props.value ? setFilter(props.value) : '';
 
     document.addEventListener('click', handleClickOutside);
 
@@ -18,17 +18,20 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
   }, [props.value]);
 
   const handleClickOutside = (event: any) => {
-    if (selectFieldRef.current && !selectFieldRef.current.contains(event.target)) {
+    if (
+      selectFieldRef.current &&
+      !selectFieldRef.current.contains(event.target)
+    ) {
       setShowOptions(false);
     }
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filterText = e.target.value.toLowerCase(); 
+    const filterText = e.target.value.toLowerCase();
     setFilter(filterText);
 
     setTimeout(() => {
-      const filteredOptions = props.options.filter(option =>
+      const filteredOptions = props.options.filter((option) =>
         option.name.toLowerCase().includes(filterText)
       );
 
@@ -45,7 +48,7 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
     }
   };
 
-    return (
+  return (
     <div className="form-control" ref={selectFieldRef}>
       {props.label && (
         <label className="label">
@@ -60,6 +63,12 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
           onChange={handleFilterChange}
           placeholder={props.placeholder}
           disabled={props.disabled}
+          onClick={() => {
+            if (!showOptions) {
+              setShowOptions(true);
+              setFilteredOptions(props.options)
+            }
+          }}
         />
         {showOptions && (
           <div className="fixed max-w-xs z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
