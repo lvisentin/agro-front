@@ -9,7 +9,12 @@ import { GetDocumentsQuery } from '@/shared/graphql/queries/GetDocuments.query';
 import { Document } from '@/shared/models/documents/Documents.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation, useQuery } from '@apollo/client';
-import { faEye, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEye,
+  faPencil,
+  faPlus,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -18,7 +23,7 @@ import Swal from 'sweetalert2';
 import styles from './documents.module.scss';
 
 function DocumentsPage() {
-  const [selectedDocument, setSelectedDocument] = useState<Document>();
+  const [selectedDocument, setSelectedDocument] = useState<Document | undefined>();
   const [deleteDocument] = useMutation(DeleteDocumentMutation);
 
   const {
@@ -47,7 +52,15 @@ function DocumentsPage() {
     });
   }
 
+  function handeEditDocumentClick(selectedDocument: Document) {
+    setSelectedDocument(selectedDocument);
+    (
+      document.getElementById('create_document_modal') as HTMLFormElement
+    )?.showModal();
+  }
+
   function openNewDocumentModal() {
+    setSelectedDocument(undefined);
     (
       document.getElementById('create_document_modal') as HTMLFormElement
     )?.showModal();
@@ -65,7 +78,7 @@ function DocumentsPage() {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
   if (documents) {
@@ -84,8 +97,11 @@ function DocumentsPage() {
           </PrimaryButton>
         </div>
 
-        <NewDocumentModal refetch={refetch} />
-        <DocumentModal document={selectedDocument} />
+        <NewDocumentModal
+          refetch={refetch}
+          document={selectedDocument ? selectedDocument : undefined}
+        />
+        <DocumentModal document={selectedDocument ? selectedDocument : undefined} />
 
         <div className="documents__list mt-4 flex flex-wrap items-center justify-center gap-8">
           {documents?.length > 0 ? (
@@ -104,9 +120,15 @@ function DocumentsPage() {
                   />
 
                   <FontAwesomeIcon
-                    className={`${styles.icon}`}
+                    className={`${styles.icon} mr-4`}
                     icon={faTrash}
                     onClick={() => handleDeleteDocumentClick(document)}
+                  />
+
+                  <FontAwesomeIcon
+                    className={`${styles.icon}`}
+                    icon={faPencil}
+                    onClick={() => handeEditDocumentClick(document)}
                   />
                 </div>
                 <Image

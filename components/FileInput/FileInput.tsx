@@ -10,22 +10,23 @@ function FileInput({
   placeholder,
   disabled,
   id,
+  className,
 }: FileInputProps) {
   return (
-    <>
+    <div className={className}>
       {label && (
-        <label className="label pb-0 mt-2">
+        <label className="label p-0 mt-0">
           <span className="label-text">{label}</span>
         </label>
       )}
 
-      <div className="form-control relative p-1">
+      <div className="form-control relative p-0">
         <input
           id={id}
           onChange={onChange}
           type="file"
           accept="image/*"
-          className="file-input file-input-bordered w-full mt-2"
+          className="file-input file-input-bordered w-full mt-1"
           onKeyDown={onKeyDown}
           onBlur={onBlur}
           value={value}
@@ -34,7 +35,7 @@ function FileInput({
           disabled={disabled}
         />
       </div>
-    </>
+    </div>
   );
 }
 

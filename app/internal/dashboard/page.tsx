@@ -18,7 +18,7 @@ export default function Home() {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
   }
 
   return (

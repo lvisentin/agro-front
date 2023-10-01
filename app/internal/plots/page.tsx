@@ -53,10 +53,10 @@ function PlotsPage() {
   function handleDelete(plot: Plot) {
     deletePlot({ variables: { id: plot.id } })
       .then(() => {
-        toast.success('Talhão deletado com sucesso');
+        toast.success('Talhão deletado com sucesso', {containerId: 'default'});
         refetch();
       })
-      .catch(() => toast.success('Ocorreu um erro, tente novamente'));
+      .catch(() => toast.success('Ocorreu um erro, tente novamente', {containerId: 'default'}));
   }
 
   function goToNewPlot() {
@@ -72,7 +72,7 @@ function PlotsPage() {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
   }
 
   return (

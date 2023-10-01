@@ -14,12 +14,14 @@ class HttpClient {
     return fetch(route, {
       method: 'POST',
       body: params,
-    }).then((response) => {
+    }).then(async (response) => {
+      const responseJson = await response.json();
+      console.log(responseJson)
       if (response.status !== 200 && response.status !== 201) {
-        throw new Error('ocorreu algo');
+        throw responseJson;
       }
 
-      return response.json();
+      return responseJson;
     });
   }
 }
