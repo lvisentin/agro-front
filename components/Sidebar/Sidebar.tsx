@@ -22,6 +22,7 @@ export interface MenuItem {
   icon: IconLookup;
   text: string;
   route: string;
+  target?: string;
 }
 
 const menuItems: MenuItem[] = [
@@ -67,8 +68,9 @@ const menuItems: MenuItem[] = [
   },
   {
     icon: faComment,
-    text: 'Consultoria',
+    text: 'Obter consultoria agronômica',
     route: 'https://api.whatsapp.com/send/?phone=%2B554691319623&text&type=phone_number&app_absent=0',
+    target: '_blank'
   },
 ];
 
@@ -111,7 +113,7 @@ const Sidebar: React.FC = () => {
             <Link
               href={menuItem.route}
               data-sveltekit-preload-data="hover"
-              {...(menuItem.text === 'Consultoria' ? { target: "_blank" } : {})}
+              target={menuItem.target}
               className={
                 pathname.includes(menuItem.route)
                   ? `${styles.activeItem} active h-full text-white p-4`
