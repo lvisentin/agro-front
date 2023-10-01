@@ -4,7 +4,7 @@ module.exports = {
   env: {
     LOGIN_URL: process.env.LOGIN_URL,
     GRAPHQL_API_URL: process.env.GRAPHQL_API_URL,
-    VERCEL_API_URL: process.env.VERCEL_API_URL
+    VERCEL_API_URL:process.env.VERCEL_API_URL
   },
   images: {
     domains: [

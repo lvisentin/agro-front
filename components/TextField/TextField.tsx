@@ -10,6 +10,7 @@ export default function TextField({
   helperText,
   placeholder,
   className,
+  id,
   onChange,
   onBlur,
   onKeyDown,
@@ -56,6 +57,7 @@ export default function TextField({
           <label className="not-prose input-group">
             {leadingIcon && <span>{leadingIcon}</span>}
             <input
+              id={id}
               onChange={onChange}
               onKeyDown={onKeyDown}
               onBlur={onBlur}
@@ -70,6 +72,7 @@ export default function TextField({
           </label>
         ) : (
           <input
+            id={id}
             onChange={onChange}
             onKeyDown={onKeyDown}
             onBlur={onBlur}

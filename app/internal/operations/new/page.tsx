@@ -35,7 +35,11 @@ function NewOperationPage() {
         toast.success('Operação criado com sucesso');
         router.push(PageRoutes.ListOperations);
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch((err) => {
+        if (err.message === 'Not enough quantity') {
+          toast.error('Operação não suportada no estoque');
+        }
+      });
   }
 
   function goBack() {
