@@ -57,7 +57,7 @@ function ProductForm({
         errors,
       }) => (
         <form onSubmit={handleSubmit} className="flex flex-col">
-          <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
+          <div className="inputs flex flex-row flex-wrap items-start justify-start gap-4">
             <TextField
               value={values.code}
               disabled={loading}
@@ -121,6 +121,7 @@ function ProductForm({
               onChange={handleChange}
               onBlur={handleBlur}
               name="quantity"
+              type="number"
               disabled={loading}
               errors={touched.quantity ? errors.quantity : null}
               placeholder="Quantidade em estoque..."
@@ -143,6 +144,7 @@ function ProductForm({
               onChange={handleChange}
               onBlur={handleBlur}
               disabled={loading}
+              type="number"
               name="minimumQuantity"
               errors={touched.minimumQuantity ? errors.minimumQuantity : null}
               placeholder="Digite o valor"
@@ -162,6 +164,7 @@ function ProductForm({
             <LoadingButton
               loading={loading}
               type="submit"
+              disabled={!(isValid && dirty)}
               onClick={handleSubmit}
             >
               Salvar Produto
