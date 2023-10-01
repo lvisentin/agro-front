@@ -19,7 +19,7 @@ function FileInput({
         </label>
       )}
 
-      <div className="form-control p-1">
+      <div className="form-control relative p-1">
         <input
           id={id}
           onChange={onChange}
