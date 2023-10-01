@@ -26,27 +26,6 @@ function PurchasesPage() {
     refetch();
   }, []);
 
-  const fakeObj:Array<Purchase> = [
-    {
-      id: "2",
-      product: "Dessecação",
-      quantity: 123,
-      total: 123,
-      category: "string",
-      description: "string",
-      createdAt: "28/06/2000"
-    },
-    {
-      id: "3",
-      product: "Dessecação",
-      quantity: 123,
-      total: 123,
-      category: "string",
-      description: "string",
-      createdAt: "29/06/2000"
-    },
-  ]
-
   const columns = [
     {
       field: 'description',
@@ -99,9 +78,9 @@ function PurchasesPage() {
           </PrimaryButton>
         </div>
 
-        {fakeObj?.length >= 0 ? (
+        {purchases?.length > 0 ? (
           <DataTable 
-            data={fakeObj} 
+            data={purchases} 
             columns={columns}
             handlePreviewClick={goToPreview}
             handleDeleteClick={deletePurchase}

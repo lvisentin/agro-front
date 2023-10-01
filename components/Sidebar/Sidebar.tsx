@@ -9,6 +9,7 @@ import {
   faComment,
   faFolder,
   faReceipt,
+  faShoppingCart,
   faTractor,
   faWheatAwn
 } from '@fortawesome/free-solid-svg-icons';
@@ -46,11 +47,11 @@ const menuItems: MenuItem[] = [
     text: 'Estoque',
     route: '/internal/supply',
   },
-  // {
-  //   icon: faShoppingCart,
-  //   text: 'Compras',
-  //   route: '/internal/purchases',
-  // },
+  {
+    icon: faShoppingCart,
+    text: 'Compras',
+    route: '/internal/purchases',
+  },
   // {
   //   icon: faDollarSign,
   //   text: 'Vendas',

@@ -2,12 +2,21 @@ import { gql } from '@apollo/client';
 
 export const GetPurchaseByIdQuery = gql`
   query GetPurchaseById($id: Int!) {
-    plot(id: $id) {
+    purchase(id: $id) {
       id
       description
-      category
-      total
+      propertyId
+      property {
+        id
+        name
+      }
+      totalCost
+      purchaseProducts {
+        id
+        unitPrice
+      }
       createdAt
+      updatedAt
     }
   }
 `;

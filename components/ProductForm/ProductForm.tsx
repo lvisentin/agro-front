@@ -41,7 +41,7 @@ function ProductForm({
         minimumQuantity: product?.minimumQuantity
           ? product?.minimumQuantity
           : 0,
-        unitPrice: product?.unitPrice ? product?.unitPrice : 0,
+        unitPrice: product?.unitPrice ? product?.unitPrice :'',
       }}
       validationSchema={newProductValidationSchema}
       onSubmit={(values) => submitFunction(values)}
@@ -164,7 +164,7 @@ function ProductForm({
             <LoadingButton
               loading={loading}
               type="submit"
-              disabled={!(isValid && dirty)}
+              disabled={!isValid || !dirty}
               onClick={handleSubmit}
             >
               Salvar Produto

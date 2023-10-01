@@ -34,7 +34,7 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
 
       setFilteredOptions(filteredOptions);
       setShowOptions(true);
-    }, 3000);
+    }, 200);
   };
 
   const handleSelectOption = (option: any) => {
@@ -62,7 +62,7 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
           disabled={props.disabled}
         />
         {showOptions && (
-          <div className="fixed max-w-xs z-50 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg">
+          <div className="fixed max-w-xs z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
             {filteredOptions?.map((option: any) => (
               <div
                 key={option.id}

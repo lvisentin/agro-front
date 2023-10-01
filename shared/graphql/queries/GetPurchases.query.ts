@@ -2,12 +2,17 @@ import { gql } from '@apollo/client';
 
 export const GetPurchasesQuery = gql`
   query GetPurchases {
-    plots {
+    purchases {
       id
       description
-      category
-      total
+      propertyId
+      property {
+        id
+        name
+      }
+      totalCost
       createdAt
+      updatedAt
     }
   }
 `;
