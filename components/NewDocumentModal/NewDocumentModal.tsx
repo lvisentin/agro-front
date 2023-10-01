@@ -23,7 +23,6 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
 
     uploadFile(file, name)
       .then(({ fileName, path }: { fileName: string; path: string }) => {
-        console.log(fileName, path);
         saveFilePath(fileName, path);
       })
       .catch(() => toast.error('Ocorreu um erro, tente novamente'))
@@ -51,11 +50,9 @@ function NewDocumentModal({ refetch }: NewDocumentModalProps) {
     const formData = new FormData();
     formData.append('filename', name);
     formData.append('file', file);
-    console.log(name);
     return httpClient
       .postFormData('https://api.gesrural.com.br/file/upload', formData)
       .then((response: any) => {
-        console.log(response);
         return {
           path: response.url,
           fileName: name,
