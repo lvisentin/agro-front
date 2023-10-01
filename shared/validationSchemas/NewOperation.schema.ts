@@ -5,7 +5,7 @@ export const newOperationValidationSchema = Yup.object().shape({
   plotId: Yup.string().required('Por favor, escolha o talhão.'),
   productId: Yup.string().required('Por favor,  escolha o produto.'),
   quantity: Yup.string().required('Por favor, digite a quantidade.'),
-  executionDate: Yup.string().required('Por favor, insira a data.'),
+  executionDate: Yup.date().required('Por favor, insira a data.'),
   productCategory: Yup.string().required('Por favor, selecione a categoria.'),
   unitCost: Yup.string().required('Por favor, digite o custo unitário.'),
   hectareCost: Yup.string().required('Por favor, digite o custo por ha.'),

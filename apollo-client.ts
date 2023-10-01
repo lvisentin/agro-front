@@ -9,7 +9,7 @@ const httpLink = createHttpLink({
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ extensions }: any) => {
-      const status = extensions.originalError.statusCode;
+      const status = extensions.originalError?.statusCode;
       if (status === 403 || status === 401) {
         localStorage.removeItem('userData');
         localStorage.removeItem('authorization');
