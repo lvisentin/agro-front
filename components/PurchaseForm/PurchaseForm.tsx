@@ -1,4 +1,5 @@
 import { GetProductsQuery } from '@/shared/graphql/queries/GetProducts.query';
+import { GetPurchaseProductQuery } from '@/shared/graphql/queries/GetPurchaseProduct.query';
 import { Product } from '@/shared/models/products/Products.model';
 import { Purchase } from '@/shared/models/purchases/Purchases.model';
 import { NewPurchaseValidationSchema } from '@/shared/validationSchemas/NewPurchase.schema';
@@ -20,13 +21,15 @@ function PurcharseForm({
   pageTitle,
 }: PurcharseFormProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState([])
   const { data: { products } = {}, loading: getProductsLoading } =
     useQuery(GetProductsQuery);
 
+  const { data: { purchaseProduct } = {}, loading: getPurchaseProductLoading } =
+  useQuery(GetPurchaseProductQuery);
+
   const columns = [
     {
-      field: 'id',
+      field: 'productId',
       name: 'Código',
     },
     {
@@ -34,11 +37,11 @@ function PurcharseForm({
       name: 'Produto',
     },
     {
-      field: 'quantity',
+      field: 'amountPerUnit',
       name: 'Quantidade',
     },
     {
-      field: 'total',
+      field: 'unitPrice',
       name: 'Custo unitário',
       transformData: (data: Product) =>
         `${data.unitPrice.toLocaleString('pt-BR', {
@@ -47,7 +50,7 @@ function PurcharseForm({
         })}`,
     },
     {
-      field: 'total',
+      field: 'totalCost',
       name: 'Custo total',
       transformData: (data: Product) =>
         `${data.unitPrice.toLocaleString('pt-BR', {
@@ -65,24 +68,26 @@ function PurcharseForm({
     if (isEditing) {
       setIsEditing(false);
       setValues({
-        id: '',
-        product: '',
-        quantity: 0,
-        total: 0,
-        category: '',
+        id: 0,
         description: '',
-        createdAt: '',
+        property: '',
+        propertyId: 0,
+        totalCost: 0,
+        code: '',
+        amountPerUnit: 0,
+        units: 0,
       });
       return;
     }
     setValues({
-      id: '',
-      product: '',
-      quantity: 0,
-      total: 0,
-      category: '',
+      id: 0,
       description: '',
-      createdAt: '',
+      property: '',
+      propertyId: 0,
+      totalCost: 0,
+      code: '',
+      amountPerUnit: 0,
+      units: 0,
     });
   }
 
@@ -97,13 +102,14 @@ function PurcharseForm({
     setValues,
   } = useFormik({
     initialValues: {
-      id: '',
-      product: '',
-      quantity: 0,
-      total: 0,
-      category: '',
+      id: 0,
       description: '',
-      createdAt: '',
+      property: '',
+      propertyId: 0,
+      totalCost: 0,
+      code: '',
+      amountPerUnit: 0,
+      units: 0,
     },
     validationSchema: NewPurchaseValidationSchema,
     onSubmit,
@@ -115,7 +121,7 @@ function PurcharseForm({
   }
 
   function getData(item: any) {
-    console.log('log', item);
+    console.log('log', item.id);
   }
 
   return (
@@ -148,51 +154,52 @@ function PurcharseForm({
           <div className="card-body pt-4 pb-4 flex flex-row">
             <SelectFieldWithFilter
               options={products?.length > 0 ? products : []}
-              value={values.product}
+              value={values.code}
               onChange={(e) => {
+                console.log(values.code);
                 setFieldValue('id', e.value);
                 getData(e);
               }}
               onBlur={handleBlur}
-              errors={touched.id ? errors.id : null}
+              errors={touched.code ? errors.code : null}
               disabled={disabled}
-              name="id"
+              name="code"
               placeholder="Pesquisar produto por produto"
               label="Produto"
             />
 
             <TextField
-              value={values.quantity}
+              value={values.amountPerUnit}
               onChange={handleChange}
               onBlur={handleBlur}
-              errors={touched.quantity ? errors.quantity : null}
+              errors={touched.amountPerUnit ? errors.amountPerUnit : null}
               disabled={disabled}
-              name="quantity"
+              name="amountPerUnit"
               placeholder="Quantidade"
               label="Quantidade"
             />
 
             <TextField
-              value={values.total}
+              value={values.totalCost}
               onChange={handleChange}
               onBlur={handleBlur}
-              errors={touched.total ? errors.total : null}
+              errors={touched.totalCost ? errors.totalCost : null}
               disabled={disabled || isEditing}
-              name="total"
+              name="totalCost"
               placeholder="Digite um valor"
               label="Valor"
             />
 
-            <PrimaryButton className="mt-9" type="submit">
+            <PrimaryButton className="mt-9" type="button">
               {isEditing ? 'Editar' : 'Adicionar'}
             </PrimaryButton>
           </div>
         </div>
       </form>
 
-      {selectedProducts?.length > 0 && (
+      {purchaseProduct?.length > 0 && (
         <DataTable
-          data={selectedProducts}
+          data={purchaseProduct}
           columns={columns}
           handleEditClick={goToEdit}
           handleDeleteClick={deleteProduct}

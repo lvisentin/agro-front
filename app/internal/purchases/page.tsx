@@ -29,17 +29,17 @@ function PurchasesPage() {
   const columns = [
     {
       field: 'description',
-      name: 'Produto',
+      name: 'Descrição',
     },
     {
-      field: 'category',
-      name: 'Quantidade',
+      field: 'property',
+      name: 'Categoria',
     },
     {
-      field: 'total',
+      field: 'totalCost',
       name: 'Valor',
       transformData: (data: Purchase) =>
-        `${data.total.toLocaleString('pt-BR', {
+        `${data.totalCost.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         })}`,
