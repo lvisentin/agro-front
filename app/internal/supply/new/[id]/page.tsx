@@ -37,10 +37,12 @@ function EditProductPage({ params: { id } }: PageProps) {
       },
     };
 
-    updateProduct({ variables: variables }).then(() => {
-      toast.success('Propriedade atualizada com sucesso.');
-      router.push(PageRoutes.ListProducts);
-    });
+    updateProduct({ variables: variables })
+      .then(() => {
+        toast.success('Propriedade atualizada com sucesso.');
+        router.push(PageRoutes.ListProducts);
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goBack() {

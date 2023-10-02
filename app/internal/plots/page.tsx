@@ -4,10 +4,11 @@ import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
+import { DeletePlotMutation } from '@/shared/graphql/mutations/DeletePlot.mutation';
 import { GetPlotsQuery } from '@/shared/graphql/queries/GetPlots.query';
 import { Plot } from '@/shared/models/plots/Plots.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
@@ -16,6 +17,7 @@ import { toast } from 'react-toastify';
 
 function PlotsPage() {
   const { push } = useRouter();
+  const [deletePlot] = useMutation(DeletePlotMutation);
 
   const {
     loading,
@@ -48,8 +50,13 @@ function PlotsPage() {
     },
   ];
 
-  function deletePlot(plot: Plot) {
-    console.log('plot', plot);
+  function handleDelete(plot: Plot) {
+    deletePlot({ variables: { id: plot.id } })
+      .then(() => {
+        toast.success('Talhão deletado com sucesso');
+        refetch();
+      })
+      .catch(() => toast.success('Ocorreu um erro, tente novamente'));
   }
 
   function goToNewPlot() {
@@ -84,7 +91,7 @@ function PlotsPage() {
             data={plots}
             columns={columns}
             handleEditClick={goToEdit}
-            handleDeleteClick={deletePlot}
+            handleDeleteClick={handleDelete}
           />
         ) : (
           <NoData message={'Não encontramos nenhum talhão cadastrada'} />

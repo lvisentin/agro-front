@@ -6,6 +6,7 @@ export const GetDocumentsQuery = gql`
       id
       name
       path
+      url
     }
   }
 `;

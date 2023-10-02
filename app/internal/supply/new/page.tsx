@@ -11,16 +11,24 @@ import { toast } from 'react-toastify';
 function NewProductPage() {
   const router = useRouter();
 
-  const [createProduct] = useMutation(CreateProductMutation);
+  const [createProduct, { loading }] = useMutation(CreateProductMutation);
 
   function handleSubmit(values: any) {
     console.log('values', values);
+    let formattedValue = '';
+
+    if (values.unitPrice.includes(',')) {
+      const splitted = values.unitPrice.split('R$')[1].split(',');
+      formattedValue = `${splitted[0]}.${splitted[1]}`;
+    } else {
+      formattedValue = values.unitPrice.split('R$')[1];
+    }
     createProduct({
       variables: {
         input: {
           ...values,
           quantity: Number(values.quantity),
-          unitPrice: Number(values.unitPrice.split('R$')[1]),
+          unitPrice: Number(formattedValue),
           minimumQuantity: Number(values.minimumQuantity),
           categoryId: Number(values.categoryId),
           propertyId: Number(values.propertyId),
@@ -29,6 +37,7 @@ function NewProductPage() {
     })
       .then(() => {
         toast.success('Produto criado com sucesso!');
+        router.push(PageRoutes.ListProducts);
       })
       .catch(() => {
         toast.error('Ocorreu um erro, tente novamente');
@@ -52,6 +61,7 @@ function NewProductPage() {
 
             <div className="card-body pt-2 pb-4">
               <ProductForm
+                loading={loading}
                 cancelFunction={goBack}
                 submitFunction={handleSubmit}
               />

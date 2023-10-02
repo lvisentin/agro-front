@@ -35,10 +35,12 @@ function EditPlotPage({ params: { id } }: PageProps) {
       },
     };
 
-    updatePlot({ variables: variables }).then(() => {
-      toast.success('Propriedade atualizada com sucesso.');
-      router.push(PageRoutes.ListPlots);
-    });
+    updatePlot({ variables: variables })
+      .then(() => {
+        toast.success('Propriedade atualizada com sucesso.');
+        router.push(PageRoutes.ListPlots);
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goBack() {
@@ -64,14 +66,16 @@ function EditPlotPage({ params: { id } }: PageProps) {
               <h2 className="prose-h2">Editar Talhão</h2>
             </div>
 
-            {plot && (
-              <PlotForm
-                cancelFunction={goBack}
-                submitFunction={handleEdit}
-                plot={plot}
-                loading={loading || updateLoading}
-              />
-            )}
+            <div className="card-body pt-2 pb-4">
+              {plot && (
+                <PlotForm
+                  cancelFunction={goBack}
+                  submitFunction={handleEdit}
+                  plot={plot}
+                  loading={loading || updateLoading}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

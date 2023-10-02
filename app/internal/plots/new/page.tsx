@@ -24,10 +24,12 @@ function NewPlotPage() {
           propertyId: Number(propertyId),
         },
       },
-    }).then(() => {
-      toast.success('Talhão criado com sucesso');
-      router.push(PageRoutes.ListPlots);
-    });
+    })
+      .then(() => {
+        toast.success('Talhão criado com sucesso');
+        router.push(PageRoutes.ListPlots);
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goBack() {

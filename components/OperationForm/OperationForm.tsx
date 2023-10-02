@@ -6,6 +6,7 @@ import {
   Product,
   ProductMeasurementUnit,
 } from '@/shared/models/products/Products.model';
+import { newOperationValidationSchema } from '@/shared/validationSchemas/NewOperation.schema';
 import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
@@ -22,6 +23,7 @@ function OperationForm({
   cancelFunction,
   submitFunction,
   disabled,
+  loading: propLoading,
   confirmBtn,
 }: OperationFormProps) {
   const { loading: getPlotsLoading, data: { plots } = {} } =
@@ -54,6 +56,7 @@ function OperationForm({
         ? operation?.product?.measurementUnit
         : ProductMeasurementUnit.kg,
     },
+    validationSchema: newOperationValidationSchema,
     onSubmit: (values) => {
       if (submitFunction) {
         submitFunction(values);
@@ -62,7 +65,6 @@ function OperationForm({
   });
 
   useEffect(() => {
-    console.log('operation', operation);
     if (operation) {
       formik.setValues({
         description: operation?.description,
@@ -81,18 +83,40 @@ function OperationForm({
             : 0,
         measurementUnit: operation?.product?.measurementUnit,
       });
+
+      setTimeout(() => {
+        (document.getElementById('executionDateInput') as any).valueAsDate =
+          new Date(operation.executionDate);
+      }, 100);
     }
   }, [operation]);
+
+  const isSubmitDisabled =
+    !formik.dirty || !formik.isValid || propLoading;
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
       <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
+        <DateInput
+          value={formik.values.executionDate}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errors={
+            formik.touched.executionDate ? formik.errors.executionDate : null
+          }
+          disabled={disabled || propLoading}
+          name="executionDate"
+          placeholder="Data"
+          label="Insira a data"
+          id="executionDateInput"
+        />
+
         <TextField
           value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           errors={formik.touched.description ? formik.errors.description : null}
-          disabled={disabled || !!operation}
+          disabled={disabled || !!operation || propLoading}
           name="description"
           placeholder="Digite o nome da operação"
           label="Operação"
@@ -100,7 +124,7 @@ function OperationForm({
 
         <SelectField
           name="plotId"
-          disabled={getPlotsLoading || !!operation}
+          disabled={getPlotsLoading || !!operation || propLoading}
           options={plots?.length > 0 ? plots : []}
           value={formik.values.plotId}
           onChange={formik.handleChange}
@@ -112,7 +136,12 @@ function OperationForm({
 
         <SelectField
           name="productId"
-          disabled={getProductsLoading || !formik.values.plotId || !!operation}
+          disabled={
+            getProductsLoading ||
+            !formik.values.plotId ||
+            !!operation ||
+            propLoading
+          }
           options={products?.length > 0 ? products : []}
           value={formik.values.productId}
           onChange={formik.handleChange}
@@ -151,24 +180,11 @@ function OperationForm({
           }}
           onBlur={formik.handleBlur}
           errors={formik.touched.quantity ? formik.errors.quantity : null}
-          disabled={disabled || !formik.values.productId}
+          disabled={disabled || !formik.values.productId || propLoading}
           name="quantity"
           type="number"
           placeholder="Digite a quantidade"
           label="Quantidade"
-        />
-
-        <DateInput
-          value={formik.values.executionDate}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          errors={
-            formik.touched.executionDate ? formik.errors.executionDate : null
-          }
-          disabled={disabled}
-          name="executionDate"
-          placeholder="Data"
-          label="Insira a data"
         />
 
         <TextField
@@ -242,11 +258,15 @@ function OperationForm({
           onClick={cancelFunction}
           className="mr-3"
         >
-          Cancelar
+          {operation ? 'Fechar' : 'Cancelar'}
         </SecondaryButton>
 
         {submitFunction && (
-          <PrimaryButton type="submit" onClick={formik.handleSubmit}>
+          <PrimaryButton
+            type="submit"
+            disabled={isSubmitDisabled}
+            onClick={formik.handleSubmit}
+          >
             {confirmBtn}
           </PrimaryButton>
         )}

@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 function NewOperationPage() {
   const router = useRouter();
 
-  const [createOperation] = useMutation(CreateOperationMutation);
+  const [createOperation, { loading }] = useMutation(CreateOperationMutation);
 
   function handleSubmit({
     description,
@@ -30,10 +30,16 @@ function NewOperationPage() {
           executionDate,
         },
       },
-    }).then(() => {
-      toast.success('Operação criado com sucesso');
-      router.push(PageRoutes.ListOperations);
-    });
+    })
+      .then(() => {
+        toast.success('Operação criado com sucesso');
+        router.push(PageRoutes.ListOperations);
+      })
+      .catch((err) => {
+        if (err.message === 'Not enough quantity') {
+          toast.error('Operação não suportada no estoque');
+        }
+      });
   }
 
   function goBack() {
@@ -51,6 +57,7 @@ function NewOperationPage() {
           </div>
           <div className="card-body pt-2 pb-4">
             <OperationForm
+              loading={loading}
               cancelFunction={goBack}
               submitFunction={handleSubmit}
               confirmBtn="Salvar operação"

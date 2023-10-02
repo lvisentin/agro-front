@@ -36,10 +36,12 @@ function EditPropertyPage({ params: { id } }: PageProps) {
       },
     };
 
-    updateProperty({ variables: variables }).then(() => {
-      toast.success('Propriedade atualizada com sucesso.');
-      router.push(PageRoutes.ListProperties);
-    });
+    updateProperty({ variables: variables })
+      .then(() => {
+        toast.success('Propriedade atualizada com sucesso.');
+        router.push(PageRoutes.ListProperties);
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goBack() {
@@ -64,14 +66,16 @@ function EditPropertyPage({ params: { id } }: PageProps) {
             <div className="card-title px-6 py-4">
               <h2 className="prose-h2">Editar propriedade</h2>
             </div>
-            {property && (
-              <PropertyForm
-                cancelFunction={goBack}
-                submitFunction={handleEdit}
-                property={property}
-                loading={loading || updateLoading}
-              />
-            )}
+            <div className="card-body pt-2 pb-4">
+              {property && (
+                <PropertyForm
+                  cancelFunction={goBack}
+                  submitFunction={handleEdit}
+                  property={property}
+                  loading={loading || updateLoading}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

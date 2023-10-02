@@ -19,7 +19,7 @@ class HttpClient {
         throw new Error('ocorreu algo');
       }
 
-      return response.text();
+      return response.json();
     });
   }
 }

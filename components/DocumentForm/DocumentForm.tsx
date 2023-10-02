@@ -1,3 +1,4 @@
+import { newDocumentValidationSchema } from '@/shared/validationSchemas/NewDocument.schema';
 import { Formik } from 'formik';
 import FileInput from '../FileInput/FileInput';
 import LoadingButton from '../LoadingButton/LoadingButton';
@@ -23,7 +24,7 @@ function DocumentForm({
         name: document ? document.name : '',
         file: [],
       }}
-      // validationSchema={newDocumentValidationSchema}
+      validationSchema={newDocumentValidationSchema}
       onSubmit={(values) => submitFunction(values)}
     >
       {({
@@ -33,6 +34,7 @@ function DocumentForm({
         handleSubmit,
         isValid,
         touched,
+        dirty,
         errors,
         setFieldValue,
         resetForm,
@@ -76,7 +78,7 @@ function DocumentForm({
               loading={loading}
               type="submit"
               onClick={handleSubmit}
-              disabled={!isValid}
+              disabled={!isValid || !dirty}
             >
               Salvar Documento
             </LoadingButton>

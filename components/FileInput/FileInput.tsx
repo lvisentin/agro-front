@@ -14,12 +14,12 @@ function FileInput({
   return (
     <>
       {label && (
-        <label className="label pb-0">
+        <label className="label pb-0 mt-2">
           <span className="label-text">{label}</span>
         </label>
       )}
 
-      <div className="form-control p-1">
+      <div className="form-control relative p-1">
         <input
           id={id}
           onChange={onChange}
