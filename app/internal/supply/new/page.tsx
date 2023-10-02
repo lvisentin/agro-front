@@ -15,12 +15,20 @@ function NewProductPage() {
 
   function handleSubmit(values: any) {
     console.log('values', values);
+    let formattedValue = '';
+
+    if (values.unitPrice.includes(',')) {
+      const splitted = values.unitPrice.split('R$')[1].split(',');
+      formattedValue = `${splitted[0]}.${splitted[1]}`;
+    } else {
+      formattedValue = values.unitPrice.split('R$')[1];
+    }
     createProduct({
       variables: {
         input: {
           ...values,
           quantity: Number(values.quantity),
-          unitPrice: Number(values.unitPrice.split('R$')[1]),
+          unitPrice: Number(formattedValue),
           minimumQuantity: Number(values.minimumQuantity),
           categoryId: Number(values.categoryId),
           propertyId: Number(values.propertyId),
