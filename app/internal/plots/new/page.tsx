@@ -14,12 +14,12 @@ function NewPlotPage() {
 
   const [createPlot] = useMutation(CreatePlotMutation);
 
-  function handleSubmit({ name, description, size, propertyId }: Plot) {
+  function handleSubmit({ name, farmingType, size, propertyId }: Plot) {
     createPlot({
       variables: {
         input: {
           name,
-          description,
+          farmingType,
           size: Number(size),
           propertyId: Number(propertyId),
         },

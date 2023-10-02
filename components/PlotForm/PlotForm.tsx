@@ -23,7 +23,7 @@ function PlotForm({
     <Formik
       initialValues={{
         name: plot ? plot.name : '',
-        description: plot ? plot.description : '',
+        farmingType: plot ? plot.farmingType : '',
         size: plot ? plot.size : 0,
         propertyId: plot ? plot.propertyId : 0,
       }}
@@ -52,13 +52,13 @@ function PlotForm({
               label="Nome"
             />
             <TextField
-              value={values.description}
+              value={values.farmingType}
               disabled={loading}
               onChange={handleChange}
               onBlur={handleBlur}
-              errors={touched.description ? errors.description : null}
-              name="description"
-              placeholder="Digite uma Cultura agrícola..."
+              errors={touched.farmingType ? errors.farmingType : null}
+              name="farmingType"
+              placeholder="Digite a cultura agrícola do talhão..."
               label="Cultura agrícola"
             />
             <TextField

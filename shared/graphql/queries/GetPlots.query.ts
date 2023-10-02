@@ -5,7 +5,7 @@ export const GetPlotsQuery = gql`
     plots {
       id
       name
-      description
+      farmingType
       property {
         name
       }
