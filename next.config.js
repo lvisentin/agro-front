@@ -1,7 +1,11 @@
 const path = require('path');
 
 module.exports = {
-  env: {},
+  env: {
+    LOGIN_URL: process.env.LOGIN_URL,
+    GRAPHQL_API_URL: process.env.GRAPHQL_API_URL,
+    VERCEL_API_URL:process.env.VERCEL_API_URL
+  },
   images: {
     domains: [
       'placehold.it',
@@ -16,7 +20,7 @@ module.exports = {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: '/internal/dashboard,',
+        pathname: '/internal/login',
       },
     },
   },

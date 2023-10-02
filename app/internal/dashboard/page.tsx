@@ -29,17 +29,17 @@ export default function Home() {
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-1 mb-5">
           <InfoCard
             title="Operações no último mês"
-            text={analyticsDashboard.operationsCount}
+            text={analyticsDashboard?.operationsCount}
             color="green"
           />
           <InfoCard
             title="Talhões"
-            text={analyticsDashboard.plotsCount}
+            text={analyticsDashboard?.plotsCount}
             color="green"
           />
           <InfoCard
             title="Total gasto no último mês"
-            text={analyticsDashboard.totalSpent.toLocaleString('pt-BR', {
+            text={analyticsDashboard?.totalSpent.toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL',
             })}
