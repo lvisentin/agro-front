@@ -5,7 +5,7 @@ export const GetPlotByIdQuery = gql`
     plot(id: $id) {
       id
       name
-      description
+      farmingType
       propertyId
       size
     }

@@ -5,6 +5,7 @@ export const GetPropertiesQuery = gql`
     properties {
       id
       name
+      farmer
       description
       size
       createdAt
