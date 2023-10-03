@@ -32,6 +32,8 @@ export default function RootLayout({
       <html lang="en" data-theme="light">
         <body className={poppins.className}>
           <ToastContainer
+            enableMultiContainer
+            containerId={'default'}
             position="top-right"
             autoClose={5000}
             hideProgressBar={false}

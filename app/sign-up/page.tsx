@@ -25,11 +25,11 @@ export default function SignUpPage() {
       },
     })
       .then(({ data: { signUp } }: any) => {
-        toast.success('Conta criada com sucesso');
+        toast.success('Conta criada com sucesso', {containerId: 'default'});
         localStorage.setItem('authorization', signUp.accessToken);
         router.push(PageRoutes.Dashboard);
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch(() => toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'}));
   }
 
   return (

@@ -36,11 +36,11 @@ function NewProductPage() {
       },
     })
       .then(() => {
-        toast.success('Produto criado com sucesso!');
+        toast.success('Produto criado com sucesso!', {containerId: 'default'});
         router.push(PageRoutes.ListProducts);
       })
       .catch(() => {
-        toast.error('Ocorreu um erro, tente novamente');
+        toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
       });
   }
 

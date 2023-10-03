@@ -68,10 +68,10 @@ function SupplyPage() {
       },
     })
       .then(() => {
-        toast.success('Produto deletado com sucesso');
+        toast.success('Produto deletado com sucesso', {containerId: 'default'});
         refetch();
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch(() => toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'}));
   }
 
   useEffect(() => {
@@ -83,7 +83,7 @@ function SupplyPage() {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
   }
 
   return (
