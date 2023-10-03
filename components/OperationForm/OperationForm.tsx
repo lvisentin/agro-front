@@ -43,21 +43,27 @@ function OperationForm({
       dosePerHecatare: operation ? operation?.dosePerHecatare : 0,
       executionDate: operation ? operation.executionDate : new Date(),
       productCategory: operation ? operation?.product?.category?.id : 0,
-      unitCost: operation ? operation?.product?.unitPrice : 0,
+      unitCost: operation
+        ? operation?.product?.unitPrice.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })
+        : 0,
       hectareCost:
         operation && operation?.plot
-          ? operation?.totalCost / operation?.plot?.size
+          ? operation?.dosePerHecatare * operation?.product?.unitPrice!
           : '',
       plotCost:
         operation && operation?.plot && operation?.product
           ? operation?.plot?.size * operation?.product?.unitPrice
-          : 0,
+          : '',
       measurementUnit: operation
         ? operation?.product?.measurementUnit
         : ProductMeasurementUnit.kg,
     },
     validationSchema: newOperationValidationSchema,
     onSubmit: (values) => {
+      console.log('vaitomarnocu');
       if (submitFunction) {
         submitFunction(values);
       }
@@ -73,14 +79,27 @@ function OperationForm({
         dosePerHecatare: operation?.dosePerHecatare,
         executionDate: operation.executionDate,
         productCategory: operation?.product?.category?.id,
-        unitCost: operation?.product?.unitPrice,
+        unitCost: operation?.product?.unitPrice.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
         hectareCost: operation?.plot
-          ? operation?.totalCost / operation?.plot?.size
+          ? (
+              operation?.dosePerHecatare * operation?.product?.unitPrice!
+            ).toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })
           : 0,
         plotCost:
           operation?.plot && operation?.product
-            ? operation?.plot?.size * operation?.product?.unitPrice
-            : 0,
+            ? (
+                operation?.plot?.size * operation?.product?.unitPrice
+              ).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              })
+            : '',
         measurementUnit: operation?.product?.measurementUnit,
       });
 
@@ -92,6 +111,78 @@ function OperationForm({
   }, [operation]);
 
   const isSubmitDisabled = !formik.dirty || !formik.isValid || propLoading;
+
+  function calculateQuantity($e: any) {
+    const selectedPlot = plots.find(
+      (curr: Plot) => curr.id === Number(formik.values.plotId)
+    );
+    const selectedProduct = products.find(
+      (curr: Product) => curr.id === Number(formik.values.productId)
+    );
+
+    console.log($e.target.value);
+
+    formik.setValues({
+      ...formik.values,
+      productId: selectedProduct.id,
+      unitCost: selectedProduct.unitPrice.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      measurementUnit: selectedProduct.measurementUnit,
+      productCategory: selectedProduct.category.id,
+      plotCost: (selectedPlot.size * selectedProduct.unitPrice).toLocaleString(
+        'pt-BR',
+        {
+          style: 'currency',
+          currency: 'BRL',
+        }
+      ),
+      hectareCost: (
+        (+$e.target.value || 0) * selectedProduct.unitPrice
+      ).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      dosePerHecatare: $e.target.value,
+    });
+  }
+
+  function changeProduct($e: any) {
+    const selectedPlot = plots.find(
+      (curr: Plot) => curr.id === Number(formik.values.plotId)
+    );
+    const selectedProduct = products.find(
+      (curr: Product) => curr.id === Number($e.target.value)
+    );
+
+    console.log();
+
+    formik.setValues({
+      ...formik.values,
+      productId: selectedProduct.id,
+      unitCost: selectedProduct.unitPrice.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      measurementUnit: selectedProduct.measurementUnit,
+      productCategory: selectedProduct.category.id,
+      plotCost: (selectedPlot.size * selectedProduct.unitPrice).toLocaleString(
+        'pt-BR',
+        {
+          style: 'currency',
+          currency: 'BRL',
+        }
+      ),
+      hectareCost: (
+        formik.values.dosePerHecatare * selectedProduct.unitPrice
+      ).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      dosePerHecatare: formik.values.dosePerHecatare,
+    });
+  }
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
@@ -143,7 +234,7 @@ function OperationForm({
           }
           options={products?.length > 0 ? products : []}
           value={formik.values.productId}
-          onChange={formik.handleChange}
+          onChange={changeProduct}
           onBlur={formik.handleBlur}
           errors={formik.touched.productId ? formik.errors.productId : null}
           placeholder="Selecione um produto"
@@ -153,30 +244,7 @@ function OperationForm({
         <TextField
           value={formik.values.dosePerHecatare}
           onChange={($e) => {
-            const selectedPlot = plots.find(
-              (curr: Plot) => curr.id === Number(formik.values.plotId)
-            );
-            const selectedProduct = products.find(
-              (curr: Product) => curr.id === Number(formik.values.productId)
-            );
-
-            console.log($e.target.value)
-
-            formik.setValues({
-              ...formik.values,
-              productId: selectedProduct.id,
-              unitCost: selectedProduct.unitPrice,
-              measurementUnit: selectedProduct.measurementUnit,
-              productCategory: selectedProduct.category.id,
-              plotCost: selectedPlot.size * selectedProduct.unitPrice,
-              hectareCost: (
-                (+$e.target.value || 0) * selectedProduct.unitPrice
-              ).toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-              }),
-              dosePerHecatare: $e.target.value,
-            });
+            calculateQuantity($e);
           }}
           onBlur={formik.handleBlur}
           errors={
