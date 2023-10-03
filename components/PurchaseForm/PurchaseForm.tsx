@@ -1,6 +1,5 @@
 import { GetProductsQuery } from '@/shared/graphql/queries/GetProducts.query';
 import { Product } from '@/shared/models/products/Products.model';
-import { Purchase } from '@/shared/models/purchases/Purchases.model';
 import { NewPurchaseValidationSchema } from '@/shared/validationSchemas/NewPurchase.schema';
 import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
@@ -20,13 +19,15 @@ function PurcharseForm({
   pageTitle,
 }: PurcharseFormProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState([])
+  const [purchaseProduct, setPurchaseProduct] = useState<any>([]);
+  const [selectedProduct, setSelectedProduct] = useState<any>({});
+  
   const { data: { products } = {}, loading: getProductsLoading } =
     useQuery(GetProductsQuery);
 
   const columns = [
     {
-      field: 'id',
+      field: 'productId',
       name: 'Código',
     },
     {
@@ -34,11 +35,11 @@ function PurcharseForm({
       name: 'Produto',
     },
     {
-      field: 'quantity',
+      field: 'amountPerUnit',
       name: 'Quantidade',
     },
     {
-      field: 'total',
+      field: 'unitPrice',
       name: 'Custo unitário',
       transformData: (data: Product) =>
         `${data.unitPrice.toLocaleString('pt-BR', {
@@ -47,7 +48,7 @@ function PurcharseForm({
         })}`,
     },
     {
-      field: 'total',
+      field: 'totalCost',
       name: 'Custo total',
       transformData: (data: Product) =>
         `${data.unitPrice.toLocaleString('pt-BR', {
@@ -57,70 +58,63 @@ function PurcharseForm({
     },
   ];
 
-  function deleteProduct(product: Product) {
-    console.log('product', product);
+  function getData(item: any) {
+    setSelectedProduct({
+      product: item.name,
+      productId: Number(item.code)
+    })
   }
 
-  function onSubmit() {
-    if (isEditing) {
-      setIsEditing(false);
-      setValues({
-        id: '',
-        product: '',
-        quantity: 0,
-        total: 0,
-        category: '',
-        description: '',
-        createdAt: '',
-      });
-      return;
-    }
-    setValues({
-      id: '',
-      product: '',
-      quantity: 0,
-      total: 0,
-      category: '',
-      description: '',
-      createdAt: '',
+  function onAddProduct() {
+    const newProduct = {
+      productId: selectedProduct.productId,
+      product: selectedProduct.product,
+      amountPerUnit: formik.values.amountPerUnit,
+      unitPrice: formik.values.totalCost, 
+      totalCost: formik.values.totalCost,
+    };
+
+    setPurchaseProduct([...purchaseProduct, newProduct]);
+
+    formik.setValues({
+      ...formik.values,
+      code: '',
+      amountPerUnit: 0,
+      totalCost: 0,
     });
+
+    formik.setFieldValue('code', '')
   }
 
-  const {
-    values,
-    handleChange,
-    setFieldValue,
-    handleBlur,
-    handleSubmit,
-    touched,
-    errors,
-    setValues,
-  } = useFormik({
-    initialValues: {
-      id: '',
-      product: '',
-      quantity: 0,
-      total: 0,
-      category: '',
-      description: '',
-      createdAt: '',
-    },
-    validationSchema: NewPurchaseValidationSchema,
-    onSubmit,
-  });
+  function deleteProduct(productIdToDelete: any) {
+    const updatedPurchaseProduct = purchaseProduct.filter(
+      (product: any) => product.productId !== productIdToDelete.productId
+    );
+  
+    setPurchaseProduct(updatedPurchaseProduct);
+  }
 
-  function goToEdit(purchase: Purchase) {
-    setValues(purchase);
+   function goToEdit() {
     setIsEditing(true);
   }
 
-  function getData(item: any) {
-    console.log('log', item);
-  }
+  const formik = useFormik({
+    initialValues: {
+      id: 0,
+      description: '',
+      property: '',
+      propertyId: 0,
+      totalCost: 0,
+      code: '',
+      amountPerUnit: 0,
+    },
+    validationSchema: NewPurchaseValidationSchema,
+    onSubmit: (values) => submitFunction(values),
+  });
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
         <div className="prose flex justify-between w-full max-w-full">
           <h2 className="prose-h2">{pageTitle}</h2>
         </div>
@@ -128,10 +122,10 @@ function PurcharseForm({
         <div className="card bg-base-100 rounded-lg">
           <div className="card-body pt-4 pb-4 w-72">
             <TextField
-              value={values.description}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.description ? errors.description : null}
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              errors={formik.touched.description ? formik.errors.description : null}
               disabled={disabled}
               name="description"
               placeholder="Digite uma descrição"
@@ -148,54 +142,54 @@ function PurcharseForm({
           <div className="card-body pt-4 pb-4 flex flex-row">
             <SelectFieldWithFilter
               options={products?.length > 0 ? products : []}
-              value={values.product}
+              value={formik.values.code}
               onChange={(e) => {
-                setFieldValue('id', e.value);
+                formik.setFieldValue('code', e.value);
                 getData(e);
               }}
-              onBlur={handleBlur}
-              errors={touched.id ? errors.id : null}
-              disabled={disabled}
-              name="id"
+              onBlur={formik.handleBlur}
+              errors={formik.touched.code ? formik.errors.code : null}
+              disabled={disabled || getProductsLoading}
+              name="code"
               placeholder="Pesquisar produto por produto"
               label="Produto"
             />
 
             <TextField
-              value={values.quantity}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.quantity ? errors.quantity : null}
+              value={formik.values.amountPerUnit}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              errors={formik.touched.amountPerUnit ? formik.errors.amountPerUnit : null}
               disabled={disabled}
-              name="quantity"
+              name="amountPerUnit"
               placeholder="Quantidade"
               label="Quantidade"
             />
 
             <TextField
-              value={values.total}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.total ? errors.total : null}
+              value={formik.values.totalCost}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              errors={formik.touched.totalCost ? formik.errors.totalCost : null}
               disabled={disabled || isEditing}
-              name="total"
+              name="totalCost"
               placeholder="Digite um valor"
               label="Valor"
             />
 
-            <PrimaryButton className="mt-9" type="submit">
+            <PrimaryButton className="mt-9" type="button" onClick={onAddProduct}>
               {isEditing ? 'Editar' : 'Adicionar'}
             </PrimaryButton>
           </div>
         </div>
       </form>
 
-      {selectedProducts?.length > 0 && (
+      {purchaseProduct?.length > 0 && (
         <DataTable
-          data={selectedProducts}
+          data={purchaseProduct}
           columns={columns}
           handleEditClick={goToEdit}
-          handleDeleteClick={deleteProduct}
+          handleDeleteClick={(productId) => deleteProduct(productId)}
         />
       )}
 
@@ -208,7 +202,7 @@ function PurcharseForm({
           Cancelar
         </SecondaryButton>
 
-        <PrimaryButton type="submit" onClick={submitFunction}>
+        <PrimaryButton type="submit" onClick={formik.handleSubmit}>
           Salvar Compra
         </PrimaryButton>
       </div>
