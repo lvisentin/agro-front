@@ -5,7 +5,7 @@ export const UpdatePlotMutation = gql`
     updatePlot(id: $id, updatePlotInput: $input) {
       id
       name
-      description
+      farmingType
       size
       propertyId
       createdAt
