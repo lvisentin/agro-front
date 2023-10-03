@@ -12,6 +12,7 @@ export default function TextField({
   className,
   id,
   onChange,
+  onClick,
   onBlur,
   onKeyDown,
   type,
@@ -79,6 +80,7 @@ export default function TextField({
             value={value}
             name={name}
             type={type || 'text'}
+            onClick={onClick}
             disabled={disabled}
             placeholder={placeholder}
             className={`input input-bordered flex-grow w-[inherit]`}

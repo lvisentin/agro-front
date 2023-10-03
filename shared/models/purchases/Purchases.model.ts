@@ -1,6 +1,10 @@
+import { PurchaseProduct } from "../PurchaseProduct/PurchaseProduct.model";
+
 export interface Purchase {
-  _id: string;
+  id: number;
   description: string;
-  category: string;
-  total: number;
+  property: any;
+  propertyId: number;
+  totalCost: number;
+  purchaseProducts: Array<PurchaseProduct>;
 }

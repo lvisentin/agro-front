@@ -41,7 +41,7 @@ function ProductForm({
         minimumQuantity: product?.minimumQuantity
           ? product?.minimumQuantity
           : 0,
-        unitPrice: product?.unitPrice ? product?.unitPrice : '',
+        unitPrice: product?.unitPrice ? product?.unitPrice :'',
       }}
       validationSchema={newProductValidationSchema}
       onSubmit={(values) => submitFunction(values)}
@@ -51,10 +51,10 @@ function ProductForm({
         handleChange,
         handleBlur,
         handleSubmit,
-        isValid,
-        dirty,
         touched,
         errors,
+        isValid,
+        dirty
       }) => (
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="inputs flex flex-row flex-wrap items-start justify-start gap-4">
@@ -164,7 +164,7 @@ function ProductForm({
             <LoadingButton
               loading={loading}
               type="submit"
-              disabled={!(isValid && dirty)}
+              disabled={!isValid || !dirty}
               onClick={handleSubmit}
             >
               Salvar Produto
