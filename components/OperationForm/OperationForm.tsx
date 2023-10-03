@@ -55,7 +55,7 @@ function OperationForm({
           : '',
       plotCost:
         operation && operation?.plot && operation?.product
-          ? operation?.plot?.size * operation?.product?.unitPrice
+          ? operation?.plot?.size * operation?.dosePerHecatare
           : '',
       measurementUnit: operation
         ? operation?.product?.measurementUnit
@@ -94,7 +94,7 @@ function OperationForm({
         plotCost:
           operation?.plot && operation?.product
             ? (
-                operation?.plot?.size * operation?.product?.unitPrice
+                operation?.plot?.size * operation?.dosePerHecatare
               ).toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
@@ -131,7 +131,7 @@ function OperationForm({
       }),
       measurementUnit: selectedProduct.measurementUnit,
       productCategory: selectedProduct.category.id,
-      plotCost: (selectedPlot.size * selectedProduct.unitPrice).toLocaleString(
+      plotCost: (selectedPlot.size * +$e.target.value).toLocaleString(
         'pt-BR',
         {
           style: 'currency',
