@@ -3,7 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 
 const httpLink = createHttpLink({
-  uri: process.env.VERCEL_API_URL,
+  uri: 'https://api.gesrural.com.br/graphql',
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
