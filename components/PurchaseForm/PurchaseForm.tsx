@@ -25,7 +25,6 @@ function PurcharseForm({
   const [isEditing, setIsEditing] = useState(false);
   const [purchaseProduct, setPurchaseProduct] = useState<any>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>({});
-
   const { data: { products } = {}, loading: getProductsLoading } =
     useQuery(GetProductsQuery);
 
@@ -46,12 +45,14 @@ function PurcharseForm({
     {
       field: 'product',
       name: 'Produto',
-      transformData: (prod: any) => purchase ? prod.product.name: prod.product,
+      transformData: (prod: any) =>
+        purchase ? prod.product.name : prod.product,
     },
     {
       field: 'amountPerUnit',
       name: 'Quantidade',
-      transformData: (prod: any) => purchase ? prod.units: prod.amountPerUnit,
+      transformData: (prod: any) =>
+        purchase ? prod.units : prod.amountPerUnit,
     },
     {
       field: 'unitPrice',
@@ -75,7 +76,7 @@ function PurcharseForm({
           totalCost = data.units * data.unitPrice;
         }
 
-        console.log(data);
+        // console.log(data);
         return totalCost.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
@@ -86,12 +87,20 @@ function PurcharseForm({
 
   function getData(item: any) {
     console.log(item);
-
+    if (!item) {
+      setSelectedProduct(undefined);
+      return;
+    }
+    
     setSelectedProduct({
       product: item.name,
       productId: item.id,
     });
   }
+
+  useEffect(() => {
+    console.log('selectedProduct', selectedProduct);
+  }, [selectedProduct]);
 
   function onAddProduct() {
     const newProduct = {
@@ -112,7 +121,9 @@ function PurcharseForm({
       totalCost: 0,
     });
 
+    console.log(document.getElementById('productSelect'));
     formik.setFieldValue('code', '');
+    setSelectedProduct(undefined);
   }
 
   function deleteProduct(product: any) {
@@ -188,9 +199,11 @@ function PurcharseForm({
               options={products?.length > 0 ? products : []}
               value={formik.values.code}
               onChange={(e) => {
+                console.log('test')
                 formik.setFieldValue('code', e.value);
                 getData(e);
               }}
+              id="productSelect"
               onBlur={formik.handleBlur}
               errors={formik.touched.code ? formik.errors.code : null}
               disabled={disabled || getProductsLoading}
@@ -230,7 +243,9 @@ function PurcharseForm({
               type="button"
               onClick={onAddProduct}
               disabled={
-                !formik.values.totalCost || !formik.values.amountPerUnit
+                !formik.values.totalCost ||
+                !formik.values.amountPerUnit ||
+                !selectedProduct?.productId
               }
             >
               {isEditing ? 'Editar' : 'Adicionar'}
@@ -261,7 +276,7 @@ function PurcharseForm({
         <PrimaryButton
           type="submit"
           onClick={formik.handleSubmit}
-          disabled={!purchaseProduct || !formik.isValid || disabled}
+          disabled={!(purchaseProduct.length > 0) || !formik.isValid || disabled || !formik.dirty}
         >
           Salvar Compra
         </PrimaryButton>

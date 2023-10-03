@@ -58,7 +58,7 @@ function OperationForm({
           ? operation?.plot?.size * operation?.dosePerHecatare
           : '',
       measurementUnit: operation
-        ? operation?.product?.measurementUnit
+        ? (operation?.product?.measurementUnit)
         : ProductMeasurementUnit.kg,
     },
     validationSchema: newOperationValidationSchema,

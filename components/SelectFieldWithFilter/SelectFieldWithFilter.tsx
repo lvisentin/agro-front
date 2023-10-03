@@ -27,6 +27,9 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (props && props.onChange) {
+      props.onChange(e);
+    }
     const filterText = e.target.value.toLowerCase();
     setFilter(filterText);
 
@@ -60,13 +63,14 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
           type="text"
           className={`input input-bordered w-full max-w-xs ${props.className}`}
           value={filter}
+          id={props.id}
           onChange={handleFilterChange}
           placeholder={props.placeholder}
           disabled={props.disabled}
           onClick={() => {
             if (!showOptions) {
               setShowOptions(true);
-              setFilteredOptions(props.options)
+              setFilteredOptions(props.options);
             }
           }}
         />

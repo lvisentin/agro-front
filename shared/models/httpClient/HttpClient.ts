@@ -14,6 +14,9 @@ class HttpClient {
     return fetch(route, {
       method: 'POST',
       body: params,
+      headers: {
+        Authorization:`Bearer ${localStorage.getItem('authorization')}`
+      }
     }).then(async (response) => {
       const responseJson = await response.json();
       console.log(responseJson)

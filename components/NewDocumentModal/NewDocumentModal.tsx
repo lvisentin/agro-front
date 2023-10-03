@@ -48,6 +48,7 @@ function NewDocumentModal({
     },
   });
 
+  
   useEffect(() => {
     if (currentDocument) {
       formik.setFieldValue('name', currentDocument.name);

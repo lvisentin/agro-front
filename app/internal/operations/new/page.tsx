@@ -37,7 +37,7 @@ function NewOperationPage() {
       })
       .catch((err) => {
         if (err.message === 'Not enough quantity') {
-          toast.error('Operação não suportada no estoque', {containerId: 'default'});
+          toast.error('Quantidade insuficiente', {containerId: 'default'});
         }
       });
   }
