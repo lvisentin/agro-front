@@ -82,6 +82,7 @@ const Sidebar: React.FC = () => {
 
   function logout() {
     localStorage.removeItem('authorization');
+    localStorage.removeItem('userData');
     router.push(PageRoutes.Login);
   }
 
