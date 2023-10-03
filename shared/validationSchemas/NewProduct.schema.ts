@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { ProductMeasurementUnit } from '../models/products/Products.model';
 
 export const newProductValidationSchema = Yup.object().shape({
-  code: Yup.string().required('Por favor, digite o código do produto.'),
+  // code: Yup.string().required('Por favor, digite o código do produto.'),
   name: Yup.string().required('Por favor,digite o nome do produto.'),
   categoryId: Yup.number()
     .min(1, 'Selecione uma categoria')

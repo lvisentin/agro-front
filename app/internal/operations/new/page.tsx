@@ -17,7 +17,7 @@ function NewOperationPage() {
     description,
     plotId,
     productId,
-    quantity,
+    dosePerHecatare,
     executionDate,
   }: Operation) {
     createOperation({
@@ -26,7 +26,7 @@ function NewOperationPage() {
           description,
           plotId: Number(plotId),
           productId,
-          quantity: Number(quantity),
+          dosePerHecatare: Number(dosePerHecatare),
           executionDate,
         },
       },
