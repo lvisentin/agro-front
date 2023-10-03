@@ -38,7 +38,7 @@ function PurchasesPage() {
     {
       field: 'property',
       name: 'Propriedade',
-      transformData: (purchase) => purchase.property.name,
+      transformData: (purchase: any) => purchase.property.name,
     },
     {
       field: 'totalCost',
