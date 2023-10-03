@@ -94,7 +94,7 @@ function OperationForm({
         plotCost:
           operation?.plot && operation?.product
             ? (
-                operation?.plot?.size * operation?.dosePerHecatare
+                operation?.plot?.size * (operation?.dosePerHecatare * operation?.product.unitPrice)
               ).toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
@@ -120,8 +120,6 @@ function OperationForm({
       (curr: Product) => curr.id === Number(formik.values.productId)
     );
 
-    console.log($e.target.value);
-
     formik.setValues({
       ...formik.values,
       productId: selectedProduct.id,
@@ -131,13 +129,13 @@ function OperationForm({
       }),
       measurementUnit: selectedProduct.measurementUnit,
       productCategory: selectedProduct.category.id,
-      plotCost: (selectedPlot.size * +$e.target.value).toLocaleString(
-        'pt-BR',
-        {
-          style: 'currency',
-          currency: 'BRL',
-        }
-      ),
+      plotCost: (
+        selectedPlot.size *
+        (+$e.target.value * selectedProduct.unitPrice)
+      ).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
       hectareCost: (
         (+$e.target.value || 0) * selectedProduct.unitPrice
       ).toLocaleString('pt-BR', {
@@ -167,13 +165,13 @@ function OperationForm({
       }),
       measurementUnit: selectedProduct.measurementUnit,
       productCategory: selectedProduct.category.id,
-      plotCost: (selectedPlot.size * selectedProduct.unitPrice).toLocaleString(
-        'pt-BR',
-        {
-          style: 'currency',
-          currency: 'BRL',
-        }
-      ),
+      plotCost: (
+        selectedPlot.size *
+        (formik.values.dosePerHecatare * selectedProduct.unitPrice)
+      ).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
       hectareCost: (
         formik.values.dosePerHecatare * selectedProduct.unitPrice
       ).toLocaleString('pt-BR', {
