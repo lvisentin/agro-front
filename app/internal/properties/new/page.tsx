@@ -16,6 +16,7 @@ function NewPropertyPage() {
   function handleSubmit(values: {
     size: string;
     name: string;
+    farmer: string;
     description: string;
   }) {
     createProperty({

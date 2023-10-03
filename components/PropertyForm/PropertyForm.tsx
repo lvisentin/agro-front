@@ -17,6 +17,7 @@ function PropertyForm({
       initialValues={{
         name: property ? property.name : '',
         description: property ? property.description : '',
+        farmer: property ? property.farmer : '',
         size: property ? property.size : 0,
       }}
       onSubmit={(values) => submitFunction(values)}
@@ -52,6 +53,17 @@ function PropertyForm({
               disabled={loading}
               placeholder="Digite uma descrição..."
               label="Descrição"
+            />
+
+            <TextField
+              value={values.farmer}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errors={touched.farmer ? errors.farmer : null}
+              name="farmer"
+              disabled={loading}
+              placeholder="Digite um produtor..."
+              label="Produtor"
             />
 
             <TextField

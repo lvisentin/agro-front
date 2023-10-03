@@ -40,7 +40,10 @@ function PropertiesPage() {
       field: 'name',
       name: 'Nome',
     },
-
+    {
+      field: 'farmer',
+      name: 'Produtor',
+    },
     {
       field: 'description',
       name: 'Descrição',
