@@ -2,6 +2,7 @@
 
 import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
 import TextField from '@/components/TextField/TextField';
+import { newPropertyValidationSchema } from '@/shared/validationSchemas/NewProperty.schema';
 import { Formik } from 'formik';
 import LoadingButton from '../LoadingButton/LoadingButton';
 import { PropertyFormProps } from './PropertyForm.model';
@@ -21,11 +22,13 @@ function PropertyForm({
         size: property ? property.size : 0,
       }}
       onSubmit={(values) => submitFunction(values)}
+      validationSchema={newPropertyValidationSchema}
     >
       {({
         values,
         handleChange,
         handleBlur,
+        dirty,
         handleSubmit,
         isValid,
         touched,
@@ -91,7 +94,7 @@ function PropertyForm({
               loading={loading}
               type="submit"
               onClick={handleSubmit}
-              disabled={!isValid}
+              disabled={!isValid || !dirty}
             >
               Salvar Propriedade
             </LoadingButton>

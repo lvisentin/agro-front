@@ -21,6 +21,8 @@ export enum ProductMeasurementUnit {
   g = 'g',
   l = 'l',
   ml = 'ml',
+  sc = 'sc',
+  ton = 'ton',
 }
 
 export interface ProductCategory {

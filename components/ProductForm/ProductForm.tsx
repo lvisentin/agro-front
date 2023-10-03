@@ -1,7 +1,10 @@
 import { GetProductCategoriesQuery } from '@/shared/graphql/queries/GetProductCategories.query';
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { ProductMeasurementUnit } from '@/shared/models/products/Products.model';
-import getEnumValues from '@/shared/utils/getEnumValues';
+import {
+  getEnumValues,
+  translateMeasurementUnit,
+} from '@/shared/utils/getEnumValues';
 import { newProductValidationSchema } from '@/shared/validationSchemas/NewProduct.schema';
 import { useQuery } from '@apollo/client';
 import { Formik } from 'formik';
@@ -27,7 +30,10 @@ function ProductForm({
 
   const measurementUnits: SelectOption[] = getEnumValues(
     ProductMeasurementUnit
-  ).map((unit, i) => ({ id: unit, name: unit }) as SelectOption);
+  ).map(
+    (unit, i) =>
+      ({ id: unit, name: translateMeasurementUnit(unit) }) as SelectOption
+  );
 
   return (
     <Formik
@@ -41,7 +47,12 @@ function ProductForm({
         minimumQuantity: product?.minimumQuantity
           ? product?.minimumQuantity
           : 0,
-        unitPrice: product?.unitPrice ? product?.unitPrice.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}) :'',
+        unitPrice: product?.unitPrice
+          ? product?.unitPrice.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })
+          : '',
       }}
       validationSchema={newProductValidationSchema}
       onSubmit={(values) => submitFunction(values)}
@@ -54,7 +65,7 @@ function ProductForm({
         touched,
         errors,
         isValid,
-        dirty
+        dirty,
       }) => (
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="inputs flex flex-row flex-wrap items-start justify-start gap-4">
