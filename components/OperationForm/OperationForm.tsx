@@ -40,7 +40,7 @@ function OperationForm({
       description: operation ? operation?.description : '',
       plotId: operation ? operation?.plot?.id : 0,
       productId: operation ? operation?.product?.id : 0,
-      quantity: operation ? operation?.quantity : 0,
+      dosePerHecatare: operation ? operation?.dosePerHecatare : 0,
       executionDate: operation ? operation.executionDate : new Date(),
       productCategory: operation ? operation?.product?.category?.id : 0,
       unitCost: operation ? operation?.product?.unitPrice : 0,
@@ -70,7 +70,7 @@ function OperationForm({
         description: operation?.description,
         plotId: operation?.plot?.id,
         productId: operation?.product?.id,
-        quantity: operation?.quantity,
+        dosePerHecatare: operation?.dosePerHecatare,
         executionDate: operation.executionDate,
         productCategory: operation?.product?.category?.id,
         unitCost: operation?.product?.unitPrice,
@@ -91,8 +91,7 @@ function OperationForm({
     }
   }, [operation]);
 
-  const isSubmitDisabled =
-    !formik.dirty || !formik.isValid || propLoading;
+  const isSubmitDisabled = !formik.dirty || !formik.isValid || propLoading;
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
@@ -152,7 +151,7 @@ function OperationForm({
         />
 
         <TextField
-          value={formik.values.quantity}
+          value={formik.values.dosePerHecatare}
           onChange={($e) => {
             const selectedPlot = plots.find(
               (curr: Plot) => curr.id === Number(formik.values.plotId)
@@ -160,6 +159,8 @@ function OperationForm({
             const selectedProduct = products.find(
               (curr: Product) => curr.id === Number(formik.values.productId)
             );
+
+            console.log($e.target.value)
 
             formik.setValues({
               ...formik.values,
@@ -169,22 +170,25 @@ function OperationForm({
               productCategory: selectedProduct.category.id,
               plotCost: selectedPlot.size * selectedProduct.unitPrice,
               hectareCost: (
-                (+formik.values.quantity * selectedProduct.unitPrice) /
-                selectedPlot.size
+                (+$e.target.value || 0) * selectedProduct.unitPrice
               ).toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
               }),
-              quantity: $e.target.value,
+              dosePerHecatare: $e.target.value,
             });
           }}
           onBlur={formik.handleBlur}
-          errors={formik.touched.quantity ? formik.errors.quantity : null}
+          errors={
+            formik.touched.dosePerHecatare
+              ? formik.errors.dosePerHecatare
+              : null
+          }
           disabled={disabled || !formik.values.productId || propLoading}
-          name="quantity"
+          name="dosePerHecatare"
           type="number"
-          placeholder="Digite a quantidade"
-          label="Quantidade"
+          placeholder="Digite a dose/ha"
+          label="Dose/ha"
         />
 
         <TextField

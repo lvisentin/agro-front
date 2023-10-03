@@ -17,7 +17,7 @@ function NewOperationPage() {
     description,
     plotId,
     productId,
-    quantity,
+    dosePerHecatare,
     executionDate,
   }: Operation) {
     createOperation({
@@ -26,18 +26,18 @@ function NewOperationPage() {
           description,
           plotId: Number(plotId),
           productId,
-          quantity: Number(quantity),
+          dosePerHecatare: Number(dosePerHecatare),
           executionDate,
         },
       },
     })
       .then(() => {
-        toast.success('Operação criado com sucesso');
+        toast.success('Operação criado com sucesso', {containerId: 'default'});
         router.push(PageRoutes.ListOperations);
       })
       .catch((err) => {
         if (err.message === 'Not enough quantity') {
-          toast.error('Operação não suportada no estoque');
+          toast.error('Operação não suportada no estoque', {containerId: 'default'});
         }
       });
   }

@@ -37,10 +37,10 @@ function EditPlotPage({ params: { id } }: PageProps) {
 
     updatePlot({ variables: variables })
       .then(() => {
-        toast.success('Propriedade atualizada com sucesso.');
+        toast.success('Propriedade atualizada com sucesso.', {containerId: 'default'});
         router.push(PageRoutes.ListPlots);
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch(() => toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'}));
   }
 
   function goBack() {
@@ -52,7 +52,7 @@ function EditPlotPage({ params: { id } }: PageProps) {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
   }
 
   return (

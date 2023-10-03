@@ -68,10 +68,10 @@ function OperationsPage() {
   function handleDelete(operation: Operation) {
     deleteOperation({ variables: { id: operation.id } })
       .then(() => {
-        toast.success('Operação deletada com sucesso');
+        toast.success('Operação deletada com sucesso', {containerId: 'default'});
         refetch();
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch(() => toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'}));
   }
 
   function showModal(test: any) {
@@ -87,7 +87,7 @@ function OperationsPage() {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
   }
 
   return (

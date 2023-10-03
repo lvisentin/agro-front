@@ -27,11 +27,11 @@ function NewPropertyPage() {
       },
     })
       .then(() => {
-        toast.success('Propriedade criada com sucesso!');
+        toast.success('Propriedade criada com sucesso!', {containerId: 'default'});
         router.push(PageRoutes.ListProperties);
       })
       .catch(() => {
-        toast.error('Ocorreu um erro, tente novamente');
+        toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
       });
   }
 

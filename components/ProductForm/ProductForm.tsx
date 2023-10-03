@@ -32,7 +32,7 @@ function ProductForm({
   return (
     <Formik
       initialValues={{
-        code: product?.code ? product.code : '',
+        // code: product?.code ? product.code : '',
         categoryId: product?.category ? product.category.id : 0,
         propertyId: product?.property ? product.property.id : 0,
         measurementUnit: product?.measurementUnit ? product.measurementUnit : 0,
@@ -58,7 +58,7 @@ function ProductForm({
       }) => (
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="inputs flex flex-row flex-wrap items-start justify-start gap-4">
-            <TextField
+            {/* <TextField
               value={values.code}
               disabled={loading}
               onChange={handleChange}
@@ -67,7 +67,7 @@ function ProductForm({
               name="code"
               placeholder="Digite um código..."
               label="Código"
-            />
+            /> */}
 
             <TextField
               value={values.name}
