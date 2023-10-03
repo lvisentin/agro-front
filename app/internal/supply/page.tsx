@@ -30,10 +30,10 @@ function SupplyPage() {
   );
 
   const columns = [
-    {
-      field: 'code',
-      name: 'Código',
-    },
+    // {
+    //   field: 'code',
+    //   name: 'Código',
+    // },
     {
       field: 'name',
       name: 'Nome',

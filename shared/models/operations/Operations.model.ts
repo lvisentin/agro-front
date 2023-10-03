@@ -8,7 +8,7 @@ export interface Operation {
   plot?: Plot;
   productId?: number;
   product?: Product;
-  quantity: number;
+  dosePerHecatare: number;
   totalCost: number;
   createdAt?: Date;
   executionDate: Date;
