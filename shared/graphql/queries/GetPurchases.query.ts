@@ -10,6 +10,11 @@ export const GetPurchasesQuery = gql`
         id
         name
       }
+      purchaseProducts {
+        id
+        unitPrice
+        units
+      }
       totalCost
       createdAt
       updatedAt

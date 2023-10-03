@@ -6,35 +6,36 @@ import { CreatePurchaseMutation } from '@/shared/graphql/mutations/CreatePurchas
 import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 function NewPurhcasePage() {
   const router = useRouter();
 
   const [CreatePurchase] = useMutation(CreatePurchaseMutation);
 
-  function handleSubmit(values: any) {
-    console.log(values);
-    
-    // CreatePurchase({
-    //   variables: {
-    //     input: {
-    //       propertyId,
-    //       description,
-    //       products: [
-    //         {
-    //           code,
-    //           amountPerUnit,
-    //           units
-    //         }
-    //       ]
-    //     },
-    //   },
-    // })
-    //   .then(() => {
-    //     toast.success('Compra criada com sucesso');
-    //     router.push(PageRoutes.ListPurchases);
-    //   })
-    //   .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+  function handleSubmit(values: any, prods: any) {
+    console.log(values, prods);
+
+    const productsToGql = prods.map((prod: any) => ({
+      productId: Number(prod.productId),
+      amountPerUnit: Number(prod.unitPrice.split('R$')[1]),
+      units: Number(prod.amountPerUnit),
+    }));
+
+    CreatePurchase({
+      variables: {
+        input: {
+          propertyId: Number(values.propertyId),
+          description: values.description,
+          products: productsToGql
+        },
+      },
+    })
+      .then(() => {
+        toast.success('Compra criada com sucesso');
+        router.push(PageRoutes.ListPurchases);
+      })
+      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
   }
 
   function goBack() {

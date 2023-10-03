@@ -14,6 +14,10 @@ export const GetPurchaseByIdQuery = gql`
       purchaseProducts {
         id
         unitPrice
+        units
+        product {
+          name
+        }
       }
       createdAt
       updatedAt

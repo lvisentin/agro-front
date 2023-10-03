@@ -1,12 +1,16 @@
 import { GetProductsQuery } from '@/shared/graphql/queries/GetProducts.query';
+import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { Product } from '@/shared/models/products/Products.model';
 import { NewPurchaseValidationSchema } from '@/shared/validationSchemas/NewPurchase.schema';
 import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import CurrencyField from '../CurrencyInput/CurrencyField';
 import DataTable from '../DataTable/DataTable';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
+import SelectField from '../SelectField/SelectField';
 import SelectFieldWithFilter from '../SelectFieldWithFilter/SelectFieldWithFilter';
 import TextField from '../TextField/TextField';
 import { PurcharseFormProps } from './PurchaseForm.model';
@@ -21,22 +25,33 @@ function PurcharseForm({
   const [isEditing, setIsEditing] = useState(false);
   const [purchaseProduct, setPurchaseProduct] = useState<any>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>({});
-  
+
   const { data: { products } = {}, loading: getProductsLoading } =
     useQuery(GetProductsQuery);
 
+  const { loading: propertiesLoading, data: { properties } = {} } =
+    useQuery(GetPropertiesQuery);
+
+  useEffect(() => {
+    if (purchase?.purchaseProducts) {
+      setPurchaseProduct(purchase.purchaseProducts);
+    }
+  }, [purchase]);
+
   const columns = [
-    {
-      field: 'productId',
-      name: 'Código',
-    },
+    // {
+    //   field: 'productId',
+    //   name: 'Código',
+    // },
     {
       field: 'product',
       name: 'Produto',
+      transformData: (prod: any) => purchase ? prod.product.name: prod.product,
     },
     {
       field: 'amountPerUnit',
       name: 'Quantidade',
+      transformData: (prod: any) => purchase ? prod.units: prod.amountPerUnit,
     },
     {
       field: 'unitPrice',
@@ -50,27 +65,41 @@ function PurcharseForm({
     {
       field: 'totalCost',
       name: 'Custo total',
-      transformData: (data: Product) =>
-        `${data.unitPrice.toLocaleString('pt-BR', {
+      transformData: (data: any) => {
+        let totalCost = 0;
+
+        if (!purchase) {
+          totalCost =
+            Number(data.amountPerUnit) * data.unitPrice.split('R$')[1];
+        } else {
+          totalCost = data.units * data.unitPrice;
+        }
+
+        console.log(data);
+        return totalCost.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
-        })}`,
+        });
+      },
     },
   ];
 
   function getData(item: any) {
+    console.log(item);
+
     setSelectedProduct({
       product: item.name,
-      productId: Number(item.code)
-    })
+      productId: item.id,
+    });
   }
 
   function onAddProduct() {
     const newProduct = {
+      row: uuidv4(),
       productId: selectedProduct.productId,
       product: selectedProduct.product,
       amountPerUnit: formik.values.amountPerUnit,
-      unitPrice: formik.values.totalCost, 
+      unitPrice: formik.values.totalCost,
       totalCost: formik.values.totalCost,
     };
 
@@ -83,33 +112,32 @@ function PurcharseForm({
       totalCost: 0,
     });
 
-    formik.setFieldValue('code', '')
+    formik.setFieldValue('code', '');
   }
 
-  function deleteProduct(productIdToDelete: any) {
-    const updatedPurchaseProduct = purchaseProduct.filter(
-      (product: any) => product.productId !== productIdToDelete.productId
-    );
-  
-    setPurchaseProduct(updatedPurchaseProduct);
+  function deleteProduct(product: any) {
+    const filtered = purchaseProduct.filter((prod: any) => {
+      return prod.row !== product.row;
+    });
+    setPurchaseProduct(filtered);
   }
 
-   function goToEdit() {
-    setIsEditing(true);
-  }
+  //  function goToEdit() {
+  //   setIsEditing(true);
+  // }
 
   const formik = useFormik({
     initialValues: {
-      id: 0,
-      description: '',
+      id: purchase ? purchase.id : 0,
+      description: purchase ? purchase.description : '',
       property: '',
-      propertyId: 0,
+      propertyId: purchase ? purchase.property.id : 0,
       totalCost: 0,
       code: '',
       amountPerUnit: 0,
     },
     validationSchema: NewPurchaseValidationSchema,
-    onSubmit: (values) => submitFunction(values),
+    onSubmit: (values) => submitFunction(values, purchaseProduct),
   });
 
   return (
@@ -120,16 +148,32 @@ function PurcharseForm({
         </div>
 
         <div className="card bg-base-100 rounded-lg">
-          <div className="card-body pt-4 pb-4 w-72">
+          <div className="card-body pt-4 pb-4 flex flex-row">
             <TextField
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              errors={formik.touched.description ? formik.errors.description : null}
+              errors={
+                formik.touched.description ? formik.errors.description : null
+              }
               disabled={disabled}
               name="description"
               placeholder="Digite uma descrição"
               label="Descrição"
+            />
+
+            <SelectField
+              name="propertyId"
+              options={properties}
+              value={formik.values.propertyId}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              disabled={propertiesLoading || disabled}
+              errors={
+                formik.touched.propertyId ? formik.errors.propertyId : null
+              }
+              placeholder="Selecione uma propriedade"
+              label="Propriedade"
             />
           </div>
         </div>
@@ -159,14 +203,18 @@ function PurcharseForm({
               value={formik.values.amountPerUnit}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              errors={formik.touched.amountPerUnit ? formik.errors.amountPerUnit : null}
+              errors={
+                formik.touched.amountPerUnit
+                  ? formik.errors.amountPerUnit
+                  : null
+              }
               disabled={disabled}
               name="amountPerUnit"
               placeholder="Quantidade"
               label="Quantidade"
             />
 
-            <TextField
+            <CurrencyField
               value={formik.values.totalCost}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -177,7 +225,14 @@ function PurcharseForm({
               label="Valor"
             />
 
-            <PrimaryButton className="mt-9" type="button" onClick={onAddProduct}>
+            <PrimaryButton
+              className="mt-9"
+              type="button"
+              onClick={onAddProduct}
+              disabled={
+                !formik.values.totalCost || !formik.values.amountPerUnit
+              }
+            >
               {isEditing ? 'Editar' : 'Adicionar'}
             </PrimaryButton>
           </div>
@@ -188,8 +243,9 @@ function PurcharseForm({
         <DataTable
           data={purchaseProduct}
           columns={columns}
-          handleEditClick={goToEdit}
-          handleDeleteClick={(productId) => deleteProduct(productId)}
+          handleDeleteClick={
+            purchase ? undefined : (product) => deleteProduct(product)
+          }
         />
       )}
 
@@ -202,7 +258,11 @@ function PurcharseForm({
           Cancelar
         </SecondaryButton>
 
-        <PrimaryButton type="submit" onClick={formik.handleSubmit}>
+        <PrimaryButton
+          type="submit"
+          onClick={formik.handleSubmit}
+          disabled={!purchaseProduct || !formik.isValid || disabled}
+        >
           Salvar Compra
         </PrimaryButton>
       </div>
