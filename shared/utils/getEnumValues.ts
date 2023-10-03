@@ -2,7 +2,7 @@ export function getEnumValues(pEnum: any) {
   return Object.values(pEnum);
 }
 
-export function translateMeasurementUnit(unit: string) {
+export function translateMeasurementUnit(unit: any) {
   switch (unit) {
     case 'sc':
       return 'Sacos';
