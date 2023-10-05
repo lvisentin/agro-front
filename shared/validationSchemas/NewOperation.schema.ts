@@ -1,11 +1,15 @@
 import * as Yup from 'yup';
 
 export const newOperationValidationSchema = Yup.object().shape({
-  description: Yup.string().required('Por favor, digite o nome da operaçao.'),
-  plotId: Yup.number().min(1, 'Por favor, escolha o talhão.').required('Por favor, escolha o talhão.'),
-  productId: Yup.number().min(1, 'Por favor,  escolha o produto.').required('Por favor,  escolha o produto.'),
-  dosePerHecatare: Yup.number().min(1).required('Por favor, digite a quantidade.'),
-  executionDate: Yup.date().required('Por favor, insira a data.'),
+  description: Yup.string().required('Digite o nome da operação.'),
+  plotId: Yup.number()
+    .min(1, 'Selecione um talhão.')
+    .required('Selecione um talhão.'),
+  productId: Yup.number()
+    .min(1, 'Selecione um produto.')
+    .required('Selecione um produto.'),
+  dosePerHecatare: Yup.number().min(1).required('Digite a quantidade.'),
+  executionDate: Yup.date().required('Insira a data.'),
   // productCategory: Yup.string().required('Por favor, selecione a categoria.'),
   // unitCost: Yup.string().required('Por favor, digite o custo unitário.'),
   // hectareCost: Yup.string().required('Por favor, digite o custo por ha.'),

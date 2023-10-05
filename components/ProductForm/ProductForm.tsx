@@ -135,7 +135,7 @@ function ProductForm({
               type="number"
               disabled={loading}
               errors={touched.quantity ? errors.quantity : null}
-              placeholder="Quantidade em estoque..."
+              placeholder="Digite a quantidade..."
               label="Quantidade em estoque"
             />
 
@@ -158,7 +158,7 @@ function ProductForm({
               type="number"
               name="minimumQuantity"
               errors={touched.minimumQuantity ? errors.minimumQuantity : null}
-              placeholder="Digite o valor"
+              placeholder="Digite o valor..."
               label="Qtd mínima em estoque"
             />
           </div>

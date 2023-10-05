@@ -169,7 +169,7 @@ function PurcharseForm({
               }
               disabled={disabled}
               name="description"
-              placeholder="Digite uma descrição"
+              placeholder="Digite a descrição..."
               label="Descrição"
             />
 
@@ -208,7 +208,7 @@ function PurcharseForm({
               errors={formik.touched.code ? formik.errors.code : null}
               disabled={disabled || getProductsLoading}
               name="code"
-              placeholder="Pesquisar produto por produto"
+              placeholder="Selecione um produto..."
               label="Produto"
             />
 
@@ -223,7 +223,7 @@ function PurcharseForm({
               }
               disabled={disabled}
               name="amountPerUnit"
-              placeholder="Quantidade"
+              placeholder="Digite a quantidade..."
               label="Quantidade"
             />
 
@@ -234,7 +234,7 @@ function PurcharseForm({
               errors={formik.touched.totalCost ? formik.errors.totalCost : null}
               disabled={disabled || isEditing}
               name="totalCost"
-              placeholder="Digite um valor"
+              placeholder="Digite o valor..."
               label="Valor"
             />
 
