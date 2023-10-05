@@ -4,14 +4,27 @@ import InfoCard from '@/components/InfoCard/InfoCard';
 import { GetAnalyticsQuery } from '@/shared/graphql/queries/GetAnalytics.query';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function Home() {
   const {
     loading,
     error,
+    refetch,
     data: { analyticsDashboard } = {},
   } = useQuery(GetAnalyticsQuery);
+
+  const [userData, setUserData] = useState<any>(null);
+
+  useEffect(() => {
+    const localData = JSON.parse(localStorage.getItem('userData')!);
+    if (localData) {
+      setUserData(localData);
+    }
+    
+    refetch();
+  }, [setUserData, refetch]);
 
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
@@ -24,7 +37,7 @@ export default function Home() {
   return (
     <AnimatedPage>
       <main>
-        <h1 className="font-semibold text-4xl mb-4">Bom dia, Lucas!</h1>
+        <h1 className="font-semibold text-4xl mb-4">Olá, {userData?.name}!</h1>
 
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-1 mb-5">
           <InfoCard
