@@ -19,7 +19,7 @@ function LoadingButton({
 }: LoadingButtonProps) {
   return (
     <button
-      className={className ? className : 'btn btn-primary border-0'}
+      className={className ? className : 'btn btn-primary text-white border-0'}
       disabled={loading || disabled}
       type={type ? type : 'button'}
       onClick={onClick}
