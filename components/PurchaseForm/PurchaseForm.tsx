@@ -246,7 +246,7 @@ function PurcharseForm({
               disabled={
                 !formik.values.totalCost ||
                 !formik.values.amountPerUnit ||
-                formik.values.amountPerUnit < 0 ||
+                formik.values.amountPerUnit <= 0 ||
                 !selectedProduct?.productId 
               }
             >
