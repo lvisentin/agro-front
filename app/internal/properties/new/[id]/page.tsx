@@ -33,8 +33,9 @@ function EditPropertyPage({ params: { id } }: PageProps) {
       id: property.id,
       input: {
         ...values,
+        size: Number(values.size)
       },
-    };
+    };    
 
     updateProperty({ variables: variables })
       .then(() => {
