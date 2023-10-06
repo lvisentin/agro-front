@@ -32,8 +32,12 @@ function EditPlotPage({ params: { id } }: PageProps) {
       id: plot.id,
       input: {
         ...values,
+        propertyId: Number(values.propertyId),
+        size: Number(values.size),
       },
     };
+
+    console.log(values)
 
     updatePlot({ variables: variables })
       .then(() => {
