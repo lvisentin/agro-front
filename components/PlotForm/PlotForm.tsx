@@ -48,7 +48,7 @@ function PlotForm({
               onBlur={handleBlur}
               errors={touched.name ? errors.name : null}
               name="name"
-              placeholder="Digite um nome..."
+              placeholder="Nome"
               label="Nome"
             />
             <TextField
@@ -58,7 +58,7 @@ function PlotForm({
               onBlur={handleBlur}
               errors={touched.farmingType ? errors.farmingType : null}
               name="farmingType"
-              placeholder="Digite a cultura agrícola do talhão..."
+              placeholder="Cultura agrícola"
               label="Cultura agrícola"
             />
             <TextField
@@ -69,7 +69,7 @@ function PlotForm({
               errors={touched.size ? errors.size : null}
               name="size"
               type="number"
-              placeholder="Digite o tamanho..."
+              placeholder="Tamanho do talhão"
               label="Tamanho do talhão (ha)"
             />
 

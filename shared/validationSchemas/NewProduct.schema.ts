@@ -18,8 +18,8 @@ export const newProductValidationSchema = Yup.object().shape({
     .required(),
   quantity: Yup.number()
     .typeError('Quantidade deve ser um número.')
-    .required('Sigite uma quantidade.'),
-  unitPrice: Yup.string().required('Sigite uma custo unitário.'),
+    .required('Digite uma quantidade.'),
+  unitPrice: Yup.string().required('Digite uma custo unitário.'),
   minimumQuantity: Yup.number()
     .typeError('Quantidade mínima em estoque deve ser um número')
     .required('Digite quantidade mínima em estoque.'),

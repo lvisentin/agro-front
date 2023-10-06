@@ -43,7 +43,7 @@ function PropertyForm({
               errors={touched.name ? errors.name : null}
               name="name"
               disabled={loading}
-              placeholder="Digite um nome..."
+              placeholder="Nome"
               label="Nome"
             />
 
@@ -54,7 +54,7 @@ function PropertyForm({
               errors={touched.description ? errors.description : null}
               name="description"
               disabled={loading}
-              placeholder="Digite uma descrição..."
+              placeholder="Descrição"
               label="Descrição"
             />
 
@@ -65,7 +65,7 @@ function PropertyForm({
               errors={touched.farmer ? errors.farmer : null}
               name="farmer"
               disabled={loading}
-              placeholder="Digite um produtor..."
+              placeholder="Produtor"
               label="Produtor"
             />
 
@@ -76,7 +76,7 @@ function PropertyForm({
               errors={touched.size ? errors.size : null}
               name="size"
               disabled={loading}
-              placeholder="Digite o tamanho..."
+              placeholder="Tamanho da propriedade"
               label="Tamanho da propriedade (ha)"
             />
           </div>
