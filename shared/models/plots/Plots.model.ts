@@ -3,5 +3,6 @@ export interface Plot {
   name: string;
   farmingType: string;
   size: number;
+  propertyName?: string;
   propertyId: number;
 }
