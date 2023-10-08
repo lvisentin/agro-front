@@ -20,6 +20,7 @@ function NewOperationPage() {
     dosePerHecatare,
     executionDate,
   }: Operation) {
+    console.log(plotId);
     createOperation({
       variables: {
         input: {

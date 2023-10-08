@@ -15,6 +15,7 @@ import DateInput from '../DateInput/DateInput';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
 import SelectField from '../SelectField/SelectField';
+import SelectFieldWithFilter from '../SelectFieldWithFilter/SelectFieldWithFilter';
 import TextField from '../TextField/TextField';
 import { OperationFormProps } from './OperationForm.model';
 
@@ -38,6 +39,7 @@ function OperationForm({
   const formik = useFormik({
     initialValues: {
       description: operation ? operation?.description : '',
+      plot: operation ? operation?.plot?.name : '',
       plotId: operation ? operation?.plot?.id : 0,
       productId: operation ? operation?.product?.id : 0,
       dosePerHecatare: operation ? operation?.dosePerHecatare : 0,
@@ -74,6 +76,7 @@ function OperationForm({
     if (operation) {
       formik.setValues({
         description: operation?.description,
+        plot: operation?.plot?.name,
         plotId: operation?.plot?.id,
         productId: operation?.product?.id,
         dosePerHecatare: operation?.dosePerHecatare,
@@ -154,8 +157,6 @@ function OperationForm({
       (curr: Product) => curr.id === Number($e.target.value)
     );
 
-    console.log();
-
     formik.setValues({
       ...formik.values,
       productId: selectedProduct.id,
@@ -180,6 +181,15 @@ function OperationForm({
       }),
       dosePerHecatare: formik.values.dosePerHecatare,
     });
+  }
+
+  function getPlot(item: any) {
+    if (!item) {
+      return;
+    }
+    
+    formik.values.plotId = item.id
+    formik.values.plot = item.name
   }
 
   return (
@@ -210,14 +220,16 @@ function OperationForm({
           label="Operação"
         />
 
-        <SelectField
-          name="plotId"
-          disabled={getPlotsLoading || !!operation || propLoading}
+        <SelectFieldWithFilter
           options={plots?.length > 0 ? plots : []}
-          value={formik.values.plotId}
-          onChange={formik.handleChange}
+          value={formik.values.plot}
+          onChange={(e) => {
+            getPlot(e)
+          }}
           onBlur={formik.handleBlur}
           errors={formik.touched.plotId ? formik.errors.plotId : null}
+          disabled={getPlotsLoading || !!operation || propLoading}
+          name="plotId"
           placeholder="Selecione um talhão"
           label="Talhão"
         />

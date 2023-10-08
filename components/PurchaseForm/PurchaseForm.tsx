@@ -86,7 +86,6 @@ function PurcharseForm({
   ];
 
   function getData(item: any) {
-    console.log(item);
     if (!item) {
       setSelectedProduct(undefined);
       return;
