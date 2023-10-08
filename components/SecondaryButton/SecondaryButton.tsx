@@ -5,7 +5,7 @@ function SecondaryButton(props: SecondaryButtonProps) {
     <button
       disabled={props.disabled}
       {...props}
-      className={`btn bg-red-500 hover:bg-red-700 disabled:border-transparent text-white ${props.className}`}
+      className={`btn bg-red-500 hover:bg-red-700 disabled:border-transparent border-0 text-white ${props.className}`}
     >
       {props.children}
     </button>
