@@ -24,6 +24,7 @@ export interface MenuItem {
   text: string;
   route: string;
   target?: string;
+  disabled?: boolean;
 }
 
 const menuItems: MenuItem[] = [
@@ -68,11 +69,30 @@ const menuItems: MenuItem[] = [
     route: '/internal/documents',
   },
   {
+    icon: faChartSimple,
+    text: 'Acompanhamento de desenvolvimento',
+    route: 'https://api.whatsapp.com/send/?phone=%2B554691319623&text&type=phone_number&app_absent=0',
+    disabled: true
+  },
+  {
+    icon: faChartSimple,
+    text: 'Resultados de produtividade',
+    route: 'https://api.whatsapp.com/send/?phone=%2B554691319623&text&type=phone_number&app_absent=0',
+    disabled: true
+  },
+  {
+    icon: faChartSimple,
+    text: 'Relatórios de Produção',
+    route: 'https://api.whatsapp.com/send/?phone=%2B554691319623&text&type=phone_number&app_absent=0',
+    disabled: true
+  },
+  {
     icon: faComment,
     text: 'Obter consultoria agronômica',
     route: 'https://api.whatsapp.com/send/?phone=%2B554691319623&text&type=phone_number&app_absent=0',
     target: '_blank'
   },
+  
 ];
 
 const Sidebar: React.FC = () => {
@@ -124,6 +144,9 @@ const Sidebar: React.FC = () => {
             >
               <FontAwesomeIcon icon={menuItem.icon} className={`h-5 w-5`} />
               <span className="hidden md:block undefined">{menuItem.text}</span>
+              {menuItem.disabled ? (
+                <div className="badge-xs badge-accent text-white rounded">Em breve</div>
+              ) : null}
             </Link>
           </li>
         ))}
