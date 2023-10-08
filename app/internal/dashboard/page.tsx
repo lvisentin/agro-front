@@ -22,9 +22,11 @@ export default function Home() {
     if (localData) {
       setUserData(localData);
     }
-    
+  }, []);
+
+  useEffect(() => {
     refetch();
-  }, [setUserData, refetch]);
+  }, [])
 
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
