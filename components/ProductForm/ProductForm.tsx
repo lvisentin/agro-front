@@ -87,7 +87,7 @@ function ProductForm({
               onBlur={handleBlur}
               errors={touched.name ? errors.name : null}
               name="name"
-              placeholder="Digite um nome..."
+              placeholder="Nome"
               label="Nome"
             />
 
@@ -135,7 +135,7 @@ function ProductForm({
               type="number"
               disabled={loading}
               errors={touched.quantity ? errors.quantity : null}
-              placeholder="Quantidade em estoque..."
+              placeholder="Quantidade em estoque"
               label="Quantidade em estoque"
             />
 
@@ -146,7 +146,7 @@ function ProductForm({
               name="unitPrice"
               disabled={loading}
               errors={touched.unitPrice ? errors.unitPrice : null}
-              placeholder="Digite o valor..."
+              placeholder="Custo unitário"
               label="Custo unitário"
             />
 
@@ -158,7 +158,7 @@ function ProductForm({
               type="number"
               name="minimumQuantity"
               errors={touched.minimumQuantity ? errors.minimumQuantity : null}
-              placeholder="Digite o valor"
+              placeholder="Qtd mínima em estoque"
               label="Qtd mínima em estoque"
             />
           </div>

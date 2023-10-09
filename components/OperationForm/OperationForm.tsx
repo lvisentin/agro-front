@@ -206,7 +206,7 @@ function OperationForm({
           errors={formik.touched.description ? formik.errors.description : null}
           disabled={disabled || !!operation || propLoading}
           name="description"
-          placeholder="Digite o nome da operação"
+          placeholder="Operação"
           label="Operação"
         />
 
@@ -253,8 +253,8 @@ function OperationForm({
           disabled={disabled || !formik.values.productId || propLoading}
           name="dosePerHecatare"
           type="number"
-          placeholder="Digite a dose/ha"
-          label="Dose/ha"
+          placeholder="Dose"
+          label="Dose (ha)"
         />
 
         <TextField
@@ -268,7 +268,7 @@ function OperationForm({
           }
           disabled={true}
           name="measurementUnit"
-          placeholder="Escolha uma unidade de medida"
+          placeholder="Unidade de medida"
           label="Unidade de medida"
         />
 
