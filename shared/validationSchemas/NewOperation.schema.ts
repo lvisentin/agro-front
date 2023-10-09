@@ -2,8 +2,7 @@ import * as Yup from 'yup';
 
 export const newOperationValidationSchema = Yup.object().shape({
   description: Yup.string().required('Digite o nome da operação.'),
-  plotId: Yup.number()
-    .min(1, 'Selecione um talhão.')
+  plot: Yup.string()
     .required('Selecione um talhão.'),
   productId: Yup.number()
     .min(1, 'Selecione um produto.')
