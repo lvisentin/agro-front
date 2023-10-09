@@ -25,7 +25,7 @@ import styles from './Sidebar.module.scss';
 export interface MenuItem {
   icon: IconLookup;
   text: string;
-  route?: string;
+  route: string;
   target?: string;
   disabled?: boolean;
 }
@@ -74,16 +74,19 @@ const menuItems: MenuItem[] = [
   {
     icon: faClipboard,
     text: 'Acompanhamento',
+    route: '',
     disabled: true
   },
   {
     icon: faGear,
     text: 'Produtividade',
+    route: '',
     disabled: true
   },
   {
     icon: faFlag,
     text: 'Produção',
+    route: '',
     disabled: true
   },
   {
@@ -132,7 +135,7 @@ const Sidebar: React.FC = () => {
         {menuItems.map((menuItem, key) => (
           <li key={key}>
             <Link
-              href={menuItem.route || pathname}
+              href={menuItem.route || ''}
               data-sveltekit-preload-data="hover"
               target={menuItem.target}
               className={
@@ -144,7 +147,7 @@ const Sidebar: React.FC = () => {
               }
             >
               <FontAwesomeIcon icon={menuItem.icon} className={`h-5 w-5`} />
-              <span className="hidden md:block undefined font-normal">{menuItem.text}</span>
+              <span className="hidden md:block font-normal">{menuItem.text}</span>
               {menuItem.disabled ? (
                 <div className="badge-sm badge-accent text-white rounded-lg">Em breve</div>
               ) : null}
