@@ -221,7 +221,7 @@ function OperationForm({
 
         <SelectFieldWithFilter
           options={plots?.length > 0 ? plots : []}
-          value={formik.values.plotId}
+          value={formik.values.plot}
           onChange={(e) => {
             getPlot(e)
           }}
