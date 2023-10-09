@@ -9,6 +9,7 @@ import { DeleteOperationMutation } from '@/shared/graphql/mutations/DeleteOperat
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
 import { Operation } from '@/shared/models/operations/Operations.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import convertDateToGMT3 from '@/shared/utils/convertDateToGMT3';
 import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,8 +39,9 @@ function OperationsPage() {
     {
       field: 'executionDate',
       name: 'Data da operação',
-      transformData: (data: Operation) =>
-        new Date(data.executionDate).toLocaleDateString('pt-BR'),
+      transformData: (data: Operation) => {
+        return convertDateToGMT3(data.executionDate);
+      },
     },
     {
       field: 'product',
@@ -68,10 +70,16 @@ function OperationsPage() {
   function handleDelete(operation: Operation) {
     deleteOperation({ variables: { id: operation.id } })
       .then(() => {
-        toast.success('Operação deletada com sucesso', {containerId: 'default'});
+        toast.success('Operação deletada com sucesso', {
+          containerId: 'default',
+        });
         refetch();
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'}));
+      .catch(() =>
+        toast.error('Ocorreu um erro, tente novamente', {
+          containerId: 'default',
+        })
+      );
   }
 
   function showModal(test: any) {
@@ -87,7 +95,7 @@ function OperationsPage() {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
+    toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
   return (

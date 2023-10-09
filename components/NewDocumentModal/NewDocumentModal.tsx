@@ -161,7 +161,7 @@ function NewDocumentModal({
               onBlur={formik.handleBlur}
               errors={formik.touched.name ? formik.errors.name : null}
               name="name"
-              placeholder="Digite um nome..."
+              placeholder="Nome"
               label="Nome"
             />
 
@@ -170,7 +170,7 @@ function NewDocumentModal({
               value={undefined}
               errors={formik.touched.file ? formik.errors.file : null}
               name="file"
-              placeholder="Escolha um arquivo..."
+              placeholder="Arquivo"
               className={`${currentDocument ? 'hidden' : 'visible'} mt-2 p-0`}
               label="Documento"
               onChange={(event) => {
