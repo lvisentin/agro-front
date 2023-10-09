@@ -26,10 +26,20 @@ function NewPlotPage() {
       },
     })
       .then(() => {
-        toast.success('Talhão criado com sucesso', {containerId: 'default'});
+        toast.success('Talhão criado com sucesso', { containerId: 'default' });
         router.push(PageRoutes.ListPlots);
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'}));
+      .catch((err) => {
+        if (err.message === 'Tamanho do talhão inválido!') {
+          toast.error(err.message, {
+            containerId: 'default',
+          });
+        } else {
+          toast.error('Ocorreu um erro, tente novamente', {
+            containerId: 'default',
+          });
+        }
+      });
   }
 
   function goBack() {
