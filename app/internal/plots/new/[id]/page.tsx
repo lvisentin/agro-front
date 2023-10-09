@@ -37,8 +37,6 @@ function EditPlotPage({ params: { id } }: PageProps) {
       },
     };
 
-    console.log(values)
-
     updatePlot({ variables: variables })
       .then(() => {
         toast.success('Propriedade atualizada com sucesso.', {containerId: 'default'});
