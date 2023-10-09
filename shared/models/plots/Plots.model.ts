@@ -1,8 +1,10 @@
+import { Property } from '../properties/Properties.model';
+
 export interface Plot {
   id: number;
   name: string;
   farmingType: string;
   size: number;
-  propertyName?: string;
+  property?: Property;
   propertyId: number;
 }
