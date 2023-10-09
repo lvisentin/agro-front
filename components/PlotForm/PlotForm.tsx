@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
-import SelectFieldWithFilter from '../SelectFieldWithFilter/SelectFieldWithFilter';
+import SelectField from '../SelectField/SelectField';
 import TextField from '../TextField/TextField';
 import { PlotFormProps } from './PlotForm.model';
 function PlotForm({
@@ -23,25 +23,17 @@ function PlotForm({
       name: plot ? plot.name : '',
       farmingType: plot ? plot.farmingType : '',
       size: plot ? plot.size : 0,
-      propertyName: plot ? plot.propertyName : '',
       propertyId: plot ? plot.propertyId : 0,
     },
     onSubmit: (values) => submitFunction(values),
-  })
+  });
 
   function getProperty(item: any) {
     if (!item) {
-      return
+      return;
     }
 
-    formik.values.propertyId = item?.id || 0
-  }
-
-  if (plot?.propertyId && properties) {
-    const hasProperty = properties.find(
-      (property :any) => property.id === Number(plot.propertyId)
-    )
-    formik.values.propertyName = hasProperty.name || ''
+    formik.values.propertyId = item?.id || 0;
   }
 
   return (
@@ -79,20 +71,17 @@ function PlotForm({
           label="Tamanho do talhão (ha)"
         />
 
-        <SelectFieldWithFilter
+        <SelectField
           options={properties?.length > 0 ? properties : []}
-          value={formik.values.propertyName}
-          onChange={(e) => {
-            getProperty(e)
-          }}
+          value={formik.values.propertyId}
+          onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           errors={formik.touched.propertyId ? formik.errors.propertyId : null}
-          disabled={getPropertiesLoading}
+          disabled={getPropertiesLoading || loading}
           name="propertyId"
           placeholder="Selecione uma propriedade"
           label="Propriedade"
-        />
-        
+        ></SelectField>
       </div>
 
       <div className="card-footer flex items-center justify-end p-4">

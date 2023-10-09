@@ -36,6 +36,11 @@ function PlotsPage() {
       name: 'Código',
     },
     {
+      field: 'property',
+      name: 'Propriedade',
+      transformData: (plot: Plot) => plot.property?.name,
+    },
+    {
       field: 'name',
       name: 'Nome',
     },
@@ -53,10 +58,16 @@ function PlotsPage() {
   function handleDelete(plot: Plot) {
     deletePlot({ variables: { id: plot.id } })
       .then(() => {
-        toast.success('Talhão deletado com sucesso', {containerId: 'default'});
+        toast.success('Talhão deletado com sucesso', {
+          containerId: 'default',
+        });
         refetch();
       })
-      .catch(() => toast.success('Ocorreu um erro, tente novamente', {containerId: 'default'}));
+      .catch(() =>
+        toast.success('Ocorreu um erro, tente novamente', {
+          containerId: 'default',
+        })
+      );
   }
 
   function goToNewPlot() {
@@ -72,7 +83,7 @@ function PlotsPage() {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
+    toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
   return (
