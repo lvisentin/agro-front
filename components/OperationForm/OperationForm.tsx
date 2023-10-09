@@ -227,9 +227,9 @@ function OperationForm({
             getPlot(e)
           }}
           onBlur={formik.handleBlur}
-          errors={formik.touched.plotId ? formik.errors.plotId : null}
+          errors={formik.touched.plot ? formik.errors.plot : null}
           disabled={getPlotsLoading || !!operation || propLoading}
-          name="plotId"
+          name="plot"
           placeholder="Selecione um talhão"
           label="Talhão"
         />
