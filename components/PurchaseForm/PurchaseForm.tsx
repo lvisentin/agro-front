@@ -235,8 +235,8 @@ function PurcharseForm({
               errors={formik.touched.totalCost ? formik.errors.totalCost : null}
               disabled={disabled || isEditing}
               name="totalCost"
-              placeholder="Valor"
-              label="Valor"
+              placeholder="Custo Unitário"
+              label="Custo Unitário"
             />
 
             <PrimaryButton
