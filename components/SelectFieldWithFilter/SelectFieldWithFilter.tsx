@@ -52,7 +52,7 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
   };
 
   return (
-    <div className="form-control" ref={selectFieldRef}>
+    <div className="form-control pb-5" ref={selectFieldRef}>
       {props.label && (
         <label className="label">
           <span className="label-text">{props.label}</span>

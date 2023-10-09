@@ -221,6 +221,7 @@ function PurcharseForm({
                   : null
               }
               disabled={disabled}
+              type="number"
               name="amountPerUnit"
               placeholder="Quantidade"
               label="Quantidade"
@@ -244,7 +245,8 @@ function PurcharseForm({
               disabled={
                 !formik.values.totalCost ||
                 !formik.values.amountPerUnit ||
-                !selectedProduct?.productId
+                formik.values.amountPerUnit <= 0 ||
+                !selectedProduct?.productId 
               }
             >
               {isEditing ? 'Editar' : 'Adicionar'}
