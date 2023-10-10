@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GetPlotsQuery = gql`
-  query GetPlots {
-    plots {
+  query getPlots($propertyId:Int) {
+    plots(propertyId: $propertyId) {
       id
       name
       farmingType
