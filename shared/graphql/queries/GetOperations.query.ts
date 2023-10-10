@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GetOperationsQuery = gql`
-  query GetOperations {
-    operations {
+  query GetOperations($plotId: Int) {
+    operations(plotId: $plotId) {
       id
       description
       plot {
