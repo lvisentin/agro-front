@@ -4,9 +4,12 @@ import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
 import OperationDetailModal from '@/components/OperationDetailModal/OperationDetailModal';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
+import SelectField from '@/components/SelectField/SelectField';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { DeleteOperationMutation } from '@/shared/graphql/mutations/DeleteOperation.mutation';
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
+import { GetPlotsQuery } from '@/shared/graphql/queries/GetPlots.query';
 import { Operation } from '@/shared/models/operations/Operations.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
 import convertDateToGMT3 from '@/shared/utils/convertDateToGMT3';
@@ -27,6 +30,10 @@ function OperationsPage() {
   } = useQuery(GetOperationsQuery);
   const [deleteOperation] = useMutation(DeleteOperationMutation);
   const [selectedOperation, setSelectedOperation] = useState(null);
+  const [selectedPlot, setSelectedPlot] = useState<Number>(0);
+  const { loading: getPlotsLoading, data: { plots } = {} } =
+    useQuery(GetPlotsQuery);
+
   const columns = [
     {
       field: 'id',
@@ -63,6 +70,17 @@ function OperationsPage() {
     refetch();
   }, []);
 
+  useEffect(() => {
+    if (!selectedPlot) {
+      refetch({ plotId: undefined });
+      return;
+    }
+
+    refetch({
+      plotId: Number(selectedPlot),
+    });
+  }, [selectedPlot, refetch]);
+
   function goToNewOperation() {
     push(PageRoutes.NewOperations);
   }
@@ -90,8 +108,8 @@ function OperationsPage() {
     ).showModal();
   }
 
-  if (loading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
+  function clearFilter() {
+    setSelectedPlot(0);
   }
 
   if (error) {
@@ -112,7 +130,32 @@ function OperationsPage() {
 
         <OperationDetailModal operation={selectedOperation || undefined} />
 
-        {operations?.length > 0 ? (
+        <div className="filter">
+          <div className="flex items-center gap-4">
+            <SelectField
+              name="Plot"
+              options={plots}
+              value={selectedPlot}
+              onChange={(e) => {
+                setSelectedPlot(e.target.value);
+              }}
+              disabled={getPlotsLoading}
+              placeholder="Selecione um talhão"
+              label="Filtrar por talhão"
+            />
+            <SecondaryButton
+              type="button"
+              onClick={clearFilter}
+              className="mt-4"
+            >
+              Limpar filtro
+            </SecondaryButton>
+          </div>
+        </div>
+
+        {loading ? (
+          <span className="loading loading-spinner loading-lg"></span>
+        ) : operations?.length > 0 ? (
           <DataTable
             data={operations}
             columns={columns}
