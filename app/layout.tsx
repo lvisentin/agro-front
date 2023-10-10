@@ -5,6 +5,7 @@ import PrimaryLayout from '@/components/layouts/primary/PrimaryLayout';
 import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { Poppins } from 'next/font/google';
+import Script from 'next/script';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import '../styles/globals.scss';
@@ -30,6 +31,17 @@ export default function RootLayout({
   return (
     <ApolloProvider client={myApolloClient}>
       <html lang="en" data-theme="light">
+        <Script
+          strategy="lazyOnload"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+        ></Script>
+        <Script strategy="lazyOnload" id="gaScript">
+          {`window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');`}
+        </Script>
         <body className={poppins.className}>
           <ToastContainer
             enableMultiContainer
