@@ -4,7 +4,6 @@ import ProductForm from '@/components/ProductForm/ProductForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { UpdateProductMutation } from '@/shared/graphql/mutations/UpdateProduct.mutation';
 import { GetProductByIdQuery } from '@/shared/graphql/queries/GetProductById.query';
-import { Product } from '@/shared/models/products/Products.model';
 
 import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation, useQuery } from '@apollo/client';
@@ -29,20 +28,40 @@ function EditProductPage({ params: { id } }: PageProps) {
     UpdateProductMutation
   );
 
-  function handleEdit(values: Product) {
+  function handleEdit(values: any) {
+    let formattedValue = '';
+
+    if (values.unitPrice.includes(',')) {
+      const splitted = values.unitPrice.split('R$')[1].split(',');
+      formattedValue = `${splitted[0]}.${splitted[1]}`;
+    } else {
+      formattedValue = values.unitPrice.split('R$')[1];
+    }
+
     const variables = {
       id: product.id,
       input: {
         ...values,
+        quantity: Number(values.quantity),
+        unitPrice: Number(formattedValue),
+        minimumQuantity: Number(values.minimumQuantity),
+        categoryId: Number(values.categoryId),
+        propertyId: Number(values.propertyId),
       },
     };
 
     updateProduct({ variables: variables })
       .then(() => {
-        toast.success('Propriedade atualizada com sucesso.');
+        toast.success('Propriedade atualizada com sucesso.', {
+          containerId: 'default',
+        });
         router.push(PageRoutes.ListProducts);
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch(() =>
+        toast.error('Ocorreu um erro, tente novamente', {
+          containerId: 'default',
+        })
+      );
   }
 
   function goBack() {
@@ -54,7 +73,7 @@ function EditProductPage({ params: { id } }: PageProps) {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
   return (

@@ -5,6 +5,7 @@ export const UpdatePropertyMutation = gql`
     updateProperty(id: $id, updatePropertyInput: $input) {
       id
       name
+      farmer
       description
       size
       createdAt

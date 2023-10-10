@@ -1,6 +1,6 @@
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { useQuery } from '@apollo/client';
-import { Formik } from 'formik';
+import { useFormik } from 'formik';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
 import SelectField from '../SelectField/SelectField';
@@ -18,94 +18,90 @@ function PlotForm({
     data: { properties } = {},
   } = useQuery(GetPropertiesQuery);
 
-  if (properties) console.log(properties);
+  const formik = useFormik({
+    initialValues: {
+      name: plot ? plot.name : '',
+      farmingType: plot ? plot.farmingType : '',
+      size: plot ? plot.size : 0,
+      propertyId: plot ? plot.propertyId : 0,
+    },
+    onSubmit: (values) => submitFunction(values),
+  });
+
+  function getProperty(item: any) {
+    if (!item) {
+      return;
+    }
+
+    formik.values.propertyId = item?.id || 0;
+  }
+
   return (
-    <Formik
-      initialValues={{
-        name: plot ? plot.name : '',
-        description: plot ? plot.description : '',
-        size: plot ? plot.size : 0,
-        propertyId: plot ? plot.propertyId : 0,
-      }}
-      onSubmit={(values) => submitFunction(values)}
-    >
-      {({
-        values,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isValid,
-        dirty,
-        touched,
-        errors,
-      }) => (
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
-            <TextField
-              value={values.name}
-              disabled={loading}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.name ? errors.name : null}
-              name="name"
-              placeholder="Digite um nome..."
-              label="Nome"
-            />
-            <TextField
-              value={values.description}
-              disabled={loading}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.description ? errors.description : null}
-              name="description"
-              placeholder="Digite uma descrição..."
-              label="Descrição"
-            />
-            <TextField
-              value={values.size}
-              disabled={loading}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.size ? errors.size : null}
-              name="size"
-              type="number"
-              placeholder="Digite o tamanho..."
-              label="Tamanho do talhão (ha)"
-            />
+    <form onSubmit={formik.handleSubmit} className="flex flex-col">
+      <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
+        <TextField
+          value={formik.values.name}
+          disabled={loading}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errors={formik.touched.name ? formik.errors.name : null}
+          name="name"
+          placeholder="Nome"
+          label="Nome"
+        />
+        <TextField
+          value={formik.values.farmingType}
+          disabled={loading}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errors={formik.touched.farmingType ? formik.errors.farmingType : null}
+          name="farmingType"
+          placeholder="Cultura agrícola"
+          label="Cultura agrícola"
+        />
+        <TextField
+          value={formik.values.size}
+          disabled={loading}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errors={formik.touched.size ? formik.errors.size : null}
+          name="size"
+          type="number"
+          placeholder="Tamanho do talhão"
+          label="Tamanho do talhão (ha)"
+        />
 
-            <SelectField
-              name="propertyId"
-              disabled={getPropertiesLoading}
-              options={properties?.length > 0 ? properties : []}
-              value={values.propertyId}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={touched.propertyId ? errors.propertyId : null}
-              placeholder="Selecione uma propriedade"
-              label="Propriedade"
-            />
-          </div>
+        <SelectField
+          options={properties?.length > 0 ? properties : []}
+          value={formik.values.propertyId}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errors={formik.touched.propertyId ? formik.errors.propertyId : null}
+          disabled={getPropertiesLoading || loading}
+          name="propertyId"
+          placeholder="Selecione uma propriedade"
+          label="Propriedade"
+        ></SelectField>
+      </div>
 
-          <div className="card-footer flex items-center justify-end p-4">
-            <SecondaryButton
-              type="button"
-              onClick={cancelFunction}
-              className="mr-3"
-            >
-              Cancelar
-            </SecondaryButton>
+      <div className="card-footer flex items-center justify-end p-4">
+        <SecondaryButton
+          type="button"
+          onClick={cancelFunction}
+          className="mr-3"
+        >
+          Cancelar
+        </SecondaryButton>
 
-            <PrimaryButton
-              type="submit"
-              onClick={handleSubmit}
-              disabled={!isValid || !dirty}
-            >
-              Salvar Talhão
-            </PrimaryButton>
-          </div>
-        </form>
-      )}
-    </Formik>
+        <PrimaryButton
+          type="submit"
+          onClick={formik.handleSubmit}
+          disabled={!formik.isValid || !formik.dirty}
+        >
+          Salvar Talhão
+        </PrimaryButton>
+      </div>
+    </form>
   );
 }
 

@@ -2,6 +2,7 @@
 
 import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
 import TextField from '@/components/TextField/TextField';
+import { newPropertyValidationSchema } from '@/shared/validationSchemas/NewProperty.schema';
 import { Formik } from 'formik';
 import LoadingButton from '../LoadingButton/LoadingButton';
 import { PropertyFormProps } from './PropertyForm.model';
@@ -17,14 +18,17 @@ function PropertyForm({
       initialValues={{
         name: property ? property.name : '',
         description: property ? property.description : '',
+        farmer: property ? property.farmer : '',
         size: property ? property.size : 0,
       }}
       onSubmit={(values) => submitFunction(values)}
+      validationSchema={newPropertyValidationSchema}
     >
       {({
         values,
         handleChange,
         handleBlur,
+        dirty,
         handleSubmit,
         isValid,
         touched,
@@ -39,7 +43,7 @@ function PropertyForm({
               errors={touched.name ? errors.name : null}
               name="name"
               disabled={loading}
-              placeholder="Digite um nome..."
+              placeholder="Nome"
               label="Nome"
             />
 
@@ -50,8 +54,19 @@ function PropertyForm({
               errors={touched.description ? errors.description : null}
               name="description"
               disabled={loading}
-              placeholder="Digite uma descrição..."
+              placeholder="Descrição"
               label="Descrição"
+            />
+
+            <TextField
+              value={values.farmer}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errors={touched.farmer ? errors.farmer : null}
+              name="farmer"
+              disabled={loading}
+              placeholder="Produtor"
+              label="Produtor"
             />
 
             <TextField
@@ -61,7 +76,7 @@ function PropertyForm({
               errors={touched.size ? errors.size : null}
               name="size"
               disabled={loading}
-              placeholder="Digite o tamanho..."
+              placeholder="Tamanho da propriedade"
               label="Tamanho da propriedade (ha)"
             />
           </div>
@@ -79,7 +94,7 @@ function PropertyForm({
               loading={loading}
               type="submit"
               onClick={handleSubmit}
-              disabled={!isValid}
+              disabled={!isValid || !dirty}
             >
               Salvar Propriedade
             </LoadingButton>

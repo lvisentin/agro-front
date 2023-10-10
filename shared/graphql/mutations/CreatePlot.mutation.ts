@@ -6,7 +6,7 @@ export const CreatePlotMutation = gql`
       id
       name
       propertyId
-      description
+      farmingType
       size
     }
   }

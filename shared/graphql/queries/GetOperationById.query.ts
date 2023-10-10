@@ -19,7 +19,7 @@ export const GetOperationByIdQuery = gql`
         measurementUnit
         unitPrice
       }
-      quantity
+      dosePerHecatare
       totalCost
       createdAt
       updatedAt

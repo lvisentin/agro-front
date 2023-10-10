@@ -4,11 +4,16 @@ import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
 import OperationDetailModal from '@/components/OperationDetailModal/OperationDetailModal';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
+import SelectField from '@/components/SelectField/SelectField';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { DeleteOperationMutation } from '@/shared/graphql/mutations/DeleteOperation.mutation';
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
+import { GetPlotsQuery } from '@/shared/graphql/queries/GetPlots.query';
+import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { Operation } from '@/shared/models/operations/Operations.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import convertDateToGMT3 from '@/shared/utils/convertDateToGMT3';
 import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,6 +31,20 @@ function OperationsPage() {
   } = useQuery(GetOperationsQuery);
   const [deleteOperation] = useMutation(DeleteOperationMutation);
   const [selectedOperation, setSelectedOperation] = useState(null);
+
+  const [selectedProperty, setSelectedProperty] = useState<Number>(0);
+  const { loading: getPropertiesLoading, data: { properties } = {} } = useQuery(
+    GetPropertiesQuery,
+    { notifyOnNetworkStatusChange: true }
+  );
+
+  const [selectedPlot, setSelectedPlot] = useState<Number>(0);
+  const {
+    loading: getPlotsLoading,
+    data: { plots } = {},
+    refetch: refetchPlots,
+  } = useQuery(GetPlotsQuery, { notifyOnNetworkStatusChange: true });
+
   const columns = [
     {
       field: 'id',
@@ -38,8 +57,9 @@ function OperationsPage() {
     {
       field: 'executionDate',
       name: 'Data da operação',
-      transformData: (data: Operation) =>
-        new Date(data.executionDate).toLocaleDateString('pt-BR'),
+      transformData: (data: Operation) => {
+        return convertDateToGMT3(data.executionDate);
+      },
     },
     {
       field: 'product',
@@ -61,6 +81,28 @@ function OperationsPage() {
     refetch();
   }, []);
 
+  useEffect(() => {
+    if (!selectedProperty) {
+      refetchPlots({ propertyId: undefined });
+      return;
+    }
+
+    refetchPlots({
+      propertyId: Number(selectedProperty),
+    });
+  }, [selectedProperty, refetch]);
+
+  useEffect(() => {
+    if (!selectedPlot) {
+      refetch({ plotId: undefined });
+      return;
+    }
+
+    refetch({
+      plotId: Number(selectedPlot),
+    });
+  }, [selectedPlot, refetch]);
+
   function goToNewOperation() {
     push(PageRoutes.NewOperations);
   }
@@ -68,10 +110,16 @@ function OperationsPage() {
   function handleDelete(operation: Operation) {
     deleteOperation({ variables: { id: operation.id } })
       .then(() => {
-        toast.success('Operação deletada com sucesso');
+        toast.success('Operação deletada com sucesso', {
+          containerId: 'default',
+        });
         refetch();
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch(() =>
+        toast.error('Ocorreu um erro, tente novamente', {
+          containerId: 'default',
+        })
+      );
   }
 
   function showModal(test: any) {
@@ -82,12 +130,13 @@ function OperationsPage() {
     ).showModal();
   }
 
-  if (loading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
+  function clearFilter() {
+    setSelectedProperty(0);
+    setSelectedPlot(0);
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
   return (
@@ -104,7 +153,45 @@ function OperationsPage() {
 
         <OperationDetailModal operation={selectedOperation || undefined} />
 
-        {operations?.length > 0 ? (
+        <div className="filter">
+          <div className="flex items-center gap-4">
+            <SelectField
+              name="property"
+              options={properties}
+              value={selectedProperty}
+              onChange={(e) => {
+                setSelectedPlot(0);
+                setSelectedProperty(e.target.value);
+              }}
+              disabled={getPropertiesLoading}
+              placeholder="Selecione uma propriedade"
+              label="Filtrar por propriedade"
+            />
+
+            <SelectField
+              name="plot"
+              options={plots}
+              value={selectedPlot}
+              onChange={(e) => {
+                setSelectedPlot(e.target.value);
+              }}
+              disabled={!selectedProperty || getPlotsLoading}
+              placeholder="Selecione um talhão"
+              label="Filtrar por talhão"
+            />
+            <SecondaryButton
+              type="button"
+              onClick={clearFilter}
+              className="mt-4"
+            >
+              Limpar filtro
+            </SecondaryButton>
+          </div>
+        </div>
+
+        {loading ? (
+          <span className="loading loading-spinner loading-lg"></span>
+        ) : operations?.length > 0 ? (
           <DataTable
             data={operations}
             columns={columns}

@@ -6,9 +6,13 @@ import {
   faArrowRightFromBracket,
   faBoxesStacked,
   faChartSimple,
+  faClipboard,
   faComment,
+  faFlag,
   faFolder,
+  faGear,
   faReceipt,
+  faShoppingCart,
   faTractor,
   faWheatAwn
 } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +27,7 @@ export interface MenuItem {
   text: string;
   route: string;
   target?: string;
+  disabled?: boolean;
 }
 
 const menuItems: MenuItem[] = [
@@ -46,11 +51,11 @@ const menuItems: MenuItem[] = [
     text: 'Estoque',
     route: '/internal/supply',
   },
-  // {
-  //   icon: faShoppingCart,
-  //   text: 'Compras',
-  //   route: '/internal/purchases',
-  // },
+  {
+    icon: faShoppingCart,
+    text: 'Compras',
+    route: '/internal/purchases',
+  },
   // {
   //   icon: faDollarSign,
   //   text: 'Vendas',
@@ -67,6 +72,24 @@ const menuItems: MenuItem[] = [
     route: '/internal/documents',
   },
   {
+    icon: faClipboard,
+    text: 'Acompanhamento',
+    route: '',
+    disabled: true
+  },
+  {
+    icon: faGear,
+    text: 'Produtividade',
+    route: '',
+    disabled: true
+  },
+  {
+    icon: faFlag,
+    text: 'Produção',
+    route: '',
+    disabled: true
+  },
+  {
     icon: faComment,
     text: 'Obter consultoria agronômica',
     route: 'https://api.whatsapp.com/send/?phone=%2B554691319623&text&type=phone_number&app_absent=0',
@@ -81,6 +104,7 @@ const Sidebar: React.FC = () => {
 
   function logout() {
     localStorage.removeItem('authorization');
+    localStorage.removeItem('userData');
     router.push(PageRoutes.Login);
   }
 
@@ -107,21 +131,26 @@ const Sidebar: React.FC = () => {
         />
       </Link>
 
-      <ul className="menu menu-sm lg:menu-md px-4 py-4 mb-auto">
+      <ul className="menu menu-sm lg:menu-md px-2 py-2 mb-auto">
         {menuItems.map((menuItem, key) => (
           <li key={key}>
             <Link
-              href={menuItem.route}
+              href={menuItem.route || ''}
               data-sveltekit-preload-data="hover"
               target={menuItem.target}
               className={
-                pathname.includes(menuItem.route)
-                  ? `${styles.activeItem} active h-full text-white p-4`
-                  : `h-full p-4`
+                menuItem.route 
+                  ?  pathname.includes(menuItem.route)
+                    ? `${styles.activeItem} active h-full text-white p-4`
+                    : `h-full p-4`
+                  : 'h-full p-4'
               }
             >
               <FontAwesomeIcon icon={menuItem.icon} className={`h-5 w-5`} />
-              <span className="hidden md:block undefined">{menuItem.text}</span>
+              <span className="hidden md:block font-normal">{menuItem.text}</span>
+              {menuItem.disabled ? (
+                <div className="badge-sm badge-accent text-white rounded-lg">Em breve</div>
+              ) : null}
             </Link>
           </li>
         ))}

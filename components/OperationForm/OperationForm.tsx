@@ -40,24 +40,30 @@ function OperationForm({
       description: operation ? operation?.description : '',
       plotId: operation ? operation?.plot?.id : 0,
       productId: operation ? operation?.product?.id : 0,
-      quantity: operation ? operation?.quantity : 0,
+      dosePerHecatare: operation ? operation?.dosePerHecatare : 0,
       executionDate: operation ? operation.executionDate : new Date(),
       productCategory: operation ? operation?.product?.category?.id : 0,
-      unitCost: operation ? operation?.product?.unitPrice : 0,
+      unitCost: operation
+        ? operation?.product?.unitPrice.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })
+        : 0,
       hectareCost:
         operation && operation?.plot
-          ? operation?.totalCost / operation?.plot?.size
+          ? operation?.dosePerHecatare * operation?.product?.unitPrice!
           : '',
       plotCost:
         operation && operation?.plot && operation?.product
-          ? operation?.plot?.size * operation?.product?.unitPrice
-          : 0,
+          ? operation?.plot?.size * operation?.dosePerHecatare
+          : '',
       measurementUnit: operation
-        ? operation?.product?.measurementUnit
+        ? (operation?.product?.measurementUnit)
         : ProductMeasurementUnit.kg,
     },
     validationSchema: newOperationValidationSchema,
     onSubmit: (values) => {
+      console.log('vaitomarnocu');
       if (submitFunction) {
         submitFunction(values);
       }
@@ -70,17 +76,30 @@ function OperationForm({
         description: operation?.description,
         plotId: operation?.plot?.id,
         productId: operation?.product?.id,
-        quantity: operation?.quantity,
+        dosePerHecatare: operation?.dosePerHecatare,
         executionDate: operation.executionDate,
         productCategory: operation?.product?.category?.id,
-        unitCost: operation?.product?.unitPrice,
+        unitCost: operation?.product?.unitPrice.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
         hectareCost: operation?.plot
-          ? operation?.totalCost / operation?.plot?.size
+          ? (
+              operation?.dosePerHecatare * operation?.product?.unitPrice!
+            ).toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })
           : 0,
         plotCost:
           operation?.plot && operation?.product
-            ? operation?.plot?.size * operation?.product?.unitPrice
-            : 0,
+            ? (
+                operation?.plot?.size * (operation?.dosePerHecatare * operation?.product.unitPrice)
+              ).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              })
+            : '',
         measurementUnit: operation?.product?.measurementUnit,
       });
 
@@ -91,8 +110,77 @@ function OperationForm({
     }
   }, [operation]);
 
-  const isSubmitDisabled =
-    !formik.dirty || !formik.isValid || propLoading;
+  const isSubmitDisabled = !formik.dirty || !formik.isValid || propLoading;
+
+  function calculateQuantity($e: any) {
+    const selectedPlot = plots.find(
+      (curr: Plot) => curr.id === Number(formik.values.plotId)
+    );
+    const selectedProduct = products.find(
+      (curr: Product) => curr.id === Number(formik.values.productId)
+    );
+
+    formik.setValues({
+      ...formik.values,
+      productId: selectedProduct.id,
+      unitCost: selectedProduct.unitPrice.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      measurementUnit: selectedProduct.measurementUnit,
+      productCategory: selectedProduct.category.id,
+      plotCost: (
+        selectedPlot.size *
+        (+$e.target.value * selectedProduct.unitPrice)
+      ).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      hectareCost: (
+        (+$e.target.value || 0) * selectedProduct.unitPrice
+      ).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      dosePerHecatare: $e.target.value,
+    });
+  }
+
+  function changeProduct($e: any) {
+    const selectedPlot = plots.find(
+      (curr: Plot) => curr.id === Number(formik.values.plotId)
+    );
+    const selectedProduct = products.find(
+      (curr: Product) => curr.id === Number($e.target.value)
+    );
+
+    console.log();
+
+    formik.setValues({
+      ...formik.values,
+      productId: selectedProduct.id,
+      unitCost: selectedProduct.unitPrice.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      measurementUnit: selectedProduct.measurementUnit,
+      productCategory: selectedProduct.category.id,
+      plotCost: (
+        selectedPlot.size *
+        (formik.values.dosePerHecatare * selectedProduct.unitPrice)
+      ).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      hectareCost: (
+        formik.values.dosePerHecatare * selectedProduct.unitPrice
+      ).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      dosePerHecatare: formik.values.dosePerHecatare,
+    });
+  }
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
@@ -118,7 +206,7 @@ function OperationForm({
           errors={formik.touched.description ? formik.errors.description : null}
           disabled={disabled || !!operation || propLoading}
           name="description"
-          placeholder="Digite o nome da operação"
+          placeholder="Operação"
           label="Operação"
         />
 
@@ -144,7 +232,7 @@ function OperationForm({
           }
           options={products?.length > 0 ? products : []}
           value={formik.values.productId}
-          onChange={formik.handleChange}
+          onChange={changeProduct}
           onBlur={formik.handleBlur}
           errors={formik.touched.productId ? formik.errors.productId : null}
           placeholder="Selecione um produto"
@@ -152,39 +240,21 @@ function OperationForm({
         />
 
         <TextField
-          value={formik.values.quantity}
+          value={formik.values.dosePerHecatare}
           onChange={($e) => {
-            const selectedPlot = plots.find(
-              (curr: Plot) => curr.id === Number(formik.values.plotId)
-            );
-            const selectedProduct = products.find(
-              (curr: Product) => curr.id === Number(formik.values.productId)
-            );
-
-            formik.setValues({
-              ...formik.values,
-              productId: selectedProduct.id,
-              unitCost: selectedProduct.unitPrice,
-              measurementUnit: selectedProduct.measurementUnit,
-              productCategory: selectedProduct.category.id,
-              plotCost: selectedPlot.size * selectedProduct.unitPrice,
-              hectareCost: (
-                (+formik.values.quantity * selectedProduct.unitPrice) /
-                selectedPlot.size
-              ).toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-              }),
-              quantity: $e.target.value,
-            });
+            calculateQuantity($e);
           }}
           onBlur={formik.handleBlur}
-          errors={formik.touched.quantity ? formik.errors.quantity : null}
+          errors={
+            formik.touched.dosePerHecatare
+              ? formik.errors.dosePerHecatare
+              : null
+          }
           disabled={disabled || !formik.values.productId || propLoading}
-          name="quantity"
+          name="dosePerHecatare"
           type="number"
-          placeholder="Digite a quantidade"
-          label="Quantidade"
+          placeholder="Dose"
+          label="Dose (ha)"
         />
 
         <TextField
@@ -198,7 +268,7 @@ function OperationForm({
           }
           disabled={true}
           name="measurementUnit"
-          placeholder="Escolha uma unidade de medida"
+          placeholder="Unidade de medida"
           label="Unidade de medida"
         />
 

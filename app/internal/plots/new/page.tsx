@@ -14,22 +14,32 @@ function NewPlotPage() {
 
   const [createPlot] = useMutation(CreatePlotMutation);
 
-  function handleSubmit({ name, description, size, propertyId }: Plot) {
+  function handleSubmit({ name, farmingType, size, propertyId }: Plot) {
     createPlot({
       variables: {
         input: {
           name,
-          description,
+          farmingType,
           size: Number(size),
           propertyId: Number(propertyId),
         },
       },
     })
       .then(() => {
-        toast.success('Talhão criado com sucesso');
+        toast.success('Talhão criado com sucesso', { containerId: 'default' });
         router.push(PageRoutes.ListPlots);
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch((err) => {
+        if (err.message === 'Tamanho do talhão inválido!') {
+          toast.error(err.message, {
+            containerId: 'default',
+          });
+        } else {
+          toast.error('Ocorreu um erro, tente novamente', {
+            containerId: 'default',
+          });
+        }
+      });
   }
 
   function goBack() {

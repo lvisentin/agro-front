@@ -13,7 +13,6 @@ export const GetProductByIdQuery = gql`
         name
       }
       name
-      code
       quantity
       unitPrice
       measurementUnit

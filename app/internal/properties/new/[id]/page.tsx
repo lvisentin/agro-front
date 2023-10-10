@@ -33,15 +33,16 @@ function EditPropertyPage({ params: { id } }: PageProps) {
       id: property.id,
       input: {
         ...values,
+        size: Number(values.size)
       },
-    };
+    };    
 
     updateProperty({ variables: variables })
       .then(() => {
-        toast.success('Propriedade atualizada com sucesso.');
+        toast.success('Propriedade atualizada com sucesso.', {containerId: 'default'});
         router.push(PageRoutes.ListProperties);
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch(() => toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'}));
   }
 
   function goBack() {
@@ -53,7 +54,7 @@ function EditPropertyPage({ params: { id } }: PageProps) {
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente');
+    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
   }
 
   return (

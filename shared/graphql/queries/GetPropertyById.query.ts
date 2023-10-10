@@ -5,6 +5,7 @@ export const GetPropertyByIdQuery = gql`
     property(id: $id) {
       id
       name
+      farmer
       description
       size
     }
