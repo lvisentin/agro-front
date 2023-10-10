@@ -10,6 +10,7 @@ import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { DeleteOperationMutation } from '@/shared/graphql/mutations/DeleteOperation.mutation';
 import { GetOperationsQuery } from '@/shared/graphql/queries/GetOperations.query';
 import { GetPlotsQuery } from '@/shared/graphql/queries/GetPlots.query';
+import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { Operation } from '@/shared/models/operations/Operations.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
 import convertDateToGMT3 from '@/shared/utils/convertDateToGMT3';
@@ -30,9 +31,19 @@ function OperationsPage() {
   } = useQuery(GetOperationsQuery);
   const [deleteOperation] = useMutation(DeleteOperationMutation);
   const [selectedOperation, setSelectedOperation] = useState(null);
+
+  const [selectedProperty, setSelectedProperty] = useState<Number>(0);
+  const { loading: getPropertiesLoading, data: { properties } = {} } = useQuery(
+    GetPropertiesQuery,
+    { notifyOnNetworkStatusChange: true }
+  );
+
   const [selectedPlot, setSelectedPlot] = useState<Number>(0);
-  const { loading: getPlotsLoading, data: { plots } = {} } =
-    useQuery(GetPlotsQuery);
+  const {
+    loading: getPlotsLoading,
+    data: { plots } = {},
+    refetch: refetchPlots,
+  } = useQuery(GetPlotsQuery, { notifyOnNetworkStatusChange: true });
 
   const columns = [
     {
@@ -69,6 +80,17 @@ function OperationsPage() {
   useEffect(() => {
     refetch();
   }, []);
+
+  useEffect(() => {
+    if (!selectedProperty) {
+      refetchPlots({ propertyId: undefined });
+      return;
+    }
+
+    refetchPlots({
+      propertyId: Number(selectedProperty),
+    });
+  }, [selectedProperty, refetch]);
 
   useEffect(() => {
     if (!selectedPlot) {
@@ -109,6 +131,7 @@ function OperationsPage() {
   }
 
   function clearFilter() {
+    setSelectedProperty(0);
     setSelectedPlot(0);
   }
 
@@ -133,13 +156,26 @@ function OperationsPage() {
         <div className="filter">
           <div className="flex items-center gap-4">
             <SelectField
-              name="Plot"
+              name="property"
+              options={properties}
+              value={selectedProperty}
+              onChange={(e) => {
+                setSelectedPlot(0);
+                setSelectedProperty(e.target.value);
+              }}
+              disabled={getPropertiesLoading}
+              placeholder="Selecione uma propriedade"
+              label="Filtrar por propriedade"
+            />
+
+            <SelectField
+              name="plot"
               options={plots}
               value={selectedPlot}
               onChange={(e) => {
                 setSelectedPlot(e.target.value);
               }}
-              disabled={getPlotsLoading}
+              disabled={!selectedProperty || getPlotsLoading}
               placeholder="Selecione um talhão"
               label="Filtrar por talhão"
             />
