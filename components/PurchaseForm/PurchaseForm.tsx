@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import CurrencyField from '../CurrencyInput/CurrencyField';
 import DataTable from '../DataTable/DataTable';
+import LoadingButton from '../LoadingButton/LoadingButton';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
 import SelectField from '../SelectField/SelectField';
@@ -21,12 +22,16 @@ function PurcharseForm({
   cancelFunction,
   disabled,
   pageTitle,
+  loading,
 }: PurcharseFormProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [purchaseProduct, setPurchaseProduct] = useState<any>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>({});
-  const { data: { products } = {}, loading: getProductsLoading } =
-    useQuery(GetProductsQuery);
+  const {
+    data: { products } = {},
+    loading: getProductsLoading,
+    refetch: refetchProducts,
+  } = useQuery(GetProductsQuery, { notifyOnNetworkStatusChange: true, variables: {propertyId: 0} });
 
   const { loading: propertiesLoading, data: { properties } = {} } =
     useQuery(GetPropertiesQuery);
@@ -50,18 +55,22 @@ function PurcharseForm({
     },
     {
       field: 'amountPerUnit',
-      name: 'Quantidade',
+      name: 'Tamanho da embalagem',
       transformData: (prod: any) =>
         purchase ? prod.units : prod.amountPerUnit,
     },
     {
       field: 'unitPrice',
-      name: 'Custo unitário',
+      name: 'Custo por embalagem',
       transformData: (data: Product) =>
         `${data.unitPrice.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         })}`,
+    },
+    {
+      field: 'units',
+      name: 'Qtd de embalagens',
     },
     {
       field: 'totalCost',
@@ -76,7 +85,6 @@ function PurcharseForm({
           totalCost = data.units * data.unitPrice;
         }
 
-        // console.log(data);
         return totalCost.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
@@ -91,7 +99,7 @@ function PurcharseForm({
       setSelectedProduct(undefined);
       return;
     }
-    
+
     setSelectedProduct({
       product: item.name,
       productId: item.id,
@@ -110,6 +118,7 @@ function PurcharseForm({
       amountPerUnit: formik.values.amountPerUnit,
       unitPrice: formik.values.totalCost,
       totalCost: formik.values.totalCost,
+      units: formik.values.units,
     };
 
     setPurchaseProduct([...purchaseProduct, newProduct]);
@@ -144,6 +153,7 @@ function PurcharseForm({
       property: '',
       propertyId: purchase ? purchase.property.id : 0,
       totalCost: 0,
+      units: 0,
       code: '',
       amountPerUnit: 0,
     },
@@ -177,7 +187,11 @@ function PurcharseForm({
               name="propertyId"
               options={properties}
               value={formik.values.propertyId}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                formik.handleChange(e);
+                refetchProducts({ propertyId: Number(e.target.value) });
+                console.log(products);
+              }}
               onBlur={formik.handleBlur}
               disabled={propertiesLoading || disabled}
               errors={
@@ -199,14 +213,16 @@ function PurcharseForm({
               options={products?.length > 0 ? products : []}
               value={formik.values.code}
               onChange={(e) => {
-                console.log('test')
+                console.log('test');
                 formik.setFieldValue('code', e.value);
                 getData(e);
               }}
               id="productSelect"
               onBlur={formik.handleBlur}
               errors={formik.touched.code ? formik.errors.code : null}
-              disabled={disabled || getProductsLoading}
+              disabled={
+                disabled || getProductsLoading || !formik.values.propertyId
+              }
               name="code"
               placeholder="Produto"
               label="Produto"
@@ -224,8 +240,8 @@ function PurcharseForm({
               disabled={disabled}
               type="number"
               name="amountPerUnit"
-              placeholder="Quantidade"
-              label="Quantidade"
+              placeholder="Tamanho da embalagem"
+              label="Tamanho da embalagem"
             />
 
             <CurrencyField
@@ -235,8 +251,20 @@ function PurcharseForm({
               errors={formik.touched.totalCost ? formik.errors.totalCost : null}
               disabled={disabled || isEditing}
               name="totalCost"
-              placeholder="Custo Unitário"
-              label="Custo Unitário"
+              placeholder="Custo Unitário (por embalagem)"
+              label="Custo Unitário (por embalagem)"
+            />
+
+            <TextField
+              value={formik.values.units}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              errors={formik.touched.units ? formik.errors.units : null}
+              disabled={disabled}
+              type="number"
+              name="units"
+              placeholder="Qtd de embalagens"
+              label="Qtd de embalagens"
             />
 
             <PrimaryButton
@@ -247,7 +275,8 @@ function PurcharseForm({
                 !formik.values.totalCost ||
                 !formik.values.amountPerUnit ||
                 formik.values.amountPerUnit <= 0 ||
-                !selectedProduct?.productId 
+                formik.values.units <= 0 ||
+                !selectedProduct?.productId
               }
             >
               {isEditing ? 'Editar' : 'Adicionar'}
@@ -275,13 +304,19 @@ function PurcharseForm({
           Cancelar
         </SecondaryButton>
 
-        <PrimaryButton
+        <LoadingButton
           type="submit"
           onClick={formik.handleSubmit}
-          disabled={!(purchaseProduct.length > 0) || !formik.isValid || disabled || !formik.dirty}
+          loading={loading}
+          disabled={
+            !(purchaseProduct.length > 0) ||
+            !formik.isValid ||
+            disabled ||
+            !formik.dirty
+          }
         >
           Salvar Compra
-        </PrimaryButton>
+        </LoadingButton>
       </div>
     </div>
   );

@@ -6,6 +6,6 @@ export interface PurcharseFormProps {
   cancelFunction: () => void;
   confirmBtn?: string;
   disabled?: boolean;
-  loading?: boolean;
+  loading: boolean;
   pageTitle: string;
 }

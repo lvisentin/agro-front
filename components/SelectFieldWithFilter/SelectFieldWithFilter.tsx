@@ -76,7 +76,7 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
         />
         {showOptions && (
           <div className="fixed max-w-xs z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-            {filteredOptions?.map((option: any) => (
+            {filteredOptions.length > 0 ?filteredOptions?.map((option: any) => (
               <div
                 key={option.id}
                 className="px-4 py-2 cursor-pointer hover:bg-gray-100"
@@ -84,7 +84,7 @@ function SelectFieldWithFilter(props: SelectFieldWithFilterProps) {
               >
                 {option.name}
               </div>
-            ))}
+            )) : <p className='px-4 py-2'>Não foram encontrados produtos</p>}
           </div>
         )}
       </div>
