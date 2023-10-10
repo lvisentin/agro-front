@@ -81,10 +81,6 @@ function DocumentsPage() {
     toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
-  if (documents) {
-    console.log(documents);
-  }
-
   return (
     <AnimatedPage>
       <div className="documents__wrapper">
