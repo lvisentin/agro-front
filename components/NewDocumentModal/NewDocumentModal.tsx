@@ -63,16 +63,11 @@ function NewDocumentModal({
       .then(({ fileName, path }: { fileName: string; path: string }) => {
         saveFilePath(fileName, path);
       })
-      .catch((err) => {
-        if (
-          err.message ===
-          'Validation failed (expected size is less than 100000)'
-        ) {
-          toast.error('O arquivo é muito grande', { containerId: 'modal' });
-          return;
-        }
-      })
-      .finally(() => setLoading(false));
+      .catch(() => {
+        toast.error('Ocorreu um erro com o servidor.', {
+          containerId: 'modal',
+        });
+      }).finally(() => setLoading(false));
   }
 
   function saveFilePath(fileName: string, path: string) {
@@ -173,6 +168,7 @@ function NewDocumentModal({
               placeholder="Arquivo"
               className={`${currentDocument ? 'hidden' : 'visible'} mt-2 p-0`}
               label="Documento"
+              disabled={loading}
               onChange={(event) => {
                 formik.setFieldValue('file', event.currentTarget.files[0]);
               }}
@@ -182,6 +178,7 @@ function NewDocumentModal({
               <SecondaryButton
                 type="button"
                 onClick={closeModal}
+                disabled={loading}
                 className="mr-3"
               >
                 Cancelar
