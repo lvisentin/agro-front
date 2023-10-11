@@ -11,15 +11,16 @@ import { toast } from 'react-toastify';
 function NewPurhcasePage() {
   const router = useRouter();
 
-  const [CreatePurchase] = useMutation(CreatePurchaseMutation);
+  const [CreatePurchase, { loading }] = useMutation(CreatePurchaseMutation);
 
   function handleSubmit(values: any, prods: any) {
     console.log(values, prods);
 
     const productsToGql = prods.map((prod: any) => ({
       productId: Number(prod.productId),
-      amountPerUnit: Number(prod.unitPrice.split('R$')[1]),
-      units: Number(prod.amountPerUnit),
+      amountPerUnit: Number(prod.amountPerUnit),
+      unitPrice: Number(prod.unitPrice.split('R$')[1]),
+      units: Number(prod.units),
     }));
 
     CreatePurchase({
@@ -27,15 +28,15 @@ function NewPurhcasePage() {
         input: {
           propertyId: Number(values.propertyId),
           description: values.description,
-          products: productsToGql
+          products: productsToGql,
         },
       },
     })
       .then(() => {
-        toast.success('Compra criada com sucesso');
+        toast.success('Compra criada com sucesso', {containerId: 'default'});
         router.push(PageRoutes.ListPurchases);
       })
-      .catch(() => toast.error('Ocorreu um erro, tente novamente'));
+      .catch(() => toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'}));
   }
 
   function goBack() {
@@ -49,6 +50,7 @@ function NewPurhcasePage() {
           <PurcharseForm
             submitFunction={handleSubmit}
             cancelFunction={goBack}
+            loading={loading}
             pageTitle="Nova Compra"
           />
         </div>
