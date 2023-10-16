@@ -110,7 +110,7 @@ function OperationForm({
     }
   }, [operation]);
 
-  const isSubmitDisabled = !formik.dirty || !formik.isValid || propLoading;
+  const isSubmitDisabled = formik.values.dosePerHecatare <= 0 || !formik.dirty || !formik.isValid || propLoading;
 
   function calculateQuantity($e: any) {
     const selectedPlot = plots.find(
