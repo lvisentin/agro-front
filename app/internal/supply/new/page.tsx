@@ -14,7 +14,6 @@ function NewProductPage() {
   const [createProduct, { loading }] = useMutation(CreateProductMutation);
 
   function handleSubmit(values: any) {
-    console.log('values', values);
     let formattedValue = '';
 
     if (values.unitPrice.includes(',')) {
