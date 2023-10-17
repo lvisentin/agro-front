@@ -121,40 +121,42 @@ const Sidebar: React.FC = () => {
         'bg-base-100 min-w-sidebar w-sidebar flex flex-col h-screen justify-between shadow-sm'
       }
     >
-      <Link href="/internal/dashboard">
-        <Image
-          src="/GesruralLogo.svg"
-          alt="GesRural Logo"
-          width={100}
-          height={100}
-          className={'w-full pt-4 px-8'}
-        />
-      </Link>
+      <div className="overflow-y-auto">
+        <Link href="/internal/dashboard">
+          <Image
+            src="/GesruralLogo.svg"
+            alt="GesRural Logo"
+            width={100}
+            height={100}
+            className={'w-full pt-4 px-8'}
+          />
+        </Link>
 
-      <ul className="menu menu-sm lg:menu-md px-2 py-2 mb-auto">
-        {menuItems.map((menuItem, key) => (
-          <li key={key}>
-            <Link
-              href={menuItem.route || ''}
-              data-sveltekit-preload-data="hover"
-              target={menuItem.target}
-              className={
-                menuItem.route 
-                  ?  pathname.includes(menuItem.route)
-                    ? `${styles.activeItem} active h-full text-white p-4`
-                    : `h-full p-4`
-                  : 'h-full p-4'
-              }
-            >
-              <FontAwesomeIcon icon={menuItem.icon} className={`h-5 w-5`} />
-              <span className="hidden md:block font-normal">{menuItem.text}</span>
-              {menuItem.disabled ? (
-                <div className="badge-sm badge-accent text-white rounded-lg">Em breve</div>
-              ) : null}
-            </Link>
-          </li>
-        ))}
-      </ul>
+        <ul className="menu menu-sm lg:menu-md px-2 py-2 mb-auto">
+          {menuItems.map((menuItem, key) => (
+            <li key={key}>
+              <Link
+                href={menuItem.route || ''}
+                data-sveltekit-preload-data="hover"
+                target={menuItem.target}
+                className={
+                  menuItem.route 
+                    ?  pathname.includes(menuItem.route)
+                      ? `${styles.activeItem} active h-full text-white p-4`
+                      : `h-full p-4`
+                    : 'h-full p-4'
+                }
+              >
+                <FontAwesomeIcon icon={menuItem.icon} className={`h-5 w-5`} />
+                <span className="hidden md:block font-normal">{menuItem.text}</span>
+                {menuItem.disabled ? (
+                  <div className="badge-sm badge-accent text-white rounded-lg">Em breve</div>
+                ) : null}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
       <div className="footer w-full">
         <ul className="menu menu-sm lg:menu-md px-4 py-4 w-full">
           <div className={'flex align-items-center px-4'}>
