@@ -8,6 +8,8 @@ export const newOperationValidationSchema = Yup.object().shape({
   productId: Yup.number()
     .min(1, 'Selecione um produto.')
     .required('Selecione um produto.'),
-  dosePerHecatare: Yup.number().min(1).required('Digite a quantidade.'),
+  dosePerHecatare: Yup.number()
+    .min(0, 'Valor não pode ser negativo.')
+    .required('Digite a dose.'),
   executionDate: Yup.date().required('Insira a data.'),
 });
