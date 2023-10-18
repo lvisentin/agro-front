@@ -2,8 +2,9 @@ import MaskedInput from 'react-text-mask';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { CurrencyFieldProps } from './CurrencyField.model';
 
+
 const defaultMaskOptions = {
-  prefix: 'R$',
+  prefix: '',
   suffix: '',
   includeThousandsSeparator: true,
   thousandsSeparatorSymbol: '.',
@@ -29,6 +30,7 @@ const CurrencyField = ({
   errors,
   helperText,
   disabled,
+  leadingIcon
 }: CurrencyFieldProps) => {
   const currencyMask = createNumberMask({
     ...defaultMaskOptions,
@@ -43,6 +45,11 @@ const CurrencyField = ({
             <span className="label-text">{label}</span>
           </label>
         )}
+        {value?.length > 0 && leadingIcon && (
+          <span className="flex absolute bottom-8 left-4">
+            {leadingIcon && <span>{leadingIcon}</span>}
+          </span>
+        )}
         <MaskedInput
           onChange={onChange}
           onKeyDown={onKeyDown}
@@ -52,7 +59,7 @@ const CurrencyField = ({
           type={'text'}
           disabled={disabled}
           placeholder={placeholder}
-          className={`input input-bordered rounded-sm flex-grow w-[inherit]`}
+          className={`input input-bordered rounded-sm flex-grow w-[inherit] ${value?.length > 0 ? 'pl-9': ''}`}
           mask={currencyMask}
         />
         {helperText && (

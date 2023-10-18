@@ -128,6 +128,9 @@ function ProductForm({
           errors={formik.touched.unitPrice ? formik.errors.unitPrice : null}
           placeholder="Custo unitário"
           label="Custo unitário"
+          leadingIcon={
+            <span>R$</span>
+          }
         />
 
         <TextField

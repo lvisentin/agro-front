@@ -4,6 +4,7 @@ import ProductForm from '@/components/ProductForm/ProductForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { CreateProductMutation } from '@/shared/graphql/mutations/CreateProduct.mutation';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import convertCurrencyValue from '@/shared/utils/convertCurrencyValue';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -14,20 +15,12 @@ function NewProductPage() {
   const [createProduct, { loading }] = useMutation(CreateProductMutation);
 
   function handleSubmit(values: any) {
-    let formattedValue = '';
-
-    if (values.unitPrice.includes(',')) {
-      const splitted = values.unitPrice.split('R$')[1].split(',');
-      formattedValue = `${splitted[0]}.${splitted[1]}`;
-    } else {
-      formattedValue = values.unitPrice.split('R$')[1];
-    }
     createProduct({
       variables: {
         input: {
           ...values,
           quantity: Number(values.quantity),
-          unitPrice: Number(formattedValue),
+          unitPrice: convertCurrencyValue(values.unitPrice),
           minimumQuantity: Number(values.minimumQuantity),
           categoryId: Number(values.categoryId),
           propertyId: Number(values.propertyId),
