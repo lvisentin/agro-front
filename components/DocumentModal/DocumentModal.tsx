@@ -1,3 +1,4 @@
+import convertDateToGMT3 from '@/shared/utils/convertDateToGMT3';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -22,7 +23,8 @@ function DocumentModal({ document }: DocumentModalProps) {
           <h3 className="text-lg font-bold">
             Documento: <span className="font-medium">{document?.name}</span>
           </h3>
-
+          <p className="font-bold">Cadastrado em: <span className="font-medium">{document?.createdAt ? convertDateToGMT3(document.createdAt) : 'N/A'}</span></p>
+          
           <div className="modal-body">
             <Image
               src={document?.path}
