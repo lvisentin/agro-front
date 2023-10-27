@@ -76,7 +76,7 @@ function PurcharseForm({
 
         if (!purchase) {
           totalCost =
-            Number(data.amountPerUnit) * data.unitPrice.split('R$')[1];
+            Number(data.amountPerUnit) * data.unitPrice;
         } else {
           totalCost = data.units * data.unitPrice;
         }
