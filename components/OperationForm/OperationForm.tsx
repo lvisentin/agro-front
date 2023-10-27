@@ -32,8 +32,14 @@ function OperationForm({
   const { loading: categoriesLoading, data: { productCategories } = {} } =
     useQuery(GetProductCategoriesQuery);
 
-  const { loading: getProductsLoading, data: { products } = {} } =
-    useQuery(GetProductsQuery);
+  const {
+    loading: getProductsLoading,
+    data: { products } = {},
+    refetch: refetchProducts,
+  } = useQuery(GetProductsQuery, {
+    variables: { propertyId: undefined },
+    notifyOnNetworkStatusChange: true,
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -58,7 +64,7 @@ function OperationForm({
           ? operation?.plot?.size * operation?.dosePerHecatare
           : '',
       measurementUnit: operation
-        ? (operation?.product?.measurementUnit)
+        ? operation?.product?.measurementUnit
         : ProductMeasurementUnit.kg,
     },
     validationSchema: newOperationValidationSchema,
@@ -94,7 +100,8 @@ function OperationForm({
         plotCost:
           operation?.plot && operation?.product
             ? (
-                operation?.plot?.size * (operation?.dosePerHecatare * operation?.product.unitPrice)
+                operation?.plot?.size *
+                (operation?.dosePerHecatare * operation?.product.unitPrice)
               ).toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
@@ -110,7 +117,7 @@ function OperationForm({
     }
   }, [operation]);
 
-  const isSubmitDisabled = !formik.dirty || !formik.isValid || propLoading;
+  const isSubmitDisabled = formik.values.dosePerHecatare <= 0 || !formik.dirty || !formik.isValid || propLoading;
 
   function calculateQuantity($e: any) {
     const selectedPlot = plots.find(
@@ -153,8 +160,6 @@ function OperationForm({
     const selectedProduct = products.find(
       (curr: Product) => curr.id === Number($e.target.value)
     );
-
-    console.log();
 
     formik.setValues({
       ...formik.values,
@@ -215,7 +220,13 @@ function OperationForm({
           disabled={getPlotsLoading || !!operation || propLoading}
           options={plots?.length > 0 ? plots : []}
           value={formik.values.plotId}
-          onChange={formik.handleChange}
+          onChange={async (e) => {
+            formik.handleChange(e);
+            const selectedPlot = plots.find(
+              (curr: Plot) => curr.id === Number(e.target.value)
+            );
+            refetchProducts({ propertyId: selectedPlot.property.id });
+          }}
           onBlur={formik.handleBlur}
           errors={formik.touched.plotId ? formik.errors.plotId : null}
           placeholder="Selecione um talhão"
@@ -228,7 +239,9 @@ function OperationForm({
             getProductsLoading ||
             !formik.values.plotId ||
             !!operation ||
-            propLoading
+            propLoading ||
+            getProductsLoading ||
+            !products
           }
           options={products?.length > 0 ? products : []}
           value={formik.values.productId}

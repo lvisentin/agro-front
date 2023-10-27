@@ -8,6 +8,7 @@ export const GetPlotsQuery = gql`
       farmingType
       property {
         name
+        id
       }
       size
     }

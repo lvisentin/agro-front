@@ -17,10 +17,12 @@ export const newProductValidationSchema = Yup.object().shape({
     )
     .required(),
   quantity: Yup.number()
+    .min(0, 'Valor não pode ser negativo.')
     .typeError('Quantidade deve ser um número.')
     .required('Digite uma quantidade.'),
-  unitPrice: Yup.string().required('Digite uma custo unitário.'),
+  unitPrice: Yup.string().required('Digite um custo unitário.'),
   minimumQuantity: Yup.number()
+    .min(0, 'Valor não pode ser negativo.')
     .typeError('Quantidade mínima em estoque deve ser um número')
     .required('Digite quantidade mínima em estoque.'),
 });
