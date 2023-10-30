@@ -91,9 +91,8 @@ const menuItems: MenuItem[] = [
   },
   {
     icon: faComment,
-    text: 'Obter consultoria agronômica',
-    route: 'https://api.whatsapp.com/send/?phone=%2B554691319623&text&type=phone_number&app_absent=0',
-    target: '_blank'
+    text: 'Consultoria',
+    route: '/internal/consultor',
   },
 ];
 
