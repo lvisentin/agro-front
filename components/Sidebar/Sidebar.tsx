@@ -80,8 +80,7 @@ const menuItems: MenuItem[] = [
   {
     icon: faGear,
     text: 'Produtividade',
-    route: '',
-    disabled: true
+    route: '/internal/productivity',
   },
   {
     icon: faFlag,
