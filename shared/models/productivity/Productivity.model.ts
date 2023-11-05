@@ -6,6 +6,12 @@ export interface Productivity {
   plotId: number;
   marketPrice: number;
   quantity: number;
-  unitPrice: number;
+  measurementUnit: ProductivityMeasurementUnit;
   closedAt: Date;
+}
+
+export enum ProductivityMeasurementUnit {
+  kg = 'kg',
+  sc = 'sc',
+  ton = 'ton',
 }
