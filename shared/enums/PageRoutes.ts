@@ -12,5 +12,9 @@ export enum PageRoutes {
   ListPurchases = '/internal/purchases',
   NewProduction = '/internal/production/new',
   ListProduction = '/internal/production',
+  NewProductivity = '/internal/productivity/new',
+  ListProductivity = '/internal/productivity',
+  newReport = '/internal/reports/new',
+  ListReport = '/internal/reports',
   Login = '/login',
 }

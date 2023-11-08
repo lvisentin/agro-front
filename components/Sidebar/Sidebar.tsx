@@ -8,13 +8,14 @@ import {
   faChartSimple,
   faClipboard,
   faComment,
+  faFileLines,
   faFlag,
   faFolder,
   faGear,
   faReceipt,
   faShoppingCart,
   faTractor,
-  faWheatAwn
+  faWheatAwn,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -77,16 +78,21 @@ const menuItems: MenuItem[] = [
     route: '/internal/production',
   },
   {
+    icon: faFileLines,
+    text: 'Relatórios',
+    route: '/internal/reports',
+  },
+  {
     icon: faClipboard,
     text: 'Acompanhamento',
     route: '',
-    disabled: true
+    disabled: true,
   },
   {
     icon: faFlag,
     text: 'Produção',
     route: '',
-    disabled: true
+    disabled: true,
   },
   {
     icon: faComment,
@@ -138,17 +144,21 @@ const Sidebar: React.FC = () => {
                 data-sveltekit-preload-data="hover"
                 target={menuItem.target}
                 className={
-                  menuItem.route 
-                    ?  pathname.includes(menuItem.route)
+                  menuItem.route
+                    ? pathname.includes(menuItem.route)
                       ? `${styles.activeItem} active h-full text-white p-4`
                       : `h-full p-4`
                     : 'h-full p-4'
                 }
               >
                 <FontAwesomeIcon icon={menuItem.icon} className={`h-5 w-5`} />
-                <span className="hidden md:block font-normal">{menuItem.text}</span>
+                <span className="hidden md:block font-normal">
+                  {menuItem.text}
+                </span>
                 {menuItem.disabled ? (
-                  <div className="badge-sm badge-accent text-white rounded-lg">Em breve</div>
+                  <div className="badge-sm badge-accent text-white rounded-lg">
+                    Em breve
+                  </div>
                 ) : null}
               </Link>
             </li>
