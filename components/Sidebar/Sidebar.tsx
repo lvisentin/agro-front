@@ -8,6 +8,7 @@ import {
   faChartSimple,
   faClipboard,
   faComment,
+  faFileLines,
   faFlag,
   faFolder,
   faGear,
@@ -70,6 +71,11 @@ const menuItems: MenuItem[] = [
     icon: faFolder,
     text: 'Documentos',
     route: '/internal/documents',
+  },
+  {
+    icon: faFileLines,
+    text: 'Relatórios',
+    route: '/internal/reports',
   },
   {
     icon: faClipboard,
