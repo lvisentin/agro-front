@@ -1,12 +1,12 @@
 'use client';
 
-import ProductivityForm from "@/components/ProductivityForm/ProductivityForm";
+import ProductionForm from "@/components/ProductionForm/ProductionForm";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
 import AnimatedPage from "@/shared/templates/AnimatedPage";
 import { useRouter } from 'next/navigation';
 
 
-function NewProductivityPage() {
+function NewProductionPage() {
   const router = useRouter();
 
   function handleSubmit() {
@@ -14,7 +14,7 @@ function NewProductivityPage() {
   }
 
   function goBack() {
-    router.push(PageRoutes.ListProductivity);
+    router.push(PageRoutes.ListProduction);
   }
 
   return(
@@ -29,7 +29,7 @@ function NewProductivityPage() {
             </div>
 
             <div className="card-body pt-2 pb-4">
-              <ProductivityForm cancelFunction={goBack} submitFunction={handleSubmit} />
+              <ProductionForm cancelFunction={goBack} submitFunction={handleSubmit} />
             </div>
           </div>
         </div>
@@ -38,4 +38,4 @@ function NewProductivityPage() {
   )
 }
 
-export default NewProductivityPage;
+export default NewProductionPage;

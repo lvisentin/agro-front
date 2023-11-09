@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 
-function ProductivityPage() {
+function ProductionPage() {
   const { push } = useRouter();
 
   // useEffect(() => { TO DO: add api call when we get API
@@ -32,8 +32,8 @@ function ProductivityPage() {
   }
 
 
-  function goToNewProductivity() {
-    push(PageRoutes.NewProductivity);
+  function goToNewProduction() {
+    push(PageRoutes.NewProduction);
   }
 
   // const columns = [ TO DO: add correct columns when API is ready
@@ -66,11 +66,11 @@ function ProductivityPage() {
 
   return (
     <AnimatedPage>
-      <div className="productivity_wrapper">
+      <div className="production_wrapper">
         <div className="prose flex justify-between w-full max-w-full">
           <h2 className="prose-h2">Produtividade</h2>
 
-          <PrimaryButton onClick={goToNewProductivity}>
+          <PrimaryButton onClick={goToNewProduction}>
               <FontAwesomeIcon icon={faPlus} />
               Novo relatório
           </PrimaryButton>
@@ -112,4 +112,4 @@ function ProductivityPage() {
   )
 }
 
-export default ProductivityPage;
+export default ProductionPage;
