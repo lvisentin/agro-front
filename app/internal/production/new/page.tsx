@@ -2,15 +2,45 @@
 
 import ProductionForm from "@/components/ProductionForm/ProductionForm";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
+import { CreateProductionMutation } from "@/shared/graphql/mutations/CreateProduction.mutation";
 import AnimatedPage from "@/shared/templates/AnimatedPage";
+import { useMutation } from "@apollo/client";
 import { useRouter } from 'next/navigation';
+import { toast } from "react-toastify";
 
 
 function NewProductionPage() {
   const router = useRouter();
 
-  function handleSubmit() {
-    console.log('teste');
+  const [CreateProduction, { loading }] = useMutation(CreateProductionMutation);
+
+  function handleSubmit(values: any) {
+    let formattedValue = '';
+
+    if (values.price.includes(',')) {
+      const splitted = values.price.split('R$')[1].split(',');
+      formattedValue = `${splitted[0]}.${splitted[1]}`;
+    } else {
+      formattedValue = values.price.split('R$')[1];
+    }
+    CreateProduction({
+      variables: {
+        input: {
+          plotId: Number(values.plotId),
+          price: Number(formattedValue),
+          quantity: Number(values.quantity),
+          measurementUnit: values.measurementUnit,
+          executionDate: values.executionDate
+        }
+      }
+    })
+      .then(() => {
+        toast.success('Produtividade criada com sucesso', {containerId: 'default'});
+        router.push(PageRoutes.ListProduction);
+      })
+      .catch(() => {
+        toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
+      });
   }
 
   function goBack() {
@@ -29,7 +59,11 @@ function NewProductionPage() {
             </div>
 
             <div className="card-body pt-2 pb-4">
-              <ProductionForm cancelFunction={goBack} submitFunction={handleSubmit} />
+              <ProductionForm
+                loading={loading}
+                cancelFunction={goBack} 
+                submitFunction={handleSubmit} 
+              />
             </div>
           </div>
         </div>
