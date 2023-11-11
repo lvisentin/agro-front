@@ -31,7 +31,12 @@ function ProductionForm({
   const formik = useFormik({
     initialValues: {
       plotId: production ?  production?.plot?.id : 0,
-      price: production ? production.price : 0,
+      price: production
+        ? production?.price.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })
+        : 0,
       quantity: production ? production.quantity : 0,
       measurementUnit: production ? production.measurementUnit : 0,
       executionDate: production ? production.executionDate : new Date()
@@ -39,6 +44,8 @@ function ProductionForm({
     validationSchema: newProductionValidationSchema,
     onSubmit: (values) => submitFunction(values)
   })
+
+  const isSubmitDisabled = formik.values.quantity <= 0 || !formik.dirty || !formik.isValid || getPlotsLoading;
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
@@ -59,7 +66,7 @@ function ProductionForm({
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           errors={formik.touched.price ? formik.errors.price : null}
-          name="marketPrice"
+          name="price"
           placeholder="Valor de mercado"
           label="Valor de mercado"
         />
@@ -98,7 +105,7 @@ function ProductionForm({
           errors={
             formik.touched.executionDate ? formik.errors.executionDate : null
           }
-          name="closedAt"
+          name="executionDate"
           placeholder="Data de fechamento"
           label="Insira a data"
         />
@@ -115,6 +122,7 @@ function ProductionForm({
 
         <PrimaryButton
           type="submit"
+          disabled={isSubmitDisabled}
           onClick={formik.handleSubmit}
         >
           Salvar

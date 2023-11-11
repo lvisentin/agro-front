@@ -1,23 +1,35 @@
 'use client';
 
+import DataTable from "@/components/DataTable/DataTable";
+import NoData from "@/components/NoData/NoData";
 import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
 import SecondaryButton from "@/components/SecondaryButton/SecondaryButton";
 import SelectField from "@/components/SelectField/SelectField";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
 import { GetPlotsQuery } from "@/shared/graphql/queries/GetPlots.query";
+import { GetProductionQuery } from "@/shared/graphql/queries/GetProduction.query";
+import { Production } from "@/shared/models/production/Production.model";
 import AnimatedPage from "@/shared/templates/AnimatedPage";
+import convertDateToGMT3 from "@/shared/utils/convertDateToGMT3";
 import { useQuery } from "@apollo/client";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from 'next/navigation';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ProductionPage() {
   const { push } = useRouter();
 
-  // useEffect(() => { TO DO: add api call when we get API
-  //   refetch();
-  // }, []);
+  const {
+    loading,
+    error,
+    data: { productions } = {},
+    refetch,
+  } = useQuery(GetProductionQuery, {notifyOnNetworkStatusChange: true});
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
 
   const [selectedPlot, setSelectedPlot] = useState(0);
@@ -36,33 +48,43 @@ function ProductionPage() {
     push(PageRoutes.NewProduction);
   }
 
-  // const columns = [ TO DO: add correct columns when API is ready
-  //   {
-  //     field: 'id',
-  //     name: 'Código',
-  //   },
-  //   {
-  //     field: 'plot',
-  //     name: 'Talhão',
-  //   },
-  //   {
-  //     field: 'markedValue',
-  //     name: 'Valor de mercado',
-  //   },
-  //   {
-  //     field: 'quantity',
-  //     name: 'Quantidade',
-  //   },
-  //   {
-  //     field: '',
-  //     name: 'Dia de fechamento',
-  //     transformData: (data: Productiviy) => {
-  //       return convertDateToGMT3(data.executionDate);
-  //     },
-  //   }
-  // ];
+  const columns = [
+    {
+      field: 'id',
+      name: 'Código',
+    },
+    {
+      field: 'plotId',
+      name: 'Talhão',
+    },
+    {
+      field: 'price',
+      name: 'Valor de mercado',
+    },
+    {
+      field: 'quantity',
+      name: 'Quantidade',
+    },
+    {
+      field: 'measurementUnit',
+      name: 'Tipo de item',
+    },
+    {
+      field: 'executionDate',
+      name: 'Dia de fechamento',
+      transformData: (data: Production) => {
+        return convertDateToGMT3(data.executionDate);
+      },
+    }
+  ];
 
-  
+  function goToEdit () {
+    console.log('edit');
+  }
+
+  function handleDelete () {
+    console.log('handleDelete');
+  }
 
   return (
     <AnimatedPage>
@@ -100,13 +122,18 @@ function ProductionPage() {
           </div>
         </div>
 
-        <div className="filter">
-          <div className="flex items-center gap-4">
-            {/* <SelectField
-              name="Productivities"
-            ></SelectField> */}
-          </div>
-        </div>
+        {loading ? (
+          <span className="loading loading-spinner loading-lg"></span>
+        ) : productions?.length > 0 ? (
+          <DataTable
+            data={productions}
+            columns={columns}
+            handleEditClick={goToEdit}
+            handleDeleteClick={handleDelete}
+          />
+        ) : (
+          <NoData message={'Não encontramos nenhum talhão cadastrada'} />
+        )}
       </div>
     </AnimatedPage>
   )
