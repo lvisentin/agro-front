@@ -30,7 +30,8 @@ function ProductionForm({
 
   const formik = useFormik({
     initialValues: {
-      plotId: production ?  production?.plot?.id : 0,
+      plotId: production ?  production.plot?.id : 0,
+      description: production ? production.description : '',
       price: production
         ? production?.price.toLocaleString('pt-BR', {
             style: 'currency',
@@ -61,6 +62,22 @@ function ProductionForm({
           placeholder="Selecione um talhão"
           label="Talhão"
         />
+
+        <TextField
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errors={
+            formik.touched.description
+              ? formik.errors.description
+              : null
+          }
+          type="textarea"
+          name="description"
+          placeholder="Descrição"
+          label="Descrição"
+        />
+
         <CurrencyField
           value={formik.values.price}
           onChange={formik.handleChange}

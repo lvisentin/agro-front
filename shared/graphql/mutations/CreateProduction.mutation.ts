@@ -5,6 +5,7 @@ export const CreateProductionMutation = gql`
     createProduction(createProductionInput: $input) {
       id
       plotId
+      description
       price
       quantity
       measurementUnit   

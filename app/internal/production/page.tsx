@@ -6,19 +6,23 @@ import PrimaryButton from "@/components/PrimaryButton/PrimaryButton";
 import SecondaryButton from "@/components/SecondaryButton/SecondaryButton";
 import SelectField from "@/components/SelectField/SelectField";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
+import { DeleteProductionMutation } from "@/shared/graphql/mutations/DeleteProduction.mutation";
 import { GetPlotsQuery } from "@/shared/graphql/queries/GetPlots.query";
 import { GetProductionQuery } from "@/shared/graphql/queries/GetProduction.query";
 import { Production } from "@/shared/models/production/Production.model";
 import AnimatedPage from "@/shared/templates/AnimatedPage";
 import convertDateToGMT3 from "@/shared/utils/convertDateToGMT3";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 function ProductionPage() {
   const { push } = useRouter();
+  const [selectedPlot, setSelectedPlot] = useState(0);
+  const [deleteProduction] = useMutation(DeleteProductionMutation);
 
   const {
     loading,
@@ -27,16 +31,25 @@ function ProductionPage() {
     refetch,
   } = useQuery(GetProductionQuery, {notifyOnNetworkStatusChange: true});
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
-
-  const [selectedPlot, setSelectedPlot] = useState(0);
   const {
     loading: getPlotsLoading,
     data: { plots } = {},
   } = useQuery(GetPlotsQuery, { notifyOnNetworkStatusChange: true });
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedPlot) {
+      refetch({ plotId: undefined });
+      return;
+    }
+
+    refetch({
+      plotId: Number(selectedPlot),
+    });
+  }, [selectedPlot, refetch]);
 
 
   function clearFilter() {
@@ -50,16 +63,23 @@ function ProductionPage() {
 
   const columns = [
     {
-      field: 'id',
-      name: 'Código',
-    },
-    {
       field: 'plotId',
       name: 'Talhão',
+      transformData : (data: Production) => data.plot?.name,
+
+    },
+    {
+      field: 'description',
+      name: 'Descrição'
     },
     {
       field: 'price',
       name: 'Valor de mercado',
+      transformData: (data: Production) =>
+        `${data.price.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })}`,
     },
     {
       field: 'quantity',
@@ -78,12 +98,23 @@ function ProductionPage() {
     }
   ];
 
-  function goToEdit () {
-    console.log('edit');
+  function goToEdit (productions: Production ) {
+    push(`${PageRoutes.NewProduction}/${productions.id}`);
   }
 
-  function handleDelete () {
-    console.log('handleDelete');
+  function handleDelete(production: Production) {
+    deleteProduction({ variables: { id: production.id } })
+      .then(() => {
+        toast.success('Produtividade deletada com sucesso', {
+          containerId: 'default',
+        });
+        refetch();
+      })
+      .catch(() =>
+        toast.error('Ocorreu um erro, tente novamente', {
+          containerId: 'default',
+        })
+      );
   }
 
   return (
