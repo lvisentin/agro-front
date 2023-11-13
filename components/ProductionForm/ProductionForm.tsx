@@ -28,6 +28,7 @@ function ProductionForm({
       ({ id: unit, name: translateMeasurementUnit(unit) }) as SelectOption
   );
 
+  console.log(production ? production : '');
   const formik = useFormik({
     initialValues: {
       plotId: production ?  production.plot?.id : 0,
