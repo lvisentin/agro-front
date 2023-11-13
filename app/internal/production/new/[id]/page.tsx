@@ -2,7 +2,7 @@
 
 import ProductionForm from '@/components/ProductionForm/ProductionForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
-import { UpdateProductMutation } from '@/shared/graphql/mutations/UpdateProduct.mutation';
+import { UpdateProductionMutation } from '@/shared/graphql/mutations/UpdateProduction.mutation';
 import { GetProductionByIdQuery } from '@/shared/graphql/queries/GetProductionById.query';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation, useQuery } from '@apollo/client';
@@ -24,7 +24,7 @@ function EditProducitonPage({ params: { id } }: PageProps) {
   } = useQuery(GetProductionByIdQuery, { variables: { id: Number(id) } });
 
   const [updateProduction, { loading: updateLoading }] =
-    useMutation(UpdateProductMutation);
+    useMutation(UpdateProductionMutation);
 
   function handleEdit(values: any) {
     let formattedValue = '';
