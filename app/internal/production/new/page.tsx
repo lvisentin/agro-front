@@ -27,6 +27,7 @@ function NewProductionPage() {
       variables: {
         input: {
           plotId: Number(values.plotId),
+          description: values.description,
           price: Number(formattedValue),
           quantity: Number(values.quantity),
           measurementUnit: values.measurementUnit,
@@ -49,7 +50,7 @@ function NewProductionPage() {
 
   return(
     <AnimatedPage>
-      <div className="new__plot__wrapper">
+      <div className="new__production__wrapper">
         <div className="prose flex justify-between w-full max-w-full"></div>
 
         <div className="page__content">

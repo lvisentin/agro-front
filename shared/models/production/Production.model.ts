@@ -4,6 +4,7 @@ export interface Production {
   id: number;
   plot?: Plot;
   plotId: number;
+  description: string
   price: number;
   quantity: number;
   measurementUnit: ProductionMeasurementUnit;
