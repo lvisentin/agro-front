@@ -1,8 +1,10 @@
 import { GetPlotsQuery } from '@/shared/graphql/queries/GetPlots.query';
-import { ProductivityMeasurementUnit } from '@/shared/models/productivity/Productivity.model';
+import { ProductionMeasurementUnit } from '@/shared/models/production/Production.model';
 import { getEnumValues, translateMeasurementUnit } from '@/shared/utils/getEnumValues';
+import { newProductionValidationSchema } from '@/shared/validationSchemas/NewProduction.schema';
 import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
+import { useEffect } from 'react';
 import CurrencyField from '../CurrencyInput/CurrencyField';
 import DateInput from '../DateInput/DateInput';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
@@ -10,18 +12,18 @@ import SecondaryButton from '../SecondaryButton/SecondaryButton';
 import SelectField from '../SelectField/SelectField';
 import { SelectOption } from '../SelectField/SelectField.model';
 import TextField from '../TextField/TextField';
-import { ProductivityFormProps } from "./ProductivityForm.model";
+import { ProductionFormProps } from "./ProductionForm.model";
 
-function ProductivityForm({
-  productivity,
+function ProductionForm({
+  production,
   submitFunction,
   cancelFunction,
-}: ProductivityFormProps) {
+}: ProductionFormProps) {
   const { loading: getPlotsLoading, data: { plots } = {} } =
     useQuery(GetPlotsQuery);
 
   const measurementUnits: SelectOption[] = getEnumValues(
-    ProductivityMeasurementUnit
+    ProductionMeasurementUnit
   ).map(
     (unit, i) =>
       ({ id: unit, name: translateMeasurementUnit(unit) }) as SelectOption
@@ -29,14 +31,46 @@ function ProductivityForm({
 
   const formik = useFormik({
     initialValues: {
-      plotId: productivity ?  productivity?.plot?.id : 0,
-      marketPrice: productivity ? productivity.marketPrice : 0,
-      quantity: productivity ? productivity.quantity : 0,
-      measurementUnit: productivity ? productivity.measurementUnit : 0,
-      closedAt: productivity ? productivity.closedAt : new Date()
+      plotId: production ?  production.plot?.id : 0,
+      description: production ? production.description : '',
+      price: production
+        ? production?.price.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })
+        : 0,
+      quantity: production ? production.quantity : 0,
+      measurementUnit: production ? production?.measurementUnit : 0,
+      executionDate: production ? production.executionDate : new Date()
     },
+    validationSchema: newProductionValidationSchema,
     onSubmit: (values) => submitFunction(values)
   })
+
+  useEffect(() => {
+    if (production) {
+      formik.setValues({
+        plotId: production?.plot?.id,
+        description: production?.description,
+        price: production?.price.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+        quantity: production?.quantity,
+        measurementUnit: production?.measurementUnit,
+        executionDate: production.executionDate
+      })
+
+
+      setTimeout(() => {
+        (document.getElementById('executionDateInput') as any).valueAsDate =
+          new Date(production.executionDate);
+      }, 100);
+    }
+
+  }, [production])
+
+  const isSubmitDisabled = formik.values.quantity <= 0 || !formik.dirty || !formik.isValid || getPlotsLoading;
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
@@ -52,12 +86,28 @@ function ProductivityForm({
           placeholder="Selecione um talhão"
           label="Talhão"
         />
-        <CurrencyField
-          value={formik.values.marketPrice}
+
+        <TextField
+          value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          errors={formik.touched.marketPrice ? formik.errors.marketPrice : null}
-          name="marketPrice"
+          errors={
+            formik.touched.description
+              ? formik.errors.description
+              : null
+          }
+          type="textarea"
+          name="description"
+          placeholder="Descrição"
+          label="Descrição"
+        />
+
+        <CurrencyField
+          value={formik.values.price}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errors={formik.touched.price ? formik.errors.price : null}
+          name="price"
           placeholder="Valor de mercado"
           label="Valor de mercado"
         />
@@ -90,15 +140,16 @@ function ProductivityForm({
 
 
         <DateInput
-          value={formik.values.closedAt}
+          value={formik.values.executionDate}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           errors={
-            formik.touched.closedAt ? formik.errors.closedAt : null
+            formik.touched.executionDate ? formik.errors.executionDate : null
           }
-          name="closedAt"
+          name="executionDate"
           placeholder="Data de fechamento"
           label="Insira a data"
+          id="executionDateInput"
         />
       </div>
 
@@ -108,11 +159,12 @@ function ProductivityForm({
           onClick={cancelFunction}
           className="mr-3"
         >
-          {productivity ? 'Fechar' : 'Cancelar'}
+          {production ? 'Fechar' : 'Cancelar'}
         </SecondaryButton>
 
         <PrimaryButton
           type="submit"
+          disabled={isSubmitDisabled}
           onClick={formik.handleSubmit}
         >
           Salvar
@@ -122,4 +174,4 @@ function ProductivityForm({
   )
 }
 
-export default ProductivityForm;
+export default ProductionForm;
