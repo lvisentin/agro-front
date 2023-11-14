@@ -69,7 +69,6 @@ function OperationForm({
     },
     validationSchema: newOperationValidationSchema,
     onSubmit: (values) => {
-      console.log('vaitomarnocu');
       if (submitFunction) {
         submitFunction(values);
       }

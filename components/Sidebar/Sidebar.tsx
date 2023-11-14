@@ -72,14 +72,13 @@ const menuItems: MenuItem[] = [
     route: '/internal/documents',
   },
   {
-    icon: faClipboard,
-    text: 'Acompanhamento',
-    route: '',
-    disabled: true
-  },
-  {
     icon: faGear,
     text: 'Produtividade',
+    route: '/internal/production',
+  },
+  {
+    icon: faClipboard,
+    text: 'Acompanhamento',
     route: '',
     disabled: true
   },
