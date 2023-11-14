@@ -4,6 +4,7 @@ import { getEnumValues, translateMeasurementUnit } from '@/shared/utils/getEnumV
 import { newProductionValidationSchema } from '@/shared/validationSchemas/NewProduction.schema';
 import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
+import { useEffect } from 'react';
 import CurrencyField from '../CurrencyInput/CurrencyField';
 import DateInput from '../DateInput/DateInput';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
@@ -28,7 +29,6 @@ function ProductionForm({
       ({ id: unit, name: translateMeasurementUnit(unit) }) as SelectOption
   );
 
-  console.log(production ? production : '');
   const formik = useFormik({
     initialValues: {
       plotId: production ?  production.plot?.id : 0,
@@ -40,12 +40,35 @@ function ProductionForm({
           })
         : 0,
       quantity: production ? production.quantity : 0,
-      measurementUnit: production ? production.measurementUnit : 0,
+      measurementUnit: production ? production?.measurementUnit : 0,
       executionDate: production ? production.executionDate : new Date()
     },
     validationSchema: newProductionValidationSchema,
     onSubmit: (values) => submitFunction(values)
   })
+
+  useEffect(() => {
+    if (production) {
+      formik.setValues({
+        plotId: production?.plot?.id,
+        description: production?.description,
+        price: production?.price.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+        quantity: production?.quantity,
+        measurementUnit: production?.measurementUnit,
+        executionDate: production.executionDate
+      })
+
+
+      setTimeout(() => {
+        (document.getElementById('executionDateInput') as any).valueAsDate =
+          new Date(production.executionDate);
+      }, 100);
+    }
+
+  }, [production])
 
   const isSubmitDisabled = formik.values.quantity <= 0 || !formik.dirty || !formik.isValid || getPlotsLoading;
 
@@ -126,6 +149,7 @@ function ProductionForm({
           name="executionDate"
           placeholder="Data de fechamento"
           label="Insira a data"
+          id="executionDateInput"
         />
       </div>
 
