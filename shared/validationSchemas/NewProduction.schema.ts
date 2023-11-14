@@ -5,6 +5,7 @@ export const newProductionValidationSchema = Yup.object().shape({
   plotId: Yup.number()
     .min(1, 'Selecione um talhão.')
     .required('Selecione um talhão.'),
+  description: Yup.string().required('Digite uma descrição.'),
   price: Yup.string().required('Digite um custo unitário.'),
   quantity: Yup.number()
     .min(0, 'Valor não pode ser negativo.')

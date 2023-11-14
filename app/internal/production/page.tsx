@@ -75,11 +75,13 @@ function ProductionPage() {
     {
       field: 'price',
       name: 'Valor de mercado',
-      transformData: (data: Production) =>
-        `${data.price.toLocaleString('pt-BR', {
+      transformData: (data: Production) => {
+        const totalPrice = data.price * data.quantity;
+        return `${totalPrice.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
-        })}`,
+        })}`;
+      }
     },
     {
       field: 'quantity',
