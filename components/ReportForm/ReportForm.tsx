@@ -3,6 +3,7 @@ import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query
 import { newReportValidationSchema } from '@/shared/validationSchemas/NewReport.schema';
 import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import DateInput from '../DateInput/DateInput';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
@@ -13,17 +14,44 @@ function ReportForm({
   submitFunction,
   loading = false,
 }: ReportFormProps) {
+  const [selectedPlot, setSelectedPlot] = useState<Number>(0);
+  const [selectedProperty, setSelectedProperty] = useState<Number>(0);
+
   const {
     loading: getPropertiesLoading,
     error: propertyError,
     data: { properties } = {},
-  } = useQuery(GetPropertiesQuery);
+    refetch
+  } = useQuery(GetPropertiesQuery, { notifyOnNetworkStatusChange: true });
 
   const {
     loading: getPlotsLoading,
     error: plotError,
     data: { plots } = {},
-  } = useQuery(GetPlotsQuery);
+    refetch: refetchPlots,
+  } = useQuery(GetPlotsQuery, { notifyOnNetworkStatusChange: true });
+
+  useEffect(() => {
+    if (!selectedProperty) {
+      refetchPlots({ propertyId: undefined });
+      return;
+    }
+
+    refetchPlots({
+      propertyId: Number(selectedProperty),
+    });
+  }, [selectedProperty, refetch]);
+
+  useEffect(() => {
+    if (!selectedPlot) {
+      refetch({ plotId: undefined });
+      return;
+    }
+
+    refetch({
+      plotId: Number(selectedPlot),
+    });
+  }, [selectedPlot, refetch]);
 
   const formik = useFormik({
     initialValues: {
@@ -49,26 +77,29 @@ function ReportForm({
       <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
         <SelectField
           options={properties?.length > 0 ? properties : []}
-          value={formik.values.propertyId}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          errors={formik.touched.propertyId ? formik.errors.propertyId : null}
-          disabled={getPropertiesLoading || loading}
+          value={selectedProperty}
+          onChange={(e) => {
+            setSelectedPlot(0);
+            setSelectedProperty(e.target.value);
+            formik.values.propertyId = e.target.value
+          }}
           name="propertyId"
+          disabled={getPropertiesLoading}
           placeholder="Selecione uma propriedade"
-          label="Propriedade"
+          label="Filtrar por propriedade"
         />
 
         <SelectField
           options={plots?.length > 0 ? plots : []}
-          value={formik.values.plotId}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          errors={formik.touched.plotId ? formik.errors.plotId : null}
-          disabled={getPlotsLoading || loading}
+          value={selectedPlot}
+          onChange={(e) => {
+            setSelectedPlot(e.target.value);
+            formik.values.plotId = e.target.value
+          }}
           name="plotId"
+          disabled={!selectedProperty || getPlotsLoading}
           placeholder="Selecione um talhão"
-          label="Talhão"
+          label="Filtrar por talhão"
         />
 
         <DateInput
@@ -93,7 +124,7 @@ function ReportForm({
           }
           name="endDate"
           placeholder="Data de fechamento"
-          label="Até "
+          label="Até"
         />
       </div>
 
