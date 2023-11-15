@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 export default function Reports() {
   function handleSubmit(values: Report) {
+    
     let apiUrl = `https://api.gesrural.com.br/analytics/reports/performance?plotId=${values.plotId}&propertyId=${values.propertyId}&startDate=${values.startDate}&endDate=${values.endDate}`;
 
     if (values.comment) {
