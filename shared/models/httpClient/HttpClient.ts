@@ -27,6 +27,22 @@ class HttpClient {
       return responseJson;
     });
   }
+
+  async getPdf(route: string) {
+    const response = await fetch(route, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/pdf',
+        Authorization:`Bearer ${localStorage.getItem('authorization')}`
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro na requisição GET: ${response.statusText}`);
+    }
+
+    return response.blob();
+  }
 }
 
 export const httpClient = new HttpClient();
