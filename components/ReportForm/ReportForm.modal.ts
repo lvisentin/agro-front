@@ -1,7 +1,7 @@
+import { Report } from "@/shared/models/reports/reports.model";
 
-export interface PurcharseFormProps {
-  // report?: Report;
-  submitFunction: (values: any, prods: any) => void;
-  cancelFunction: () => void;
-  disabled?: boolean;
+export interface ReportFormProps {
+  report?: Report;
+  submitFunction: (values: any) => void;
+  loading?: boolean;
 }
