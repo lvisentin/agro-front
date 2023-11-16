@@ -28,7 +28,6 @@ function EditProducitonPage({ params: { id } }: PageProps) {
 
   function handleEdit(values: any) {
     const formattedPrice = values.price.replace('R$', '').replace(/\./g, '').replace(',', '.')
-    console.log(formattedPrice);
 
     const variables = {
       id: production.id,
