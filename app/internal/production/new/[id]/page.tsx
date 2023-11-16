@@ -27,22 +27,15 @@ function EditProducitonPage({ params: { id } }: PageProps) {
     useMutation(UpdateProductionMutation);
 
   function handleEdit(values: any) {
-    let formattedValue = '';
+    const formattedPrice = values.price.replace('R$', '').replace(/\./g, '').replace(',', '.')
+    console.log(formattedPrice);
 
-    if (values.price.includes(',')) {
-      const splitted = values.price.split('R$')[1].split(',');
-      formattedValue = `${splitted[0]}.${splitted[1]}`;
-    } else {
-      formattedValue = values.price.split('R$')[1];
-    }
-
-    
     const variables = {
       id: production.id,
       input: {
         plotId: Number(values.plotId),
         description: values.description,
-        price: Number(formattedValue),
+        price: Number(formattedPrice),
         quantity: Number(values.quantity),
         measurementUnit: values.measurementUnit,
         executionDate: values.executionDate
@@ -54,9 +47,7 @@ function EditProducitonPage({ params: { id } }: PageProps) {
         toast.success('Produtividade atualizada com sucesso.', {containerId: 'default'});
         router.push(PageRoutes.ListProduction);
       })
-      .catch((err) => {
-        console.log('err', err);
-        
+      .catch(() => {
         toast.error('Ocorreu um erro, tente novamente', {
           containerId: 'default',
         });
