@@ -18,6 +18,7 @@ function ProductionForm({
   production,
   submitFunction,
   cancelFunction,
+  loading
 }: ProductionFormProps) {
   const { loading: getPlotsLoading, data: { plots } = {} } =
     useQuery(GetPlotsQuery);
@@ -31,7 +32,7 @@ function ProductionForm({
 
   const formik = useFormik({
     initialValues: {
-      plotId: production ?  production.plot?.id : 0,
+      plotId: production ? production.plotId : 0,
       description: production ? production.description : '',
       price: production
         ? production?.price.toLocaleString('pt-BR', {
@@ -40,7 +41,7 @@ function ProductionForm({
           })
         : 0,
       quantity: production ? production.quantity : 0,
-      measurementUnit: production ? production?.measurementUnit : 0,
+      measurementUnit: production ? production?.measurementUnit : ProductionMeasurementUnit.kg,
       executionDate: production ? production.executionDate : new Date()
     },
     validationSchema: newProductionValidationSchema,
@@ -50,7 +51,7 @@ function ProductionForm({
   useEffect(() => {
     if (production) {
       formik.setValues({
-        plotId: production?.plot?.id,
+        plotId: production?.plotId,
         description: production?.description,
         price: production?.price.toLocaleString('pt-BR', {
           style: 'currency',
@@ -62,10 +63,17 @@ function ProductionForm({
       })
 
 
-      setTimeout(() => {
-        (document.getElementById('executionDateInput') as any).valueAsDate =
-          new Date(production.executionDate);
-      }, 100);
+      const setExecutionDate = () => {
+        const executionDateInput = document.getElementById('executionDateInput') as HTMLInputElement;
+  
+        if (executionDateInput) {
+          executionDateInput.valueAsDate = new Date(production.executionDate);
+        } else {
+          requestAnimationFrame(setExecutionDate);
+        }
+      };
+  
+      setExecutionDate();
     }
 
   }, [production])
@@ -77,7 +85,7 @@ function ProductionForm({
       <div className="inputs flex flex-row flex-wrap items-center justify-start gap-4">
         <SelectField
           name="plotId"
-          disabled={getPlotsLoading}
+          disabled={getPlotsLoading || loading}
           options={plots?.length > 0 ? plots : []}
           value={formik.values.plotId}
           onChange={formik.handleChange}
@@ -93,11 +101,12 @@ function ProductionForm({
           onBlur={formik.handleBlur}
           errors={
             formik.touched.description
-              ? formik.errors.description
-              : null
+            ? formik.errors.description
+            : null
           }
-          type="textarea"
+          disabled={loading}
           name="description"
+          type="textarea"
           placeholder="Descrição"
           label="Descrição"
         />
@@ -107,6 +116,8 @@ function ProductionForm({
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           errors={formik.touched.price ? formik.errors.price : null}
+          disabled={loading}
+          
           name="price"
           placeholder="Valor de mercado"
           label="Valor de mercado"
@@ -121,6 +132,7 @@ function ProductionForm({
               ? formik.errors.quantity
               : null
           }
+          disabled={loading}
           type="number"
           name="quantity"
           placeholder="Quantidade"
@@ -129,6 +141,7 @@ function ProductionForm({
 
         <SelectField
           name="measurementUnit"
+          disabled={loading}
           options={measurementUnits}
           value={formik.values.measurementUnit}
           onChange={formik.handleChange}
@@ -146,6 +159,7 @@ function ProductionForm({
           errors={
             formik.touched.executionDate ? formik.errors.executionDate : null
           }
+          disabled={loading}
           name="executionDate"
           placeholder="Data de fechamento"
           label="Insira a data"

@@ -15,20 +15,14 @@ function NewProductionPage() {
   const [CreateProduction, { loading }] = useMutation(CreateProductionMutation);
 
   function handleSubmit(values: any) {
-    let formattedValue = '';
+    const formattedPrice = values.price.replace('R$', '').replace('.', '').replace(',', '.')
 
-    if (values.price.includes(',')) {
-      const splitted = values.price.split('R$')[1].split(',');
-      formattedValue = `${splitted[0]}.${splitted[1]}`;
-    } else {
-      formattedValue = values.price.split('R$')[1];
-    }
     CreateProduction({
       variables: {
         input: {
           plotId: Number(values.plotId),
           description: values.description,
-          price: Number(formattedValue),
+          price: Number(formattedPrice),
           quantity: Number(values.quantity),
           measurementUnit: values.measurementUnit,
           executionDate: values.executionDate
