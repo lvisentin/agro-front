@@ -6,6 +6,7 @@ import { UpdateProductMutation } from '@/shared/graphql/mutations/UpdateProduct.
 import { GetProductByIdQuery } from '@/shared/graphql/queries/GetProductById.query';
 
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import convertCurrency from '@/shared/utils/convertCurrency';
 import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -29,21 +30,13 @@ function EditProductPage({ params: { id } }: PageProps) {
   );
 
   function handleEdit(values: any) {
-    let formattedValue = '';
-
-    if (values.unitPrice.includes(',')) {
-      const splitted = values.unitPrice.split('R$')[1].split(',');
-      formattedValue = `${splitted[0]}.${splitted[1]}`;
-    } else {
-      formattedValue = values.unitPrice.split('R$')[1];
-    }
-
+  
     const variables = {
       id: product.id,
       input: {
         ...values,
         quantity: Number(values.quantity),
-        unitPrice: Number(formattedValue),
+        unitPrice: convertCurrency(values.unitPrice),
         minimumQuantity: Number(values.minimumQuantity),
         categoryId: Number(values.categoryId),
         propertyId: Number(values.propertyId),
