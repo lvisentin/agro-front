@@ -11,7 +11,6 @@ import {
   faFileLines,
   faFlag,
   faFolder,
-  faGear,
   faReceipt,
   faShoppingCart,
   faTractor,
@@ -73,8 +72,13 @@ const menuItems: MenuItem[] = [
     route: '/internal/documents',
   },
   {
-    icon: faGear,
-    text: 'Produtividade',
+    icon: faFileLines,
+    text: 'Relatórios',
+    route: '/internal/reports',
+  },
+  {
+    icon: faFlag,
+    text: 'Produção',
     route: '/internal/production',
   },
   {
@@ -85,12 +89,6 @@ const menuItems: MenuItem[] = [
   {
     icon: faClipboard,
     text: 'Acompanhamento',
-    route: '',
-    disabled: true,
-  },
-  {
-    icon: faFlag,
-    text: 'Produção',
     route: '',
     disabled: true,
   },
