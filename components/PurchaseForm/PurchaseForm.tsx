@@ -118,7 +118,7 @@ function PurcharseForm({
       ...formik.values,
       code: '',
       amountPerUnit: 0,
-      totalCost: 0,
+      totalCost: '',
     });
 
     formik.setFieldValue('code', '');
@@ -138,7 +138,7 @@ function PurcharseForm({
       description: purchase ? purchase.description : '',
       property: '',
       propertyId: purchase ? purchase.property.id : 0,
-      totalCost: 0,
+      totalCost: '',
       units: 0,
       code: '',
       amountPerUnit: 0,

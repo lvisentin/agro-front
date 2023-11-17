@@ -4,6 +4,7 @@ import ProductionForm from "@/components/ProductionForm/ProductionForm";
 import { PageRoutes } from "@/shared/enums/PageRoutes";
 import { CreateProductionMutation } from "@/shared/graphql/mutations/CreateProduction.mutation";
 import AnimatedPage from "@/shared/templates/AnimatedPage";
+import convertCurrency from "@/shared/utils/convertCurrency";
 import { useMutation } from "@apollo/client";
 import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify";
@@ -15,14 +16,12 @@ function NewProductionPage() {
   const [CreateProduction, { loading }] = useMutation(CreateProductionMutation);
 
   function handleSubmit(values: any) {
-    const formattedPrice = values.price.replace('R$', '').replace('.', '').replace(',', '.')
-
     CreateProduction({
       variables: {
         input: {
           plotId: Number(values.plotId),
           description: values.description,
-          price: Number(formattedPrice),
+          price: convertCurrency(values.price),
           quantity: Number(values.quantity),
           measurementUnit: values.measurementUnit,
           executionDate: values.executionDate

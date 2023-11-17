@@ -5,6 +5,7 @@ import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { UpdateProductionMutation } from '@/shared/graphql/mutations/UpdateProduction.mutation';
 import { GetProductionByIdQuery } from '@/shared/graphql/queries/GetProductionById.query';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import convertCurrency from '@/shared/utils/convertCurrency';
 import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -34,7 +35,7 @@ function EditProducitonPage({ params: { id } }: PageProps) {
       input: {
         plotId: Number(values.plotId),
         description: values.description,
-        price: Number(formattedPrice),
+        price: convertCurrency(values.price),
         quantity: Number(values.quantity),
         measurementUnit: values.measurementUnit,
         executionDate: values.executionDate
