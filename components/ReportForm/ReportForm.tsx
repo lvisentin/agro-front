@@ -58,8 +58,8 @@ function ReportForm({
       plotId: 0,
       propertyId: 0,
       comment: '',
-      startDate: new Date(),
-      endDate: new Date()
+      startDate: '',
+      endDate: ''
     },
     validationSchema: newReportValidationSchema,
     onSubmit: (values) => submitFunction(values),
