@@ -3,6 +3,8 @@
 import DataTable from '@/components/DataTable/DataTable';
 import NoData from '@/components/NoData/NoData';
 import PrimaryButton from '@/components/PrimaryButton/PrimaryButton';
+import SecondaryButton from '@/components/SecondaryButton/SecondaryButton';
+import TextField from '@/components/TextField/TextField';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { DeleteProductMutation } from '@/shared/graphql/mutations/DeleteProduct.mutation';
 import { GetProductsQuery } from '@/shared/graphql/queries/GetProducts.query';
@@ -11,12 +13,14 @@ import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useMutation, useQuery } from '@apollo/client';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { debounce } from 'lodash';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 function SupplyPage() {
   const { push } = useRouter();
+  const [selectedProducty, setSelectedProducty] = useState('');
 
   const {
     loading,
@@ -30,10 +34,6 @@ function SupplyPage() {
   );
 
   const columns = [
-    // {
-    //   field: 'code',
-    //   name: 'Código',
-    // },
     {
       field: 'name',
       name: 'Nome',
@@ -78,6 +78,26 @@ function SupplyPage() {
     refetch();
   }, []);
 
+  const debouncedRefetch = debounce((filterValue: string) => {
+    refetch({
+      name: filterValue,
+    });
+  }, 2000);
+
+  useEffect(() => {
+    if (!selectedProducty) {
+      refetch({ name: undefined });
+      return;
+    }
+
+    debouncedRefetch(selectedProducty);
+    return () => debouncedRefetch.cancel();
+  }, [selectedProducty, debouncedRefetch]);
+
+  function clearFilter() {
+    setSelectedProducty('');
+  }
+
   if (loading || deleteLoading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
@@ -96,6 +116,28 @@ function SupplyPage() {
             <FontAwesomeIcon icon={faPlus} />
             Novo produto
           </PrimaryButton>
+        </div>
+
+        <div className="filter">
+          <div className="flex items-center gap-4">
+            <TextField
+              value={selectedProducty}
+              disabled={loading}
+              onChange={(e) => {
+                setSelectedProducty(e.target.value);
+              }}
+              name="property"
+              placeholder="Filtrar por nome"
+              label="Nome"
+            />
+            <SecondaryButton
+              type="button"
+              onClick={clearFilter}
+              className="mt-4"
+            >
+              Limpar filtro
+            </SecondaryButton>
+          </div>
         </div>
 
         {products?.length > 0 ? (
