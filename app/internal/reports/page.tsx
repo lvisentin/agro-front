@@ -4,10 +4,14 @@ import ReportForm from '@/components/ReportForm/ReportForm';
 import { httpClient } from '@/shared/models/httpClient/HttpClient';
 import { Report } from '@/shared/models/reports/reports.model';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function Reports() {
+  const [loading, setLoading] = useState(false);
+
   function handleSubmit(values: Report) {
+    setLoading(true)
     
     let apiUrl = `https://api.gesrural.com.br/analytics/reports/performance?plotId=${values.plotId}&propertyId=${values.propertyId}&startDate=${values.startDate}&endDate=${values.endDate}`;
 
@@ -32,7 +36,8 @@ export default function Reports() {
       toast.error('Ocorreu um erro, tente novamente', {
         containerId: 'default',
       });
-    });
+    })
+    .finally(() => { setLoading(false) })
   }
 
   return (
@@ -49,6 +54,7 @@ export default function Reports() {
             <div className="card-body pt-2 pb-4">
               <ReportForm
                 submitFunction={handleSubmit}
+                loading={loading}
               />
             </div>
           </div>
