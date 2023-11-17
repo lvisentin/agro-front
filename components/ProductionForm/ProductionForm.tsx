@@ -39,7 +39,7 @@ function ProductionForm({
             style: 'currency',
             currency: 'BRL',
           })
-        : 0,
+        : '',
       quantity: production ? production.quantity : 0,
       measurementUnit: production ? production?.measurementUnit : ProductionMeasurementUnit.kg,
       executionDate: production ? production.executionDate : new Date()

@@ -43,10 +43,6 @@ function PurcharseForm({
   }, [purchase]);
 
   const columns = [
-    // {
-    //   field: 'productId',
-    //   name: 'Código',
-    // },
     {
       field: 'product',
       name: 'Produto',
@@ -94,7 +90,6 @@ function PurcharseForm({
   ];
 
   function getData(item: any) {
-    console.log(item);
     if (!item) {
       setSelectedProduct(undefined);
       return;
@@ -105,10 +100,6 @@ function PurcharseForm({
       productId: item.id,
     });
   }
-
-  useEffect(() => {
-    console.log('selectedProduct', selectedProduct);
-  }, [selectedProduct]);
 
   function onAddProduct() {
     const newProduct = {
@@ -127,10 +118,9 @@ function PurcharseForm({
       ...formik.values,
       code: '',
       amountPerUnit: 0,
-      totalCost: 0,
+      totalCost: '',
     });
 
-    console.log(document.getElementById('productSelect'));
     formik.setFieldValue('code', '');
     setSelectedProduct(undefined);
   }
@@ -152,7 +142,7 @@ function PurcharseForm({
       description: purchase ? purchase.description : '',
       property: '',
       propertyId: purchase ? purchase.property.id : 0,
-      totalCost: 0,
+      totalCost: '',
       units: 0,
       code: '',
       amountPerUnit: 0,
@@ -190,7 +180,6 @@ function PurcharseForm({
               onChange={(e) => {
                 formik.handleChange(e);
                 refetchProducts({ propertyId: Number(e.target.value) });
-                console.log(products);
               }}
               onBlur={formik.handleBlur}
               disabled={propertiesLoading || disabled}
@@ -213,7 +202,6 @@ function PurcharseForm({
               options={products?.length > 0 ? products : []}
               value={formik.values.code}
               onChange={(e) => {
-                console.log('test');
                 formik.setFieldValue('code', e.value);
                 getData(e);
               }}
