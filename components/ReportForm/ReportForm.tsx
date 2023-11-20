@@ -58,8 +58,8 @@ function ReportForm({
       plotId: 0,
       propertyId: 0,
       comment: '',
-      startDate: new Date(),
-      endDate: new Date()
+      startDate: '',
+      endDate: ''
     },
     validationSchema: newReportValidationSchema,
     onSubmit: (values) => submitFunction(values),
@@ -69,7 +69,7 @@ function ReportForm({
     toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
-  const isSubmitDisabled = !formik.dirty || !formik.isValid;
+  const isSubmitDisabled = !formik.dirty || !formik.isValid || getPlotsLoading || loading;
 
 
   return (
@@ -84,7 +84,7 @@ function ReportForm({
             formik.values.propertyId = e.target.value
           }}
           name="propertyId"
-          disabled={getPropertiesLoading}
+          disabled={getPropertiesLoading || loading}
           placeholder="Selecione uma propriedade"
           label="Filtrar por propriedade"
         />
@@ -97,7 +97,7 @@ function ReportForm({
             formik.values.plotId = e.target.value
           }}
           name="plotId"
-          disabled={!selectedProperty || getPlotsLoading}
+          disabled={!selectedProperty || getPlotsLoading || loading}
           placeholder="Selecione um talhão"
           label="Filtrar por talhão"
         />
@@ -106,6 +106,7 @@ function ReportForm({
           value={formik.values.startDate}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          disabled={getPlotsLoading || loading}
           errors={
             formik.touched.startDate ? formik.errors.startDate : null
           }
@@ -119,6 +120,7 @@ function ReportForm({
           value={formik.values.endDate}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          disabled={getPlotsLoading || loading}
           errors={
             formik.touched.endDate ? formik.errors.endDate : null
           }
@@ -138,6 +140,7 @@ function ReportForm({
               ? formik.errors.comment
               : null
           }
+          disabled={getPlotsLoading || loading}
           name="comment"
           placeholder="Comentário"
           label="Comentário (Opcional)"
