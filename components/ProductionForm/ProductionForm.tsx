@@ -42,7 +42,7 @@ function ProductionForm({
         : '',
       quantity: production ? production.quantity : 0,
       measurementUnit: production ? production?.measurementUnit : ProductionMeasurementUnit.kg,
-      executionDate: production ? production.executionDate : new Date()
+      executionDate: production ? production.executionDate : ''
     },
     validationSchema: newProductionValidationSchema,
     onSubmit: (values) => submitFunction(values)
