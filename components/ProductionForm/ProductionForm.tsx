@@ -135,8 +135,8 @@ function ProductionForm({
           disabled={loading}
           type="number"
           name="quantity"
-          placeholder="Quantidade"
-          label="Quantidade"
+          placeholder="Produção por HA"
+          label="Produção por HA"
         />
 
         <SelectField
