@@ -85,7 +85,7 @@ function ProductionPage() {
     },
     {
       field: 'quantity',
-      name: 'Quantidade',
+      name: 'Produção por HA',
     },
     {
       field: 'measurementUnit',
