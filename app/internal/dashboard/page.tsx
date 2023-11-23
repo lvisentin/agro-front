@@ -12,13 +12,6 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function Home() {
-  const {
-    loading,
-    error,
-    refetch,
-    data: { analyticsDashboard } = {},
-  } = useQuery(GetAnalyticsQuery);
-
   const { loading: getPropertiesLoading, data: { properties } = {} } =
     useQuery(GetPropertiesQuery);
 
@@ -59,6 +52,20 @@ export default function Home() {
       propertyId: Number(selectedProperty),
     });
   }, [selectedProperty, refetchPlots]);
+
+  const { loading, error, refetch, data: { analyticsDashboard } = {}} = 
+  useQuery(GetAnalyticsQuery);
+
+  useEffect(() => {
+    if (!selectedProperty) {
+      refetch({ propertyId: undefined });
+      return;
+    }
+
+    refetch({
+      propertyId: Number(selectedProperty),
+    });
+  }, [selectedProperty])
 
   useEffect(() => {
     refetch();
