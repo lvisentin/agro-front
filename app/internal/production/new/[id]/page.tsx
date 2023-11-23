@@ -72,7 +72,7 @@ function EditProducitonPage({ params: { id } }: PageProps) {
         <div className="page__content">
           <div className="card w-full bg-base-100 shadow-xl rounded-md">
             <div className="card-title px-6 py-4">
-              <h2 className="prose-h2">Editar Produtividade</h2>
+              <h2 className="prose-h2">Editar Produção</h2>
             </div>
 
             <div className="card-body pt-2 pb-4">
