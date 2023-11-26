@@ -69,8 +69,17 @@ function ReportForm({
     toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
-  const isSubmitDisabled = !formik.dirty || !formik.isValid || getPlotsLoading || loading;
+  const formatDate = (date: any) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
+  const today = new Date();
+  const formattedToday = formatDate(today);
+
+  const isSubmitDisabled = !formik.dirty || !formik.isValid || getPlotsLoading || loading;
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
@@ -111,10 +120,10 @@ function ReportForm({
             formik.touched.startDate ? formik.errors.startDate : null
           }
           name="startDate"
+          max={formattedToday}
           placeholder="Data de abertura"
           label="De"
         />
-
 
         <DateInput
           value={formik.values.endDate}
@@ -127,6 +136,8 @@ function ReportForm({
           name="endDate"
           placeholder="Data de fechamento"
           label="Até"
+          max={formattedToday}
+          min={formik.values.startDate}
         />
       </div>
 

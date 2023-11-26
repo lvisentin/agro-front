@@ -15,6 +15,8 @@ export default function TextField({
   onClick,
   onBlur,
   onKeyDown,
+  max,
+  min,
   type,
   value,
   name,
@@ -80,6 +82,8 @@ export default function TextField({
             value={value}
             name={name}
             type={type || 'text'}
+            max={max}
+            min={min}
             onClick={onClick}
             disabled={disabled}
             placeholder={placeholder}
