@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { PieChartProps } from './PieChartProps.model';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
+import { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
+import { PieChartProps } from './PieChartProps.model';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
