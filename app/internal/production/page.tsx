@@ -76,7 +76,7 @@ function ProductionPage() {
       field: 'price',
       name: 'Valor de mercado',
       transformData: (data: Production) => {
-        const totalPrice = data.price * data.quantity;
+        const totalPrice = data.price * data.quantityPerHectare;
         return `${totalPrice.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
@@ -84,7 +84,7 @@ function ProductionPage() {
       }
     },
     {
-      field: 'quantity',
+      field: 'quantityPerHectare',
       name: 'Produção por HA',
     },
     {

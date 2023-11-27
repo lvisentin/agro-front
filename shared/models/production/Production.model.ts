@@ -6,7 +6,7 @@ export interface Production {
   plotId: number;
   description: string
   price: number;
-  quantity: number;
+  quantityPerHectare: number;
   measurementUnit: ProductionMeasurementUnit;
   executionDate: Date;
 }
