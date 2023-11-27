@@ -57,7 +57,7 @@ function ProductionForm({
           style: 'currency',
           currency: 'BRL',
         }),
-        quantity: production?.quantity,
+        quantity: production?.quantityPerHectare,
         measurementUnit: production?.measurementUnit,
         executionDate: production.executionDate
       })
