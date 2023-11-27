@@ -1,11 +1,13 @@
 import { GetProductsQuery } from '@/shared/graphql/queries/GetProducts.query';
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import { Product } from '@/shared/models/products/Products.model';
+import convertCurrency from '@/shared/utils/convertCurrency';
 import { NewPurchaseValidationSchema } from '@/shared/validationSchemas/NewPurchase.schema';
 import { useQuery } from '@apollo/client';
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
 import CurrencyField from '../CurrencyInput/CurrencyField';
 import DataTable from '../DataTable/DataTable';
 import LoadingButton from '../LoadingButton/LoadingButton';
@@ -24,14 +26,16 @@ function PurcharseForm({
   pageTitle,
   loading,
 }: PurcharseFormProps) {
-  const [isEditing, setIsEditing] = useState(false);
   const [purchaseProduct, setPurchaseProduct] = useState<any>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>({});
   const {
     data: { products } = {},
     loading: getProductsLoading,
     refetch: refetchProducts,
-  } = useQuery(GetProductsQuery, { notifyOnNetworkStatusChange: true, variables: {propertyId: 0} });
+  } = useQuery(GetProductsQuery, {
+    notifyOnNetworkStatusChange: true,
+    variables: { propertyId: 0 },
+  });
 
   const { loading: propertiesLoading, data: { properties } = {} } =
     useQuery(GetPropertiesQuery);
@@ -76,7 +80,7 @@ function PurcharseForm({
 
         if (!purchase) {
           totalCost =
-            Number(data.amountPerUnit) * data.unitPrice.split('R$')[1];
+            Number(data.amountPerUnit) * convertCurrency(data.unitPrice);
         } else {
           totalCost = data.units * data.unitPrice;
         }
@@ -131,10 +135,6 @@ function PurcharseForm({
     });
     setPurchaseProduct(filtered);
   }
-
-  //  function goToEdit() {
-  //   setIsEditing(true);
-  // }
 
   const formik = useFormik({
     initialValues: {
@@ -237,7 +237,7 @@ function PurcharseForm({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               errors={formik.touched.totalCost ? formik.errors.totalCost : null}
-              disabled={disabled || isEditing}
+              disabled={disabled}
               name="totalCost"
               placeholder="Custo Unitário (por embalagem)"
               label="Custo Unitário (por embalagem)"
@@ -267,7 +267,7 @@ function PurcharseForm({
                 !selectedProduct?.productId
               }
             >
-              {isEditing ? 'Editar' : 'Adicionar'}
+              Adicionar
             </PrimaryButton>
           </div>
         </div>
