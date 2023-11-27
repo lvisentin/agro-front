@@ -22,7 +22,7 @@ function NewProductionPage() {
           plotId: Number(values.plotId),
           description: values.description,
           price: convertCurrency(values.price),
-          quantity: Number(values.quantity),
+          quantityPerHectare : Number(values.quantity),
           measurementUnit: values.measurementUnit,
           executionDate: values.executionDate
         }
