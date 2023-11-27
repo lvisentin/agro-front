@@ -22,6 +22,8 @@ export interface TextFieldProps {
   onClick?: (e: ChangeEvent<any>) => any;
   onBlur?: (e: FocusEvent<any, Element>) => any;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
+  min?: string,
+  max?: string
   type?: string;
   value?: any;
   name: string;
