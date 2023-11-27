@@ -7,7 +7,7 @@ export const CreateProductionMutation = gql`
       plotId
       description
       price
-      quantity
+      quantityPerHectare
       measurementUnit   
       executionDate
     }
