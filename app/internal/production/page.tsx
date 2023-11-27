@@ -123,11 +123,11 @@ function ProductionPage() {
     <AnimatedPage>
       <div className="production_wrapper">
         <div className="prose flex justify-between w-full max-w-full">
-          <h2 className="prose-h2">Produtividade</h2>
+          <h2 className="prose-h2">Produção</h2>
 
           <PrimaryButton onClick={goToNewProduction}>
               <FontAwesomeIcon icon={faPlus} />
-              Novo relatório
+              Nova Produção
           </PrimaryButton>
         </div>
 
