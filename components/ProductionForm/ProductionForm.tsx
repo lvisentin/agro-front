@@ -40,7 +40,7 @@ function ProductionForm({
             currency: 'BRL',
           })
         : '',
-      quantity: production ? production.quantity : 0,
+      quantity: production ? production.quantityPerHectare : 0,
       measurementUnit: production ? production?.measurementUnit : ProductionMeasurementUnit.kg,
       executionDate: production ? production.executionDate : ''
     },
