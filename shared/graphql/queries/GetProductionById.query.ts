@@ -7,7 +7,7 @@ export const GetProductionByIdQuery = gql`
       plotId
       description
       price
-      quantity
+      quantityPerHectare
       measurementUnit
       executionDate
     }
