@@ -11,7 +11,7 @@ export const GetProductionQuery = gql`
       }
       description
       price
-      quantity
+      quantityPerHectare
       measurementUnit
       executionDate
       createdAt
