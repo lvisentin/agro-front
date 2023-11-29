@@ -15,86 +15,73 @@ export default function Home() {
   const { loading: getPropertiesLoading, data: { properties } = {} } =
     useQuery(GetPropertiesQuery);
 
-  const { loading: getPlotsLoading, data: { plots } = {}, refetch: refetchPlots} = 
-    useQuery(GetPlotsQuery);
-    
+  const {
+    loading: getPlotsLoading,
+    data: { plots } = {},
+    refetch: refetchPlots,
+  } = useQuery(GetPlotsQuery);
+
+  const {
+    loading,
+    error,
+    refetch,
+    data: { analyticsDashboard } = {},
+  } = useQuery(GetAnalyticsQuery);
+
+  // TODO: colocar isso num service
   const [userData, setUserData] = useState<any>(null);
   const [selectedProperty, setSelectedProperty] = useState(0);
   const [selectedPlot, setSelectedPlot] = useState(0);
 
+  function handlePlotChange(e: any) {
+    setSelectedPlot(e.target.value);
+  }
+
+  function handlePropertyChange(e: any) {
+    setSelectedProperty(e.target.value);
+
+    if (!e.target.value) {
+      refetch({ propertyId: undefined });
+      refetchPlots({ propertyId: undefined });
+      return;
+    }
+
+    refetch({ propertyId: Number(e.target.value) });
+    refetchPlots({
+      propertyId: Number(e.target.value),
+    });
+  }
 
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem('userData')!);
     if (localData) {
       setUserData(localData);
     }
-  }, []);
 
-  useEffect(() => {
-    if (!getPropertiesLoading && properties && properties.length > 0 && selectedProperty === 0) {
-      setSelectedProperty(properties[0].id);
-    }
-  }, [getPropertiesLoading, properties, selectedProperty]);
-
-  useEffect(() => {
-    if (!getPlotsLoading && plots && plots.length > 0 && selectedPlot === 0) {
-      setSelectedPlot(plots[0].id);
-    }
-  }, [getPlotsLoading, plots, selectedPlot]);
-
-  useEffect(() => {
-    if (!selectedProperty) {
-      refetchPlots({ propertyId: undefined });
-      return;
-    }
-
-    refetchPlots({
-      propertyId: Number(selectedProperty),
-    });
-  }, [selectedProperty, refetchPlots]);
-
-  const { loading, error, refetch, data: { analyticsDashboard } = {}} = 
-  useQuery(GetAnalyticsQuery);
-
-  useEffect(() => {
-    if (!selectedProperty) {
-      refetch({ propertyId: undefined });
-      return;
-    }
-
-    refetch({
-      propertyId: Number(selectedProperty),
-    });
-  }, [selectedProperty])
-
-  useEffect(() => {
     refetch();
-  }, [])
+  }, []);
 
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
   }
 
   if (error) {
-    toast.error('Ocorreu um erro, tente novamente', {containerId: 'default'});
+    toast.error('Ocorreu um erro, tente novamente', { containerId: 'default' });
   }
 
   return (
     <AnimatedPage>
       <div className="analytics_wrapper">
-       <div className="prose flex justify-between w-full max-w-full">
+        <div className="prose flex justify-between w-full max-w-full">
           <h2 className="prose-h2">Olá, {userData?.name}!</h2>
         </div>
-        <div className='filter'>
-          <div className='flex items-center gap-4'>
+        <div className="filter">
+          <div className="flex items-center gap-4">
             <SelectField
               name="property"
               options={properties}
               value={selectedProperty}
-              onChange={(e) => {
-                setSelectedPlot(0)
-                setSelectedProperty(e.target.value);
-              }}
+              onChange={handlePropertyChange}
               disabled={getPropertiesLoading}
               placeholder="Selecione uma propriedade"
               label="Filtrar por propriedade"
@@ -103,9 +90,7 @@ export default function Home() {
             <SelectField
               options={plots?.length > 0 ? plots : []}
               value={selectedPlot}
-              onChange={(e) => {
-                setSelectedPlot(e.target.value);
-              }}
+              onChange={handlePlotChange}
               name="plotId"
               disabled={!selectedProperty || getPlotsLoading || loading}
               placeholder="Selecione um talhão"
@@ -116,27 +101,33 @@ export default function Home() {
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-1 mb-5">
           {[
             {
-              title: "Operações no último mês",
+              title: 'Operações no último mês',
               text: analyticsDashboard?.operationsCount,
-              color: "green",
+              color: 'green',
             },
             {
-              title: "Custo por talhão",
+              title: 'Custo por talhão',
               text: analyticsDashboard?.plotsCount,
-              color: "green",
+              color: 'green',
             },
             {
-              title: "Custo total / ha",
-              text: analyticsDashboard?.costPerHectare,
-              color: "green",
+              title: 'Custo total / ha',
+              text: analyticsDashboard?.costPerHectare?.toLocaleString(
+                'pt-BR',
+                {
+                  style: 'currency',
+                  currency: 'BRL',
+                }
+              ),
+              color: 'green',
             },
             {
-              title: "Total gasto no último mês",
+              title: 'Total gasto no último mês',
               text: analyticsDashboard?.totalSpent?.toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
               }),
-              color: "green",
+              color: 'green',
             },
           ].map((item, index) => (
             <InfoCard
@@ -147,10 +138,14 @@ export default function Home() {
             />
           ))}
         </div>
-
-        <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-2 p-1 mb-5">
-          <PieChart title={'Talhão'} />
-        </div>
+        {analyticsDashboard && (
+          <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-2 p-1 mb-5">
+            <PieChart
+              title={'Produtos utilizados'}
+              chartOptions={analyticsDashboard.productUsageByCategory}
+            />
+          </div>
+        )}
       </div>
     </AnimatedPage>
   );
