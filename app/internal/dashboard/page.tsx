@@ -4,7 +4,6 @@ import InfoCard from '@/components/InfoCard/InfoCard';
 import PieChart from '@/components/PieChart/PieChart';
 import SelectField from '@/components/SelectField/SelectField';
 import { GetAnalyticsQuery } from '@/shared/graphql/queries/GetAnalytics.query';
-import { GetPlotsQuery } from '@/shared/graphql/queries/GetPlots.query';
 import { GetPropertiesQuery } from '@/shared/graphql/queries/GetProperties.query';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
 import { useQuery } from '@apollo/client';
@@ -16,12 +15,6 @@ export default function Home() {
     useQuery(GetPropertiesQuery);
 
   const {
-    loading: getPlotsLoading,
-    data: { plots } = {},
-    refetch: refetchPlots,
-  } = useQuery(GetPlotsQuery);
-
-  const {
     loading,
     error,
     refetch,
@@ -31,25 +24,16 @@ export default function Home() {
   // TODO: colocar isso num service
   const [userData, setUserData] = useState<any>(null);
   const [selectedProperty, setSelectedProperty] = useState(0);
-  const [selectedPlot, setSelectedPlot] = useState(0);
-
-  function handlePlotChange(e: any) {
-    setSelectedPlot(e.target.value);
-  }
 
   function handlePropertyChange(e: any) {
     setSelectedProperty(e.target.value);
 
     if (!e.target.value) {
       refetch({ propertyId: undefined });
-      refetchPlots({ propertyId: undefined });
       return;
-    }
+    }''
 
     refetch({ propertyId: Number(e.target.value) });
-    refetchPlots({
-      propertyId: Number(e.target.value),
-    });
   }
 
   useEffect(() => {
@@ -58,8 +42,14 @@ export default function Home() {
       setUserData(localData);
     }
 
-    refetch();
-  }, []);
+    refetch({ propertyId: Number(selectedProperty) });
+  }, [selectedProperty, refetch]);
+
+  useEffect(() => {
+    if (properties && properties.length > 0) {
+      setSelectedProperty((properties[0].id));
+    }
+  }, [properties]);
 
   if (loading) {
     return <span className="loading loading-spinner loading-lg"></span>;
@@ -85,16 +75,6 @@ export default function Home() {
               disabled={getPropertiesLoading}
               placeholder="Selecione uma propriedade"
               label="Filtrar por propriedade"
-            />
-
-            <SelectField
-              options={plots?.length > 0 ? plots : []}
-              value={selectedPlot}
-              onChange={handlePlotChange}
-              name="plotId"
-              disabled={!selectedProperty || getPlotsLoading || loading}
-              placeholder="Selecione um talhão"
-              label="Filtrar por talhão"
             />
           </div>
         </div>

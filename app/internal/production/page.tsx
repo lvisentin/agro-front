@@ -165,7 +165,7 @@ function ProductionPage() {
             handleDeleteClick={handleDelete}
           />
         ) : (
-          <NoData message={'Não encontramos nenhum talhão cadastrada'} />
+          <NoData message={'Não encontramos nenhuma produção cadastrada'} />
         )}
       </div>
     </AnimatedPage>
