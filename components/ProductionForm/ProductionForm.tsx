@@ -40,7 +40,7 @@ function ProductionForm({
             currency: 'BRL',
           })
         : '',
-      quantity: production ? production.quantityPerHectare : 0,
+      quantityPerHectare: production ? production.quantityPerHectare : 0,
       measurementUnit: production ? production?.measurementUnit : ProductionMeasurementUnit.kg,
       executionDate: production ? production.executionDate : ''
     },
@@ -57,7 +57,7 @@ function ProductionForm({
           style: 'currency',
           currency: 'BRL',
         }),
-        quantity: production?.quantityPerHectare,
+        quantityPerHectare: production?.quantityPerHectare,
         measurementUnit: production?.measurementUnit,
         executionDate: production.executionDate
       })
@@ -78,7 +78,17 @@ function ProductionForm({
 
   }, [production])
 
-  const isSubmitDisabled = formik.values.quantity <= 0 || !formik.dirty || !formik.isValid || getPlotsLoading;
+  const formatDate = (date: any) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const today = new Date();
+  const formattedToday = formatDate(today);
+
+  const isSubmitDisabled = formik.values.quantityPerHectare <= 0 || !formik.dirty || !formik.isValid || getPlotsLoading;
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col">
@@ -124,17 +134,17 @@ function ProductionForm({
         />
 
         <TextField
-          value={formik.values.quantity}
+          value={formik.values.quantityPerHectare}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           errors={
-            formik.touched.quantity
-              ? formik.errors.quantity
+            formik.touched.quantityPerHectare
+              ? formik.errors.quantityPerHectare
               : null
           }
           disabled={loading}
           type="number"
-          name="quantity"
+          name="quantityPerHectare"
           placeholder="Produção por HA"
           label="Produção por HA"
         />
@@ -159,6 +169,7 @@ function ProductionForm({
           errors={
             formik.touched.executionDate ? formik.errors.executionDate : null
           }
+          max={formattedToday}
           disabled={loading}
           name="executionDate"
           placeholder="Data de fechamento"
