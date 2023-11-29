@@ -146,7 +146,7 @@ function ProductForm({
         />
       </div>
 
-      <div className="card-footer flex items-center justify-end p-4">
+      <div className="card-footer flex items-center justify-end py-4">
         <SecondaryButton
           type="button"
           onClick={cancelFunction}
