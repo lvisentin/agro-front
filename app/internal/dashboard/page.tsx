@@ -98,7 +98,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-1 mb-5">
+        <div className="grid lg:grid-cols-5 md:grid-cols-2 gap-4 p-1 mb-5">
           {[
             {
               title: 'Operações no último mês',
@@ -131,7 +131,7 @@ export default function Home() {
             },
             {
               title: 'ROI',
-              text: `${analyticsDashboard?.roi.toFixed(2)}%`,
+              text: `${analyticsDashboard?.roi?.toFixed(2)}%`,
               color: 'green',
             },
           ].map((item, index) => (
