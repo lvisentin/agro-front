@@ -131,7 +131,7 @@ export default function Home() {
             },
             {
               title: 'ROI',
-              text: `${analyticsDashboard?.roi?.toFixed(2)}%`,
+              text: analyticsDashboard?.roi ? `${analyticsDashboard?.roi?.toFixed(2)}%` :"N/A" ,
               color: 'green',
             },
           ].map((item, index) => (
