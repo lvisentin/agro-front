@@ -69,7 +69,6 @@ function OperationForm({
     },
     validationSchema: newOperationValidationSchema,
     onSubmit: (values) => {
-      console.log('vaitomarnocu');
       if (submitFunction) {
         submitFunction(values);
       }
@@ -335,7 +334,7 @@ function OperationForm({
         />
       </div>
 
-      <div className="card-footer flex items-center justify-end p-4">
+      <div className="card-footer flex items-center justify-end py-4">
         <SecondaryButton
           type="button"
           onClick={cancelFunction}

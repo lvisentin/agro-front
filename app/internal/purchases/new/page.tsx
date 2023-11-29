@@ -4,6 +4,7 @@ import PurcharseForm from '@/components/PurchaseForm/PurchaseForm';
 import { PageRoutes } from '@/shared/enums/PageRoutes';
 import { CreatePurchaseMutation } from '@/shared/graphql/mutations/CreatePurchase.mutation';
 import AnimatedPage from '@/shared/templates/AnimatedPage';
+import convertCurrency from '@/shared/utils/convertCurrency';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -14,12 +15,10 @@ function NewPurhcasePage() {
   const [CreatePurchase, { loading }] = useMutation(CreatePurchaseMutation);
 
   function handleSubmit(values: any, prods: any) {
-    console.log(values, prods);
-
     const productsToGql = prods.map((prod: any) => ({
       productId: Number(prod.productId),
       amountPerUnit: Number(prod.amountPerUnit),
-      unitPrice: Number(prod.unitPrice.split('R$')[1]),
+      unitPrice: convertCurrency(prod.unitPrice),
       units: Number(prod.units),
     }));
 
