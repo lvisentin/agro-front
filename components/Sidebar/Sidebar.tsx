@@ -72,11 +72,6 @@ const menuItems: MenuItem[] = [
     route: '/internal/documents',
   },
   {
-    icon: faFileLines,
-    text: 'Relatórios',
-    route: '/internal/reports',
-  },
-  {
     icon: faFlag,
     text: 'Produção',
     route: '/internal/production',
