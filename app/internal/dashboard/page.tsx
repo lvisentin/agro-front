@@ -129,6 +129,11 @@ export default function Home() {
               }),
               color: 'green',
             },
+            {
+              title: 'ROI',
+              text: `${analyticsDashboard?.roi.toFixed(2)}%`,
+              color: 'green',
+            },
           ].map((item, index) => (
             <InfoCard
               key={index}
