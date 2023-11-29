@@ -36,7 +36,7 @@ function EditProducitonPage({ params: { id } }: PageProps) {
         plotId: Number(values.plotId),
         description: values.description,
         price: convertCurrency(values.price),
-        quantity: Number(values.quantity),
+        quantityPerHectare: Number(values.quantityPerHectare),
         measurementUnit: values.measurementUnit,
         executionDate: values.executionDate
       },
