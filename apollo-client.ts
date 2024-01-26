@@ -8,7 +8,14 @@ const httpLink = createHttpLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
-    graphQLErrors.forEach(({ extensions }: any) => {
+    graphQLErrors.forEach(({ extensions, path, message }: any) => {
+      if (path[0] === 'signIn') return
+
+      if (message === "PAYMENT_REQUIRED") {
+        window.location.href = process.env.PAYMENT_ERROR_URL!;
+        return
+      }
+      
       const status = extensions.originalError?.statusCode;
       if (status === 403 || status === 401) {
         localStorage.removeItem('userData');
